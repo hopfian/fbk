@@ -333,7 +333,13 @@ retries, mutations never retried), `test_healing_wiring.py` (the round-two wirin
 `Session.registry` adopting a healed registry when every on-disk tier is corrupt, the
 `Surface.doc_id` chokepoint heal with its dry-run refusal, and the governor's
 corrupt-state rebuild event), `test_healing_doctor.py` (the doctor's self-healing
-readout), and `test_healing_doctor_fix.py` (the `--fix` quarantine pass).
+readout), and `test_healing_doctor_fix.py` (the `--fix` quarantine pass). The
+login state machine carries its own suite: `tests/unit/test_auth_login.py`
+(the lsd+jazoest harvest, the credential POST body, the three 2FA variants
+with approval polling, the generic continue replay, unrecognized-checkpoint
+conservatism, the step cap, and the jar round trip) — all offline against a
+duck-typed transport stub and synthetic checkpoint pages; the live login is
+the operator's call.
 
 **Pins, not smoke.** Unit tests pin exact decoded shapes and counts: field
 sets, doc_id equality, input structures, human-output lines. When a wire
@@ -435,7 +441,7 @@ Full anchor map (src area → operator guide):
 | src area | operator guide |
 |---|---|
 | `config.py`, `transport/profile.py`, `commands/config.py`, `commands/fingerprint.py` | 02-configuration.md |
-| `session.py`, `token_cache.py`, `auth/*`, `transport/cookies.py`, `transport/session.py`, `commands/auth.py`, `commands/cookies.py` | 03-session-and-auth.md |
+| `session.py`, `token_cache.py`, `auth/*` (incl. `auth/login.py`), `transport/cookies.py`, `transport/session.py`, `commands/auth.py`, `commands/login.py`, `commands/cookies.py` | 03-session-and-auth.md |
 | `surfaces/feed.py`, `surfaces/profile.py`, `surfaces/comments.py`, `surfaces/stories.py`, `surfaces/notifications.py`, `surfaces/memories.py`, `surfaces/saved.py`, `surfaces/presence.py`, `surfaces/overview.py` + their `commands/*` twins | 04-reference-feed.md |
 | `surfaces/search.py`, `surfaces/marketplace.py`, `surfaces/video.py`, `surfaces/photos.py`, `surfaces/events.py`, `surfaces/upload.py`, `surfaces/video_upload.py` + their `commands/*` twins (incl. `commands/drafts.py` and the draft store) | 05-reference-content.md |
 | `surfaces/messenger.py`, `surfaces/friends.py`, `surfaces/groups.py`, `surfaces/pages.py`, `surfaces/settings.py` + their `commands/*` twins | 06-reference-people.md |
@@ -519,6 +525,7 @@ agent-commenting-standards.md (§4 above).
   `test_healing_transport.py`, `test_healing_wiring.py`,
   `test_healing_doctor.py`, `test_healing_doctor_fix.py` — the healing
   suites
+- `tests/unit/test_auth_login.py` — the offline login state-machine suite
 - `src/commands/registry.py` — `doc-ids` / `registry refresh|diff|audit`
 - `src/constants.py` — `KNOWN_MUTATIONS` and the calibration-citation model
 - `tests/fakes.py` — `StubSession` / `StubGraphQLClient` / `StubTransport`

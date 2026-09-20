@@ -20,7 +20,7 @@ of the research suite's 01–16 numbering.
 |---|---|
 | [01-getting-started.md](01-getting-started.md) | install, cookies, first run |
 | [02-configuration.md](02-configuration.md) | runtime config, env vars, paths, fingerprint profile |
-| [03-session-and-auth.md](03-session-and-auth.md) | session model, whoami/state/logout/cookies, global flags |
+| [03-session-and-auth.md](03-session-and-auth.md) | session model, login/whoami/state/logout/cookies, global flags |
 | [04-reference-feed.md](04-reference-feed.md) | feed, profile, comments, stories, notifications, memories, saved, presence, overview |
 | [05-reference-content.md](05-reference-content.md) | search, marketplace, video, photos, events, upload, draft |
 | [06-reference-people.md](06-reference-people.md) | messenger, friends, groups, pages, settings |
@@ -41,6 +41,7 @@ Every command family from `fbk --help`, mapped to the guide that documents it:
 
 | command | guide |
 |---|---|
+| `login` | [03-session-and-auth.md](03-session-and-auth.md) |
 | `whoami` | [03-session-and-auth.md](03-session-and-auth.md) |
 | `state` | [03-session-and-auth.md](03-session-and-auth.md) |
 | `logout` | [03-session-and-auth.md](03-session-and-auth.md) |

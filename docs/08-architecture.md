@@ -22,14 +22,18 @@ Dependencies point strictly downward; nothing imports `commands/`.
 | Surface | `surfaces/*`, `surfaces/base.py` | One service class per Facebook surface (feed, messenger, groups, ...). Wire knowledge only: friendly names, variable assembly, response decode into `domain/common.py` models. Never touches HTTP — everything delegates through `Session`/`GraphQLClient`, which keeps every service testable against stubs (`tests/fakes.py`) |
 | GraphQL | `graphql/client.py`, `parsing.py`, `errors.py`, `registry.py`, `registry_refresh.py` | Persisted-query calls to `POST /api/graphql/` (no query text ever ships — `doc_id` resolves server-side), streamed-NDJSON parsing and deep merge, the typed error taxonomy, and doc_id resolution/harvest |
 | Transport | `transport/session.py`, `headers.py`, `cookies.py`, `profile.py` | `FBTransport`: curl_cffi `chrome136` TLS/h2 impersonation (pinned, versioned — the unversioned `chrome` preset would silently rotate the fingerprint), canonical header overlays, Netscape jar ingestion, `ClientProfile` coherence validation. Governor gate runs before I/O on every governed method |
-| Auth | `auth/bootstrap.py`, `state.py`, `logout.py` | One homepage GET → login-state classification (`LoginState`), CSRF pair (fb_dtsg + lsd) harvest, deploy revision, bundle census, SSR preload registry; the `logout.php` form POST pair |
+| Auth | `auth/bootstrap.py`, `state.py`, `logout.py`, `login.py` | One homepage GET → login-state classification (`LoginState`), CSRF pair (fb_dtsg + lsd) harvest, deploy revision, bundle census, SSR preload registry; the `logout.php` form POST pair; the headless login state machine (login-page `lsd`/`jazoest` harvest → credential POST → server-given checkpoint walker → jar) |
 | Realtime (parallel branch off the cookie jar) | `realtime/ws.py`, `realtime/mqtt/*`, `realtime/dgw/*` | Fingerprint-coherent WebSocket factory + the MQTT and DGW protocol clients (below) |
 | Cross-cutting | `governor.py`, `journal/recorder.py`, `token_cache.py`, `stats.py`, `retry.py`, `domain/common.py`, `commands/render.py`, `constants.py`, `config.py` | Pacing/budgets, redacted JSONL journals, the persistent token cache, nearest-rank percentile, command-layer retry, typed domain models, shared story renderers, the single source of live-calibrated protocol constants, and path/config discovery |
 
 ## Request flow: `fbk feed read` end-to-end
 
 One invocation, start to finish. Step numbers are stable; cite them in
-reviews.
+reviews. (The `fbk login` flow is the deliberate sibling entry point: it skips
+the Session facade and token cache entirely — a fresh governed transport with
+an **empty** jar, the login-page token harvest, the credential POST, then the
+checkpoint loop ending in `save_netscape` — but every wire call still rides
+that same governed `get`/`post` pair.)
 
 1. **argv → dispatch.** `app.main` reconfigures stdout/stderr to UTF-8
    (Windows consoles default to cp1252 and choke on Bangla/emoji payloads),
@@ -541,13 +545,15 @@ of these, the change is wrong.
   `src/graphql/registry.py`, `src/graphql/registry_refresh.py`
 * `src/healing.py` — the self-healing coordinator (the `KIND_*` vocabulary,
   per-kind caps and cooldowns, `state/healing.jsonl`)
-* `src/auth/bootstrap.py`, `src/auth/state.py`, `src/auth/logout.py`
+* `src/auth/bootstrap.py`, `src/auth/state.py`, `src/auth/logout.py`,
+  `src/auth/login.py`
 * `src/transport/session.py`, `src/transport/headers.py`,
   `src/transport/profile.py`, `src/transport/cookies.py`
 * `src/journal/recorder.py`, `src/journal/analysis.py`
 * `src/realtime/ws.py`, `src/realtime/mqtt/{client,connect,frames,thrift}.py`,
   `src/realtime/dgw/{client,frames,requests}.py`
 * `src/commands/messenger.py`, `src/surfaces/messenger.py`
+* `src/commands/login.py` — the `fbk login` CLI over `auth/login.py`
 * `cli/README.md`, `cli/docs/README.md`
 * Research suite (repo root, cited by filename):
   docs/04-graphql-protocol-deep-dive.md,

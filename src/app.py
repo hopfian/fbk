@@ -44,6 +44,7 @@ except PackageNotFoundError:  # running from an uninstalled source tree
 # One module per surface family. Each module exposes register(subparsers).
 _COMMAND_MODULES = (
     "commands.auth",
+    "commands.login",
     "commands.registry",
     "commands.feed",
     "commands.profile",

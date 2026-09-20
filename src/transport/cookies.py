@@ -167,6 +167,42 @@ def load_netscape(path: str | os.PathLike[str], *,
     return cookies
 
 
+def save_netscape(path: str | os.PathLike[str],
+                  cookies: Mapping[str, str],
+                  *, domain: str = ".facebook.com") -> Path:
+    """Persist a cookie map as a Netscape-format jar (the login hand-off).
+
+    Writes the canonical Netscape row shape the strict loader reads back
+    (``domain/flag/path/secure/expiry/name/value``); rows are written as
+    session cookies (expiry ``0``) — the loader runs with
+    ``ignore_expires=True``, so the session jar and the operator own
+    expiry policy. The write is atomic (temp + ``os.replace``) and the
+    destination is conventionally the gitignored ``cli/cookies.txt``.
+
+    Args:
+        path: Destination jar path (typically ``Config.cookies_path``).
+        cookies: The cookie map (from ``FBTransport.cookie_map()`` after a
+            successful login).
+        domain: The scope column; the session domain per docs/03 §1.
+
+    Returns:
+        The written path.
+
+    Raises:
+        OSError: The destination is unwritable (surfaced, not suppressed —
+            a login that cannot persist its jar must fail loudly).
+    """
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    rows = ["# Netscape HTTP Cookie File"]
+    rows.extend(f"{domain}\tTRUE\t/\tTRUE\t0\t{name}\t{value}"
+                for name, value in sorted(cookies.items()))
+    tmp = destination.with_suffix(".txt.tmp")
+    tmp.write_text("\n".join(rows) + "\n", encoding="utf-8")
+    os.replace(tmp, destination)
+    return destination
+
+
 def describe(cookies: Mapping[str, str]) -> list[str]:
     """Render a safe 'name: present/absent' report — never values.
 

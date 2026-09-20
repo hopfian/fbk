@@ -2,8 +2,8 @@
 
 This guide covers the session model — what one `fbk` invocation does from
 cookie jar to armed GraphQL client — the login-state machine, the persistent
-token cache, the commands `fbk whoami`, `fbk state`, `fbk logout`, and
-`fbk cookies inspect`, and the global flags every command shares. Path
+token cache, the commands `fbk login`, `fbk whoami`, `fbk state`, `fbk logout`,
+and `fbk cookies inspect`, and the global flags every command shares. Path
 resolution, env vars, and the transport profile are covered in
 [02-configuration.md](02-configuration.md). Wire-format grounding lives in
 the research suite — e.g. research doc:
@@ -232,9 +232,10 @@ unusable.
 **This is destructive to every session sharing these cookies.** The teardown
 is server-side: the browser you exported `cookies.txt` from (and any other
 client riding the same `xs`) is logged out too. Use it when retiring a jar or
-ending a session cleanly — it is not a per-run verb. fbk never logs in
-programmatically; re-auth is always a fresh export from a logged-in browser
-(login is the highest-scrutiny moment on the surface).
+ending a session cleanly — it is not a per-run verb. Re-auth has two sanctioned
+paths: `fbk login` (§10, headless) or a fresh export from a logged-in browser
+(login is the highest-scrutiny moment on the surface — the governor paces every
+step of it).
 
 ## 7. `fbk cookies inspect` — offline jar audit
 
@@ -296,7 +297,7 @@ Scripts and CI gates match on these codes; renumbering is a breaking change:
 | Code | Meaning |
 |------|---------|
 | 0    | Success (also the `--dry-run` completion sentinel) |
-| 1    | Failed precondition returned by the handler: session not `LOGGED_IN` (`whoami`/`state`), missing cookie pair (`cookies inspect`), unconfirmed mutation (`logout`), or a raw-seam command under `--dry-run` |
+| 1    | Failed precondition returned by the handler: session not `LOGGED_IN` (`whoami`/`state`), missing cookie pair (`cookies inspect`), unconfirmed mutation (`logout`), a raw-seam command under `--dry-run`, or a typed login failure (`login` — bad credentials, aborted code prompt, unrecognized checkpoint, approval timeout) |
 | 2    | Any other GraphQL/wire failure or unexpected exception; argparse usage errors |
 | 3    | `NotLoggedInError` — re-auth the jar |
 | 4    | `CheckpointError` — halt and contain, do not retry the jar |
@@ -329,6 +330,142 @@ The discipline is enforced structurally, not by convention:
 * `--json` output is exactly as redacted as the human output; redaction
   happens before emission, not at print time.
 
+## 10. `fbk login` — create the session headlessly
+
+The one command that **creates** a session instead of consuming one. It runs
+the same device-based web login a browser performs — GET the login page,
+harvest the CSRF pair, POST the credentials, drive whatever 2FA checkpoint the
+edge serves — and persists the resulting jar to the cookies path (default
+`cli/cookies.txt`, `--cookies`/`FBK_COOKIES`-overridable) so every other
+command works immediately. No browser export required; the export path
+([01-getting-started.md](01-getting-started.md)) remains the fallback.
+
+Wire grounding (research doc: docs/03-authentication-and-session-model.md §3):
+the flow GETs `https://www.facebook.com/login/`, harvests `lsd` (the
+`["LSD",[],{"token":…}]` require-frame first, a form-hidden input second) and
+derives `jazoest` from it (the byte-sum checksum — research doc:
+docs/05-legacy-ajax-and-rest-endpoints.md §4), then POSTs `email`/`pass`/
+`lsd`/`jazoest`/`login_source=Comet_Dialog`/`persistent`/`default` to the
+device-based `login.php` endpoint. Everything rides a **fresh governed
+transport with an empty jar** — the login-page GET absorbs `datr` — so a login
+is ~3–8 paced requests: expect about a minute, not a burst.
+
+### The 2FA step
+
+The checkpoint the edge serves back is **walked from the server-given form**
+(action URL + hidden fields replayed verbatim — the same server-given-shape
+principle as the SSR preload replay, research doc:
+docs/15-live-calibration-findings.md §P2-2), not from hardcoded shapes, and the
+edge's 2FA choice is handled automatically:
+
+* **Approval notification** — the "did you just log in?" page carries no form:
+  fbk polls the same URL (governor-paced; the poll interval stacks on the
+  governor's gate) while you accept the notification on a signed-in device, for
+  up to `--approval-wait` seconds (default 180). The GET transitions once the
+  decision lands.
+* **Authenticator TOTP** — a code checkpoint (`approvals_code` input): fbk
+  prompts for your code, fills it, and replays the server-given fields.
+* **SMS OTP** — the same code-entry shape, classified by the page's markers.
+* **Generic continue-style forms** — any other server-given form is replayed
+  verbatim with its hidden fields.
+
+Anything else is deliberately refused — checkpoint shapes are integrity flows
+that vary per deploy and per account risk state; an unrecognized shape must be
+completed in a browser, not guessed at headlessly (see the failure table). At
+most **8 checkpoint steps** are driven per run (`MAX_CHECKPOINT_STEPS`).
+
+### Flags
+
+| Flag | Semantics |
+|------|-----------|
+| `identifier` | Positional, optional: email, phone, or username — prompted when omitted |
+| `--password-stdin` | Read the password from stdin's first line instead of the hidden prompt (scripting) |
+| `--code CODE` | 2FA code up front (TOTP/SMS) — skips the interactive code prompt when the edge asks |
+| `--approval-wait S` | Seconds to wait for the phone-notification approval (default 180) |
+| `--force` | Re-login even when the jar already carries the `c_user`/`xs` pair |
+
+The common flag set (§8) applies too — notably `--cookies PATH` (where the jar
+is written) and `--no-journal` (the run otherwise journals to
+`state/login.jsonl`).
+
+### Examples
+
+Interactive (identifier prompted, password hidden, 2FA prompted as served):
+
+```
+$ fbk login
+identifier (email / phone / username): you@example.com
+password:
+[login] GET login page
+[login] POST credentials
+[login] approval required — accept the notification on a signed-in device (waiting up to 180s)
+[login] GET approval poll
+logged in — user 12345678901234 (checkpoint: approval, 2 step(s), 3 poll(s))
+jar saved -> ...\cli\cookies.txt
+verify with: fbk whoami
+```
+
+Scripted — password on stdin, code up front (PowerShell:
+`Get-Content password.txt | fbk login you@example.com --password-stdin --code 123456`):
+
+```
+fbk login you@example.com --password-stdin --code 123456 < password.txt
+```
+
+### Output
+
+Exit 0 on success or when already logged in; 1 on typed login failures; 2 on
+unexpected errors. Default mode prints the human summary above; `--json`
+emits the payload alone:
+
+```json
+{"state": "logged_in", "user_id": "12345678901234", "checkpoint": "approval",
+ "steps": 2, "polls": 3, "saved_to": "...\\cli\\cookies.txt", "next": "fbk whoami"}
+```
+
+`checkpoint` is the **first 2FA variant the edge asked for** (`approval` /
+`code-totp` / `code-sms`, `null` on a direct login); `steps`/`polls` count the
+checkpoint steps consumed and approval poll rounds. On success the jar is
+written atomically in Netscape format (src/transport/cookies.py
+`save_netscape`) and the stale `state/token_cache.json` is invalidated —
+verify with `fbk whoami`.
+
+**Already-logged-in guard:** when the on-disk jar already carries the
+`c_user`/`xs` pair, the command is idempotent — it emits
+`{"state": "already_logged_in", "user_id": …, "jar": …}`, prints
+`already logged in (user …) — … use --force to re-login`, and exits 0 without
+touching the wire. `--force` re-runs the flow over the existing pair.
+
+### Security notes
+
+* The password and 2FA codes are read via getpass/stdin — **never argv** — and
+  exist only in process memory; they are never logged, journalled, or printed.
+* The `state/login.jsonl` journal records body field **names** only
+  (`email`, `pass`, `lsd`, …), never values (the §9 discipline).
+* The payload carries identity metadata and checkpoint labels only — never
+  credentials.
+* The governor paces every step of the flow; a login is the
+  highest-scrutiny moment on the surface — expect roughly a minute, and never
+  retry it in a loop.
+
+### Honesty: schema-decoded, not live-fired
+
+The state machine is schema-decoded and unit-tested **offline** against
+synthetic checkpoint pages (`tests/unit/test_auth_login.py`); the live login is
+the operator's call. Checkpoint shapes vary per deploy and per account risk
+state — the walker replays whatever form the server actually served and refuses
+anything it does not recognize.
+
+### Failure table (exit 1 unless noted)
+
+| Error | Meaning | Remedy |
+|---|---|---|
+| `BadCredentialsError` | The identifier/password pair was rejected | Check the credentials and retry |
+| `LoginUnrecognizedCheckpointError` | The checkpoint served a shape this flow does not handle | Complete this login in a browser, then export the jar |
+| `LoginTimeoutError` | The notification was not approved within `--approval-wait` | Approve it on a signed-in device, then retry |
+| `LoginError` | Anything else: the empty code prompt aborted, the login page carried no `lsd` token (page shape changed), or the 8-step checkpoint cap exhausted | Read stderr; browser login + jar export remains the fallback |
+| unexpected | Any other exception | exit 2 — `--debug` for the traceback |
+
 ## Files that feed this guide
 
 - `src/session.py` — the Session facade: composition order, cache-first
@@ -337,6 +474,9 @@ The discipline is enforced structurally, not by convention:
 - `src/auth/bootstrap.py` — page bootstrap, token harvest, login-state
   classification, checkpoint signal
 - `src/auth/state.py` — the `LoginState` enum
+- `src/auth/login.py` — the headless login state machine (lsd/jazoest
+  harvest, credential POST, the server-given checkpoint walker, approval
+  polling, `MAX_CHECKPOINT_STEPS`)
 - `src/auth/logout.py` — the `logout.php` POST pair, `jazoest`,
   `LogoutService`
 - `src/token_cache.py` — the persistent token cache (15-min TTL,
@@ -344,8 +484,11 @@ The discipline is enforced structurally, not by convention:
 - `src/healing.py` — the self-healing coordinator (records the
   `token-cache-rebuild` events)
 - `src/transport/cookies.py` — Netscape jar load (with the tolerant
-  torn-jar reparse), `fingerprint`, `redact`
+  torn-jar reparse), the login hand-off `save_netscape`, `fingerprint`,
+  `redact`
 - `src/commands/auth.py` — `whoami` / `state` / `logout` handlers
+- `src/commands/login.py` — the `fbk login` handler (prompts,
+  already-logged-in guard, jar persistence, token-cache invalidation)
 - `src/commands/cookies.py` — `cookies inspect` handler
 - `src/app.py` — entrypoint, `--debug`, exit mapping
 - `src/commands/common.py` — global flags, `emit` stdout discipline,

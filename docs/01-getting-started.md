@@ -25,7 +25,17 @@ fbk --version
 
 ## The cookie jar
 
-Live (network) commands need a session cookie jar in Netscape format:
+Live (network) commands need a session cookie jar in Netscape format. The
+primary way to obtain it is `fbk login` — the headless interactive login
+(identifier, hidden password prompt, then the 2FA step the edge serves):
+
+```
+fbk login you@example.com
+```
+
+The jar is written to the cookies path and `fbk whoami` verifies it; details,
+flags, and failure remedies are in [03-session-and-auth.md](03-session-and-auth.md)
+§10. Export-from-browser remains the alternative:
 
 1. Log in to facebook.com in a normal browser.
 2. Export the cookies as a Netscape `cookies.txt` jar — either from the browser
@@ -46,7 +56,8 @@ Requirements:
 The offline introspection commands (`doc-ids`, `registry diff`/`audit`,
 `config`, `cookies`, `journal`, `doctor`, `templates`,
 `governor status`/`audit`, `measure report`) need no jar at all — you can run
-everything in this guide except `whoami`/`overview` before exporting one.
+everything in this guide except `fbk login`, `whoami`/`overview` before you
+have one.
 
 ## First-run ritual
 

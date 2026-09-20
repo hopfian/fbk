@@ -4,14 +4,15 @@ Exit codes first — they are a stable public interface (scripts and CI gates ma
 them), then symptom → cause → remedy for the failures operators actually hit. Ground
 truth: `src/commands/common.py` (`run_command`), `src/app.py`, `src/governor.py`,
 `src/graphql/errors.py`, `src/auth/state.py`, `src/auth/bootstrap.py`,
-`src/transport/session.py`, `src/commands/doctor.py`, `src/healing.py`.
+`src/auth/login.py`, `src/commands/login.py`, `src/transport/session.py`,
+`src/commands/doctor.py`, `src/healing.py`.
 
 ## Exit codes
 
 | rc | meaning | operator response |
 |---:|---|---|
 | 0 | Success. Also the `--dry-run` success sentinel: the request plan was printed and nothing was sent. | — |
-| 1 | Failed precondition, decided by the handler itself: an unconfirmed mutation (e.g. messenger send with no echoed rows, events create/delete without an id, settings verify-password rejected, logout unconfirmed), `whoami`/`state` classifying anything but `logged_in`, `cookies inspect` finding the auth pair missing, `doctor` failing a critical check. Also the `--dry-run` refusal from raw-seam commands (`upload`, `video upload`): they bypass GraphQL and cannot be planned. | Read the command's stderr; fix the precondition. |
+| 1 | Failed precondition, decided by the handler itself: an unconfirmed mutation (e.g. messenger send with no echoed rows, events create/delete without an id, settings verify-password rejected, logout unconfirmed), `whoami`/`state` classifying anything but `logged_in`, `cookies inspect` finding the auth pair missing, `doctor` failing a critical check, or a typed `fbk login` failure (below). Also the `--dry-run` refusal from raw-seam commands (`upload`, `video upload`): they bypass GraphQL and cannot be planned. | Read the command's stderr; fix the precondition. |
 | 2 | Any other `FBGraphError` (unclassified wire failures, `GraphQLProtocolError` variable-coercion rejections, `DocIdStaleError`), any unexpected exception, argparse usage errors, and `GovernorBlockedError` escapes (caps / cooldown / quiet-hours — the governor's STOP signal, a plain `RuntimeError`, not a typed family). | See the sections below; never blind-retry. |
 | 3 | `NotLoggedInError` — session invalid/expired. The client already tried one auto re-bootstrap on DTSG rejection and it failed. | Re-export the jar (below). |
 | 4 | `CheckpointError` — integrity challenge. The governor has already engaged a 6-hour disengagement. | Halt. Do not hammer. |
@@ -286,6 +287,47 @@ top-level `fixed` list (only when `--fix` and something was fixed —
 `{"file", "quarantined_to"}` entries); human mode prints `[FIXED]` lines
 after the checks. The exit code is unchanged — still 0/1, decided by the
 checks alone; the fix pass is best-effort and cannot break the run.
+
+## `fbk login` failures
+
+`fbk login` exits 0 on success **and** when the jar is already logged in; 1 on
+the typed errors below (stderr carries the message, never a credential — the
+`state/login.jsonl` journal records body field *names* only); 2 for anything
+unexpected (`--debug` for the traceback). The flow is schema-decoded, not
+live-fired: checkpoint shapes vary per deploy and per account risk state.
+
+**Wrong password.** `the identifier/password pair was rejected — check the
+credentials and retry` (`BadCredentialsError`).
+
+**Remedy.** Check the identifier/password and re-run; the failure is typed the
+moment the edge rejects the pair.
+
+**Unrecognized checkpoint.** `checkpoint served an unrecognized shape —
+complete this login in a browser, then export the jar`
+(`LoginUnrecognizedCheckpointError`).
+
+**Remedy.** Exactly what it says: complete the login in a normal browser, then
+export the jar ([01-getting-started.md](01-getting-started.md)). The walker
+replays only the server-given form it recognizes — an integrity flow outside
+that vocabulary is refused, never guessed at headlessly.
+
+**Approval timeout.** `the notification was not approved within 180s — approve
+it on a signed-in device and retry` (`LoginTimeoutError`).
+
+**Remedy.** Approve the "did you just log in?" notification on a signed-in
+device, then re-run; raise `--approval-wait` if 180 s is too tight. The polls
+are governor-paced — the wait is real pacing, not a hang.
+
+**Already logged in.** `already logged in (user …) — … use --force to
+re-login` — exit 0, not a failure. **Remedy:** `fbk login --force` to re-run
+the flow over the existing `c_user`/`xs` pair.
+
+**New IP / new fingerprint.** A login from a fresh IP or fingerprint may
+trigger **more** checkpoints than you are used to — that is the edge behaving
+exactly as expected for a new client identity (research doc:
+docs/10-rate-limiting-and-behavioral-detection.md). The governor paces every
+step; do not retry in a loop. If the shape is unrecognized, fall back to the
+browser login + jar export above.
 
 ## Cookies inspect exits 1
 

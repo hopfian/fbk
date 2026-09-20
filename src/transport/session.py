@@ -223,6 +223,36 @@ class FBTransport:
         self._q = 0  # Relay request sequence (docs/04 §2)
 
     # ------------------------------------------------------------------ lifecycle
+    def cookie_value(self, name: str) -> str | None:
+        """One cookie's value from the LIVE session jar (login flow).
+
+        Set-Cookie rotations land in the underlying curl_cffi jar — this
+        reads THAT, not the constructor's static map, so a value absorbed
+        mid-flow (the ``c_user``/``xs`` pair a successful login sets) is
+        visible immediately. Absent → ``None``.
+
+        Args:
+            name: The cookie name (e.g. ``c_user``).
+        """
+        jar = getattr(self._session.cookies, "jar", None)
+        if jar is not None:
+            for ck in jar:
+                if getattr(ck, "name", None) == name:
+                    return getattr(ck, "value", None)
+        return self.cookies.get(name)
+
+    def cookie_map(self) -> dict[str, str]:
+        """Every cookie in the live session jar as ``{name: value}``.
+
+        The login flow's persistence source: after a successful login the
+        map carries ``datr`` + the auth pair, ready for
+        ``transport.cookies.save_netscape``.
+        """
+        jar = getattr(self._session.cookies, "jar", None)
+        if jar is None:
+            return dict(self.cookies)
+        return {ck.name: (ck.value or "") for ck in jar if ck.name}
+
     def close(self) -> None:
         """Idempotent close of the underlying curl session.
 

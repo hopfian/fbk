@@ -65,11 +65,11 @@ class TestWalkerRootDepth:
         # the never-drift pin: walker output == the tree's own choices
         assert _candidates(parser, [""]) == _visible(parser)
 
-    def test_root_lists_35_families(self):
+    def test_root_lists_36_families(self):
         """33 pre-existing families + `draft` + the public `completions`
         verb; the hidden `_complete` must not be a candidate."""
         out = _candidates(_wired(), [""])
-        assert len(out) == 35
+        assert len(out) == 36
         assert "completions" in out
         assert "draft" in out
         assert "registry" in out

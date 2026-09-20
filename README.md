@@ -26,7 +26,7 @@ page 1           : has_next_page=True
 
 ## Highlights
 
-* **35 command families** across the Facebook surface: feed, stories,
+* **36 command families** across the Facebook surface: feed, stories,
   notifications, messenger, groups, pages, events, marketplace, saved items,
   comments, photos, video, search, friends, settings, presence, and more —
   each with `--json` machine output and a compact one-line JSON tail.
@@ -83,7 +83,18 @@ fbk --version
 
 ## The session
 
-Live (network) commands need a session cookie jar in Netscape format:
+Live (network) commands need a session cookie jar in Netscape format. Or create
+one directly — `fbk login` runs the headless interactive login (identifier +
+hidden password prompt + the 2FA step the edge serves: approval notification,
+authenticator code, or SMS OTP) and saves the jar to `cookies.txt`; the
+governor paces every step, so expect about a minute:
+
+```
+fbk login
+fbk whoami      # verify
+```
+
+The export-from-browser path remains the fallback:
 
 1. Log in to facebook.com in a normal browser.
 2. Export the cookies as a Netscape `cookies.txt` jar (DevTools storage tab,
@@ -115,6 +126,7 @@ compact one-line JSON — scripts pipe the last line.
 
 | command | what it covers |
 |---|---|
+| `login` | headless interactive login — identifier + password + 2FA (approval notification, authenticator code, or SMS OTP) -> saves `cookies.txt` |
 | `whoami` / `state` / `logout` | session validation, login-state classification, server-side teardown |
 | `cookies` | jar inspection — taxonomy + fingerprints, never values |
 | `feed` | `read`, `paginate`, `react`, `unreact`, `comment`, `delete-comment`, `publish`, `publish-batch`, `edit`, `set-privacy`, `share`, `save`, `notify`, `life-categories` |

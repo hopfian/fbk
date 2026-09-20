@@ -63,6 +63,10 @@ The `--cookies` flag is applied after discovery (an absolute-path
 | profile.json | —             | —              | `<root>/data/profile.json` |
 | impersonate  | —             | `FBK_IMPERSONATE` | `chrome136` (pinned) |
 
+The `cookies.txt` path is read AND written: `fbk login` persists the jar
+it creates to the same resolved path (see
+[03-session-and-auth.md](03-session-and-auth.md) §10).
+
 ### FBK_IMPERSONATE and the fallback chain
 
 The impersonation target is the curl_cffi TLS/h2 (JA3/JA4) identity. The
