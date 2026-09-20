@@ -76,7 +76,7 @@ data, not failure.
 Every knob is individually overridable via `FBK_GOVERNOR_*` environment
 variables, resolved by `GovernorConfig.from_env` in `src/governor.py`; the
 self-healing layer (`src/healing.py`) mirrors the same convention with its
-own four overrides. Exact names, types, and defaults:
+own five overrides. Exact names, types, and defaults:
 
 | Variable | Type | Default (field) | Meaning |
 |---|---|---|---|
@@ -93,6 +93,7 @@ own four overrides. Exact names, types, and defaults:
 | `FBK_HEAL_REGISTRY_HOURS` | float | 6.0 (`DEFAULT_REGISTRY_HOURS`) | Cross-invocation cooldown between self-healing registry re-harvests, hours |
 | `FBK_HEAL_MAX_BUNDLES` | int | 60 (`DEFAULT_MAX_BUNDLES`) | Bundle cap per self-healing re-harvest; `0` or a malformed value falls back to this default |
 | `FBK_HEAL_TRANSPORT_RETRIES` | int | 1 (`DEFAULT_TRANSPORT_RETRIES`) | Read-only connection-phase retries per logical call, hard ceiling 3 |
+| `FBK_HEAL_REALTIME_RECONNECTS` | int | 3 (`DEFAULT_REALTIME_RECONNECTS`) | Reconnects one `fbk messenger listen` session may spend on dropped sockets, hard ceiling 10 (`MAX_REALTIME_RECONNECTS`); values above it clamp, a malformed value keeps the default |
 
 Notes, all verified in source:
 
@@ -158,6 +159,27 @@ page:
   3); a mutation is never re-fired — a timeout after send cannot
   distinguish "request lost" from "response lost", and the double-post
   hazard outweighs the recovery (docs/11 §5).
+* **Every realtime re-dial is a fresh network dial, so it passes the
+  governor too.** The WebSocket dial bypasses the HTTP transport's request
+  path — the one seam that never met the pacing queue — so a self-healing
+  reconnect of `fbk messenger listen` (MQTT and `--dgw`) paces each
+  re-dial through the governor's `before_request` gate and inherits the
+  lognormal gap, the caps, and the cooldowns; a refused gate ends the
+  listen (`GovernorBlockedError` propagates — containment, not
+  escalation). The budget is `FBK_HEAL_REALTIME_RECONNECTS` reconnects per
+  listen session (default 3), hard ceiling 10 — a persistent broker outage
+  terminates the listen instead of looping forever. And the `--seconds`
+  wall-clock budget is set once after the first successful dial and never
+  recomputed: reconnects draw from the remaining window, so healing cannot
+  turn a 30-second listen into an hour.
+* **A degenerate homepage earns exactly one retry — enforcement never
+  does.** A bootstrap that classifies `UNKNOWN`, or `LOGGED_IN` without a
+  usable `fb_dtsg`, is a parse/shape fault: `Session.bootstrap` retries it
+  once (each GET through the same governor gate) and adopts the healthy
+  page when the retry recovers; persistent degeneracy propagates as the
+  honest typed error. A `CHECKPOINT` classification is never retried — a
+  challenge is enforcement, and enforcement is met with disengagement, not
+  retry-escalation (docs/11-opsec-and-session-engineering.md §5).
 * **Every heal is logged for audit.** Each action appends a redacted row
   to `state/healing.jsonl` (operation names, doc ids, error codes, counts
   — never token values) and mirrors to stderr as
@@ -176,7 +198,10 @@ page:
   back to v2 exactly as before the heal). The doctrine is *no overwrite
   without a rollback path*: a backup-creation failure skips the heal
   entirely and the caller's typed error is the honest outcome. Rolling
-  back protects the working registry from being replaced by garbage.
+  back protects the working registry from being replaced by garbage. The
+  manual `fbk registry refresh --save` now performs the same backup-on-write,
+  so every v3 overwrite — coordinator or operator — leaves the rollback
+  point behind.
 * **A governor counter reset is an audited event.** A corrupt
   `state/governor_state.json` fails soft to fresh counters — which
   re-arms the request caps. Under `FBK_HEAL=off` that discard stays

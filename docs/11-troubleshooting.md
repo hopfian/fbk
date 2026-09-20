@@ -17,7 +17,7 @@ truth: `src/commands/common.py` (`run_command`), `src/app.py`, `src/governor.py`
 | 4 | `CheckpointError` — integrity challenge. The governor has already engaged a 6-hour disengagement. | Halt. Do not hammer. |
 | 5 | `RateLimitedError` — soft block. The governor has already engaged a 15-minute cooldown. | Respect-backoff (`--retry N`) or disengage. |
 | 6 | `RegistryMissError` (incl. `RegistryLoadError`, its corrupt-file subclass) — friendly_name absent from every registry tier. | Auto-heals first (one capped re-harvest + re-resolve); the manual re-harvest `fbk registry refresh --save` remains the move when the typed error still surfaces (see the registry-drift section). |
-| 7 | `CookieLoadError` — jar missing, unreadable, or carries no parseable auth rows. | Re-export the jar. |
+| 7 | `CookieLoadError` — jar missing, unreadable, or carries no parseable auth rows. A torn jar (one mangled row among good ones) self-heals first — see the torn-jar section. | Re-export the jar. |
 | 8 | `FingerprintRejectedError` — the edge rejected the TLS/h2 identity itself, or no supported curl_cffi impersonation target exists. | Fix the fingerprint (below); retrying the same session cannot succeed. |
 | 130 | `KeyboardInterrupt` — operator interrupt. | — |
 
@@ -49,6 +49,29 @@ fbk state               # classify: logged_out vs checkpoint vs shadow_suspect
 Re-export a fresh Netscape jar from a logged-in browser to `cli/cookies.txt`, then confirm
 with `fbk whoami` (exit 0 = `logged_in`). If `state` reports `checkpoint`, see the next
 section — do not just re-export and continue.
+
+Two self-healing events now fire inside this pipeline before any remedy is needed:
+
+* **`token-cache-rebuild` "identity mismatch"** — the persistent cache still carried an
+  entry bound to a *different* account than the jar's `c_user` (the jar was swapped while
+  `state/token_cache.json` persisted). The check runs in `Session.bootstrap` — not in
+  `TokenCache`, which has no jar to compare against — and discards the entry *before*
+  using it, so the run costs zero wasted requests instead of burning one doomed call on
+  cached tokens the DTSG auto-refresh would then have had to cure. The stderr line is
+  informational: the fresh bootstrap that follows re-binds the tokens, and the next
+  invocation is warm again. No remedy needed; deleting the cache manually is also fine.
+* **`bootstrap-retry` "degenerate bootstrap — one governed retry"** — a homepage bootstrap
+  classified `unknown`, or `logged_in` without a harvestable `fb_dtsg`: a poisoned shell
+  (a soft-blocked or shape-drifted page parse), not a login state. `Session.bootstrap`
+  retries exactly once (each bootstrap GET is governor-paced) and adopts the healthy page
+  when the retry recovers — the stderr line is the evidence, not a failure. If
+  degeneracy persists across the retry, the honest outcome follows: the poisoned page
+  propagates (`fbk state` reporting `unknown`, or a `logged_in` classification whose
+  whoami line reads `dtsg : MISSING` — no real call can ride it) and `fbk governor
+  status` will show whether an enforcement cooldown engaged. Do not loop retries by
+  hand — a persistent degenerate homepage is an edge-side condition, and
+  a `CHECKPOINT` classification is never retried (enforcement is met with disengagement,
+  docs/11-opsec-and-session-engineering.md §5).
 
 ## Checkpoint
 
@@ -170,7 +193,9 @@ the command completes; the typed error never surfaces:
 
 The heal verifies itself: before it rewrites `data/doc_id_registry_v3.json` it backs the
 current file up bit-for-bit to `data/doc_id_registry_v3.prev.json` (that file is the
-pre-heal backup — the last verified registry, safe to keep or diff); after the harvest the
+pre-heal backup — the last verified registry, safe to keep or diff; the manual
+`refresh --save` now performs the same backup-on-write, so this artifact appears after
+any v3 overwrite); after the harvest the
 reloaded registry must clear 200 pairs (`MIN_HARVEST_PAIRS` — the shipped v3 carries
 1,031). A degenerate or unparseable harvest — a soft-blocked or shape-drifted page parse —
 is refused and **rolled back**: the backup restored via `os.replace`, or the fresh v3
@@ -214,7 +239,9 @@ Recovery is the live re-harvest:
 fbk registry refresh --save
 ```
 
-`--save` writes `data/doc_id_registry_v3.json`; the v2 fallback tier is never overwritten.
+`--save` writes `data/doc_id_registry_v3.json`; the v2 fallback tier is never overwritten,
+and the current v3 is backed up to `data/doc_id_registry_v3.prev.json` first (best-effort;
+`registry diff`/`audit` ignore the `.prev` file — it is not in the load descent).
 Re-run `fbk doctor` afterwards to confirm both tiers parse; its self-healing check also
 summarizes what the auto-heals did (the `state/healing.jsonl` census — see
 [07-reference-tooling.md](07-reference-tooling.md)).
@@ -272,6 +299,61 @@ an exception. (A jar that is missing/unreadable/has no facebook.com rows raises
 **Remedy.** Re-export the full jar from a logged-in browser; the pair is validated as a
 unit server-side. Confirm with `fbk cookies inspect` (exit 0) and `fbk whoami`.
 
+## A torn cookie jar (self-heals)
+
+**Symptom.** A live command starts anyway and stderr carries
+
+```
+[heal] cookie-jar-heal: cookie jar tolerant reparse — strict parse failed; tolerant reparse dropped 2 row(s)
+```
+
+**Cause.** The jar file is non-empty but the strict `MozillaCookieJar` parse rejected it —
+the classic shape is one mangled line among good rows (a hand-edited file, a truncated
+export, an editor that reflowed the tab-separated columns). The loader (src/transport/
+cookies.py) reparses the file line-level: rows carrying the canonical seven tab-separated
+fields (including the `#HttpOnly_` variant) are parsed directly, the genuinely mangled
+non-comment lines are dropped and counted, and the surviving `facebook.com` rows keep the
+session alive. That stderr line is the audit of what was dropped — it names a count,
+never a cookie value.
+
+**Remedy.** None required — the healed session is equivalent to a clean jar's parse. Still
+re-export a clean jar when convenient: every heal is one less line of drift to audit.
+
+**When `CookieLoadError` still fires (exit 7):** the file is missing; every non-comment,
+non-blank row is mangled (nothing survives the reparse); or the survivors carry zero
+`facebook.com` rows. Those are exactly the conditions under which an empty session must
+never silently start — re-export the jar from a logged-in browser.
+
+## Messenger listen drops mid-window
+
+**Symptom.** A `fbk messenger listen` (MQTT or `--dgw`) run whose socket died partway
+through the `--seconds` window — historically the command failed immediately with the
+transport error. Now stderr first carries one or more
+
+```
+[heal] realtime-reconnect: listen socket dropped — re-dial 1/3 after ConnectionError
+```
+
+(or `listen dial failed` when a re-dial's handshake itself was refused), each followed by
+the listen continuing.
+
+**Cause.** A connection-phase failure — socket drop, WS close, CONNACK/SUBACK refusal,
+keepalive death (`MQTTClientError`/`DGWError`/`ConnectionError`/`TimeoutError`/`OSError`).
+The listen loop re-dials the same transport instead of failing: every re-dial is
+governor-paced (the lognormal gap, caps, cooldowns — a refused gate ends the listen),
+frames collected before the drop are preserved, and the `--seconds` window is one
+wall-clock budget set after the first successful dial — reconnects draw from the
+remaining window, they never extend it. The budget is `FBK_HEAL_REALTIME_RECONNECTS`
+(default 3, hard ceiling 10).
+
+**Remedy.** Usually none — the listen heals itself and the command still exits 0 with the
+accumulated frames. When the budget is spent, a final
+`reconnect budget exhausted (N dial attempts)` event precedes the original typed error
+propagating (same exit behavior as the pre-healing listen): the broker/edge is persistently
+refusing, so stop rather than re-run immediately — check `fbk governor status` for an
+engaged cooldown. `FBK_HEAL=off` restores the pre-healing single-dial behavior. `Ctrl-C`
+and the normal deadline expiry are not failures — neither reconnects nor logs anything.
+
 ## Token-cache staleness
 
 **Symptom.** A run that should cost one request re-bootstraps, or stale-token behavior
@@ -288,8 +370,9 @@ self-healed too: `TokenCache.load_diagnosed` classifies the miss (`absent`/`expi
 [03-session-and-auth.md](03-session-and-auth.md) §3).
 
 **Remedy.** Delete the cache to force a fresh bootstrap on the next invocation (a corrupt
-file needs no manual delete — the self-heal discards it; deleting is for staleness and
-identity-mismatch cases):
+file needs no manual delete — the self-heal discards it; an identity-mismatched entry is
+now discarded automatically too — see the session-dead section; deleting remains the move
+for plain staleness):
 
 ```
 Remove-Item state\token_cache.json     # (or: rm state/token_cache.json)

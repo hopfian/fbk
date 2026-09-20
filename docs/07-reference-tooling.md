@@ -103,6 +103,7 @@ a `unique_pairs` list plus a `revision` deploy tag:
 | file | role |
 |---|---|
 | `data/doc_id_registry_v3.json` | refresh output — freshest ids (currently 1,031 pairs, revision 1047963790) |
+| `data/doc_id_registry_v3.prev.json` | the bit-for-bit backup the *previous* v3 overwrite left behind — both the auto-heal and the manual `--save` write it (`shutil.copy2`) before replacing v3, so any overwrite is reversible; harmless to keep, and ignored by every read (it is not in the load-priority descent) |
 | `data/doc_id_registry_v2.json` | the prior harvest (1,028 pairs, revision 1047871790); fallback tier, never overwritten |
 
 Reads load through a priority list — v3 first, then v2, then the legacy
@@ -189,7 +190,11 @@ server no longer knows a doc_id the client sent) and `RegistryMissError`
 read-only probe: harvest, diff, print — nothing on disk changes. With
 `--save` the fresh pairs are written to `data/doc_id_registry_v3.json`; the
 v2 file is **never overwritten** (v3 supersedes v2 by merge, so the previous
-harvest stays intact as the fallback tier).
+harvest stays intact as the fallback tier). The v3 write is rollback-safe:
+the current file is backed up bit-for-bit to
+`data/doc_id_registry_v3.prev.json` first (the same backup-on-write the
+self-healing auto-heal performs, so the manual command and the coordinator
+leave identical artifacts — a bad harvest is always reversible).
 
 **Syntax**
 
@@ -242,7 +247,8 @@ schedule — each harvest is real request traffic against the deploy.
 
 **Status.** LIVE: touches facebook.com (homepage bootstrap + bundle
 downloads), requires a loadable cookie jar, paced by the governor. `--save`
-is the only disk write; it never touches v2.
+is the only disk write; it never touches v2, and it leaves the
+`doc_id_registry_v3.prev.json` backup behind (diff/audit ignore it).
 
 ## fbk registry diff
 
@@ -1067,7 +1073,9 @@ exists; `--json` additionally carries the top-level `self_healing` payload:
 `enabled` (bool), `log` (path), `events_24h` (int), `by_kind` (per-kind
 census over the closed vocabulary — `registry-refresh`, `doc-id-retry`,
 `token-cache-rebuild`, `transport-retry`, `governor-state-rebuild`,
-`doctor-fix`), and `last` (the newest event
+`doctor-fix`, `cookie-jar-heal`, `bootstrap-retry`,
+`realtime-reconnect` — nine kinds, in `src/healing.py`'s declaration
+order), and `last` (the newest event
 row, `null` when the log is absent or nothing parses). Exit semantics (pinned by
 `tests/unit/test_doctor.py`): **0 while every critical check passes —
 warns allowed, even critical ones; 1 as soon as any critical check

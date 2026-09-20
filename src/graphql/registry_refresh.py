@@ -66,6 +66,8 @@ RE_PARAMS = re.compile(
 _BUNDLE_HEADERS = {"accept": "*/*", "referer": "https://www.facebook.com/"}
 _FETCH_TIMEOUT = 60.0       # generous single-bundle timeout; bundles are large minified JS
 _V3_NAME = "doc_id_registry_v3.json"   # refresh output; v2 is never overwritten (docs/15 §P5-3)
+# rollback copy written before every v3 overwrite (self-healing primitive)
+_V3_PREV_NAME = "doc_id_registry_v3.prev.json"
 
 # Per-worker curl sessions: the transport's own curl_cffi session is NOT
 # thread-safe, so workers get thread-local sessions instead.
@@ -284,6 +286,17 @@ def _write_v3(config: Config, fresh: dict[str, str], diff: RegistryDiff,
     assets = Path(config.assets_dir)
     assets.mkdir(parents=True, exist_ok=True)
     path = assets / _V3_NAME
+    # uniform backup-on-write (the self-healing rollback primitive, src/
+    # healing.py): both the operator's manual `registry refresh --save`
+    # and the coordinator's auto-heal overwrite v3 — a bit-for-bit .prev
+    # copy first means a bad harvest is always reversible, whichever
+    # path produced it. Best-effort: a failed copy must not block the write.
+    if path.is_file():
+        try:
+            import shutil
+            shutil.copy2(path, path.with_name(_V3_PREV_NAME))
+        except OSError:
+            pass
     payload = {
         "revision": diff.harvest_revision,
         "harvested_at": datetime.now().replace(microsecond=0).isoformat(),

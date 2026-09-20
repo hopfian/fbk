@@ -79,6 +79,20 @@ CALIBRATION NOTES:
     publish — no publish shape exists in the shipped bundles, so this service
     deliberately exposes no typing method.
 
+  * Realtime self-healing — ``listen``/``listen_dgw`` wrap their dial+collect
+    phase in the bounded reconnect loop of :meth:`MessengerService.
+    _listen_healed` (healing kind ``realtime-reconnect``, src/healing.py): a
+    connection-phase failure mid-listen (socket drop, WS close, CONNACK
+    refusal, keepalive death) re-dials up to ``realtime_reconnect_limit()``
+    times, every re-dial paced through the session transport's governor gate,
+    every attempt recorded as a redacted ``KIND_REALTIME_RECONNECT`` row in
+    the wired :class:`healing.HealingLog`. Frames collected before the drop
+    are preserved — a reconnect resumes into the same accumulation, and the
+    ``--seconds`` deadline stays the single wall-clock budget of the whole
+    session (reconnects draw from the remaining window, never extend it).
+    Without a wired healing log (every direct surface caller but
+    ``cmd_listen``) the methods keep their pre-healing single-dial behavior.
+
 USER-DOC ANCHOR: cli/docs/06-reference-people.md — ship a matching edit to
 that guide in the same change whenever this module's behavior changes.
 """
@@ -90,14 +104,16 @@ import json
 import random
 import time
 import uuid
-from collections.abc import Iterator
-from typing import Any
+from collections.abc import Callable, Iterator
+from typing import Any, Protocol
 
 import constants as C
 from domain.common import Actor, Message, ThreadSummary
 from graphql.errors import GraphQLProtocolError
+from healing import KIND_REALTIME_RECONNECT, HealingLog, realtime_reconnect_limit
+from realtime.dgw.client import DGWError
 from realtime.dgw.requests import LightspeedClient
-from realtime.mqtt.client import MQTTClient
+from realtime.mqtt.client import MQTTClient, MQTTClientError
 
 from .base import Surface
 
@@ -171,6 +187,37 @@ DEFAULT_SEND_INPUT_V2: dict[str, Any] = {
 #: Response fields whose presence marks a successful send (one per variant).
 _SEND_RESPONSE_FIELDS = ("xfb_comet_ai_hts_send_message_mutation",
                          "xfb_conversational_support_send_message")
+
+
+#: The connection-phase exception set the realtime layer actually raises
+#: (read from the layers themselves, 2026-09): the typed broker refusals
+#: (``MQTTClientError`` — CONNACK/SUBACK rejection; ``DGWError`` — handshake
+#: rejection), the WS adapter's documented recv contract (``realtime/ws.py``
+#: CurlCffiWSAdapter.recv: ``ConnectionError`` when the reader thread dies —
+#: the mid-listen socket drop — and ``TimeoutError`` when a handshake/read
+#: deadline escapes a client), and raw socket/TLS failures under the WS
+#: factory (``OSError`` — which also covers curl_cffi's ``RequestsError``,
+#: an OSError subclass, e.g. a keepalive PINGREQ dying on a dropped socket).
+#: Deliberately absent: frame-decode ``ValueError``s (corrupted bytes are a
+#: bug signal, not a network drop) and ``KeyboardInterrupt`` (BaseException —
+#: a user interrupt is not a failure and must never reconnect or log).
+_REALTIME_CONNECT_ERRORS: tuple[type[BaseException], ...] = (
+    MQTTClientError,
+    DGWError,
+    ConnectionError,
+    TimeoutError,
+    OSError,
+)
+
+#: Fixed coalescing backoff between listen re-dials when no governor gate is
+#: reachable (transport-less callers — stub sessions in offline tests, and
+#: any Session whose transport carries no governor). Sub-second re-dial
+#: bursts are the metronomic hammering signature the Phase-8 calibration
+#: flagged (docs/15 §P8-1), so even the fallback keeps attempts seconds
+#: apart; whenever the governor gate IS reachable it is used alone and this
+#: constant never sleeps (the gate's own lognormal pacing, docs/10 §7, is
+#: the discipline — an extra sleep would stack waits on top of it).
+REALTIME_RECONNECT_BACKOFF_S = 2.0
 
 
 #: The thread id present in the live DGW lightspeed capture (docs/15
@@ -490,7 +537,8 @@ class MessengerService(Surface):
 
     # ------------------------------------------------------------------ listen
     def listen(self, topics: list[str] | None = None, *,
-               seconds: float = 30.0) -> list[dict[str, Any]]:
+               seconds: float = 30.0,
+               healing_log: HealingLog | None = None) -> list[dict[str, Any]]:
         """Subscribe to MQTT topics and collect PUBLISH frames for ``seconds``.
 
         Connects the edge-chat MQIsdp broker with the session cookies
@@ -499,56 +547,51 @@ class MessengerService(Surface):
         pings fire inside ``read()`` on idle. Defaults to the live-observed
         web-client subscribe set (``/t_ms`` + ``/t_rtc_multi``).
 
+        Self-healing (src/healing.py): when a healing log is wired (the
+        ``cmd_listen`` handler) the dial+collect phase rides
+        :meth:`_listen_healed` — a connection-phase failure mid-listen
+        (socket drop, WS close, CONNACK refusal, keepalive death) re-dials
+        up to ``realtime_reconnect_limit()`` times, governor-paced, each
+        attempt recorded as a ``realtime-reconnect`` heal event. Without a
+        wired log the behavior is the pre-healing single dial.
+
         Args:
             topics: Subscribe targets; ``None`` replays the live-observed
                 web-client set. ``/t_ms`` is the only universally confirmed
                 delta topic (docs/06 §4 topic map).
             seconds: Collection window; the socket is closed at the
-                monotonic deadline regardless of pending frames.
+                monotonic deadline regardless of pending frames. The
+                deadline is one wall-clock budget for the whole session —
+                reconnect attempts draw from the remaining window.
+            healing_log: Optional :class:`healing.HealingLog` the reconnect
+                events append to; ``None`` (the default) disables healing
+                reconnects entirely.
 
         Returns:
             One ``{"topic", "kind", "size", "summary"}`` dict per received
             PUBLISH frame — payload bodies are Thrift-compact (docs/06 §5)
-            and are summarized, not decoded.
+            and are summarized, not decoded. Frames collected before a
+            drop are preserved across reconnects.
 
         Raises:
             Whatever ``MQTTClient.connect`` raises on a failed WS
                 upgrade/handshake (transport-layer, not typed GraphQL
-                errors) — a rejected CONNECT is fatal for the window.
+                errors) — a rejected CONNECT is fatal once the reconnect
+                budget is spent.
+            GovernorBlockedError: A re-dial refused by the governor's
+                cooldown/caps propagates (containment: disengage, docs/11
+                §5) instead of hammering the edge.
         """
         targets = list(topics) if topics else [
             C.MQTT_TOPICS["main_sync"], C.MQTT_TOPICS["rtc_multi"]]
-        collected: list[dict[str, Any]] = []
-        client = MQTTClient(self.session.cookies, url=C.MESSENGER_MQTT_WS)
-        try:
-            client.connect(self.session.user_id())
-            for packet_id, topic in enumerate(targets, start=1):
-                client.subscribe(topic, packet_id=packet_id)
-            deadline = time.monotonic() + max(0.0, seconds)
-            while True:
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
-                    break
-                frame = client.read(timeout=min(5.0, remaining))
-                if frame is None:
-                    continue
-                if frame.kind == "PUBLISH":
-                    collected.append({
-                        "topic": frame.topic,
-                        "kind": frame.kind,
-                        "size": len(frame.payload),
-                        "summary": frame.thrift_summary(),
-                    })
-        finally:
-            # Teardown must never mask the loop's original exception: a
-            # partially-connected socket (connect() failed mid-handshake)
-            # can raise a secondary error out of close().
-            with contextlib.suppress(Exception):
-                client.close()
-        return collected
+        return self._listen_healed(
+            seconds=seconds, healing_log=healing_log,
+            make_attempt=lambda collected: _MQTTListenAttempt(self, targets,
+                                                              collected))
 
     def listen_dgw(self, *, channel: str = "lightspeed", seconds: float = 30.0,
-                   thread_ids: list[str] | None = None) -> list[dict[str, Any]]:
+                   thread_ids: list[str] | None = None,
+                   healing_log: HealingLog | None = None) -> list[dict[str, Any]]:
         """Subscribe over the DGW lightspeed socket and collect responses.
 
         Opens a LightspeedClient with the session cookies (docs/15 §P3-7),
@@ -556,7 +599,12 @@ class MessengerService(Surface):
         client_subscribe for the thread list plus the given thread ids
         (defaulting to the real thread id from the capture), then reads
         typed responses until the deadline — received data frames are
-        auto-acked with their ACK8.
+        auto-acked with their ACK8. A fresh device id is generated per
+        dial (each socket carries its own id, docs/15 §P2-4).
+
+        Self-healing: the same bounded reconnect loop as :meth:`listen`
+        (see that docstring) wraps this transport, so a dropped DGW socket
+        heals identically to a dropped MQTT one.
 
         Args:
             channel: DGW gateway channel (docs/15 §P2-4b: ``rpsignaling``,
@@ -564,9 +612,12 @@ class MessengerService(Surface):
                 default ``lightspeed`` is the channel that carries the
                 state-sync request/response dialect.
             seconds: Collection window; the socket closes at the deadline.
+                The deadline is one wall-clock budget for the whole session.
             thread_ids: Thread keys added to the client_subscribe task
                 queue; ``None`` subscribes only the live-captured default
                 thread.
+            healing_log: Optional :class:`healing.HealingLog` for reconnect
+                events; ``None`` disables healing reconnects.
 
         Returns:
             ``[{"request_id": ..., "payload_type": ..., "payload": <json
@@ -577,33 +628,278 @@ class MessengerService(Surface):
             Whatever ``LightspeedClient.connect`` raises on a failed
                 handshake — the DGW server-first ``0x0A`` byte and control
                 acks must succeed before any data frames flow.
+            GovernorBlockedError: A governor-refused re-dial propagates
+                (containment, docs/11 §5).
         """
         targets = list(thread_ids) if thread_ids else [DGW_DEFAULT_THREAD_ID]
+        return self._listen_healed(
+            seconds=seconds, healing_log=healing_log,
+            make_attempt=lambda collected: _DGWListenAttempt(self, channel,
+                                                             targets, collected))
+
+    def _listen_healed(self, *, seconds: float,
+                       healing_log: HealingLog | None,
+                       make_attempt: Callable[[list[dict[str, Any]]],
+                                              _ListenAttempt],
+                       ) -> list[dict[str, Any]]:
+        """Drive one listen session across bounded self-healing re-dials.
+
+        The shared reconnect loop behind :meth:`listen` and
+        :meth:`listen_dgw` — the dial+collect phase lives in the adapter
+        (``make_attempt`` builds a fresh one per dial), this method owns
+        only the healing policy:
+
+        * Budget: reconnects are spent up to ``realtime_reconnect_limit()``
+          times, and only when a healing log is wired — a reconnect without
+          its audited event would be an unaccounted dial, so an unwired log
+          pins the pre-healing single-dial behavior (and ``FBK_HEAL=off``
+          forces the limit to 0 anyway).
+        * Deadline: the ``--seconds`` budget is set ONCE, after the first
+          successful dial+subscribe (exactly where the pre-healing loop
+          started its window), and never recomputed — reconnect attempts
+          draw from the same remaining wall clock, never extend the session.
+        * Events: every re-dial appends one ``realtime-reconnect`` row whose
+          detail carries the attempt number and the exception type name
+          (never payloads or tokens); the trigger names the phase —
+          ``listen dial failed`` when the handshake itself refused,
+          ``listen socket dropped`` when a live session died mid-collect.
+          Exhausting the budget records the final
+          ``reconnect budget exhausted (N dial attempts)`` row and
+          re-raises the ORIGINAL typed error.
+        * Non-failures: ``KeyboardInterrupt`` is a BaseException and never
+          matches the connection-phase set — an interrupt and a normal
+          deadline expiry reconnect nothing and log nothing.
+
+        Args:
+            seconds: The collection window (see above for its semantics).
+            healing_log: Wired log or ``None`` (no healing).
+            make_attempt: Factory for one socket attempt, receiving the
+                shared frame buffer (the SAME accumulation every attempt
+                appends into — a reconnect resumes collection); the adapter's
+                ``open()`` dials and subscribes, ``pump(deadline)`` collects
+                until the deadline (raising on a mid-listen drop), ``close()``
+                is the idempotent best-effort teardown.
+
+        Returns:
+            The frames accumulated across every attempt of the session.
+
+        Raises:
+            BaseException: The original connection-phase error once the
+                reconnect budget is spent, and any non-connection-phase
+                error (protocol decode bugs) immediately.
+        """
+        limit = realtime_reconnect_limit() if healing_log is not None else 0
         collected: list[dict[str, Any]] = []
-        client = LightspeedClient(self.session.cookies, channel)
+        deadline: float | None = None
+        redials = 0
+        attempt = make_attempt(collected)
+        phase = "dial"
         try:
-            device_id = str(uuid.uuid4())
-            client.connect(self.session.user_id(), device_id=device_id)
-            client.subscribe_threads(device_id, targets, request_id=1)
-            deadline = time.monotonic() + max(0.0, seconds)
             while True:
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
-                    break
-                response = client.read_response(timeout=min(5.0, remaining))
-                if response is None:
-                    continue
-                collected.append({
-                    "request_id": response.request_id,
-                    "payload_type": response.payload_type,
-                    "payload": _dgw_payload_head(response.payload),
-                })
+                try:
+                    attempt.open()
+                    phase = "session"
+                    if deadline is None:
+                        deadline = time.monotonic() + max(0.0, seconds)
+                    attempt.pump(deadline)
+                    return collected
+                except _REALTIME_CONNECT_ERRORS as exc:
+                    if redials >= limit:
+                        if healing_log is not None and redials:
+                            healing_log.append(
+                                KIND_REALTIME_RECONNECT,
+                                ("listen dial failed" if phase == "dial"
+                                 else "listen socket dropped"),
+                                f"reconnect budget exhausted "
+                                f"({redials + 1} dial attempts)")
+                        raise
+                    attempt.close()
+                    redials += 1
+                    if healing_log is not None:
+                        healing_log.append(
+                            KIND_REALTIME_RECONNECT,
+                            ("listen dial failed" if phase == "dial"
+                             else "listen socket dropped"),
+                            f"re-dial {redials}/{limit} after "
+                            f"{type(exc).__name__}")
+                    self._pace_redial()
+                    attempt = make_attempt(collected)
+                    phase = "dial"
         finally:
-            # Same teardown discipline as listen(): close() is best-effort
-            # cleanup and must not mask the loop's original exception.
-            with contextlib.suppress(Exception):
-                client.close()
-        return collected
+            # Idempotent teardown of the CURRENT socket on every exit path
+            # (result, budget-exhausted raise, interrupt, protocol error) —
+            # and the only close on the pre-healing single-dial path, so
+            # the teardown-suppression contract is unchanged.
+            attempt.close()
+
+    def _pace_redial(self) -> None:
+        """Pace one re-dial: the session governor's gate, or a fixed backoff.
+
+        The realtime WS dial bypasses the HTTP transport's request path, so
+        it never passed the governor before; a self-healing re-dial is a
+        fresh network dial and must pass it. The gate supplies the lognormal
+        inter-arrival pacing (docs/10 §7) and enforces cooldowns/caps — a
+        :class:`~governor.GovernorBlockedError` propagates (containment:
+        the discipline says stop, not retry, docs/11 §5). When no governor
+        is reachable from this layer (transport-less sessions — the offline
+        stub plane), the small fixed
+        :data:`REALTIME_RECONNECT_BACKOFF_S` keeps attempts out of the
+        sub-second burst regime (docs/15 §P8-1) without stacking a second
+        sleep on top of the gate when the gate IS reachable.
+        """
+        governor = getattr(getattr(self.session, "transport", None),
+                           "governor", None)
+        if governor is not None:
+            governor.before_request(is_mutation=False)
+        else:
+            time.sleep(REALTIME_RECONNECT_BACKOFF_S)
+
+
+# --------------------------------------------------------------------------
+# Realtime listen reconnect layer (self-healing — src/healing.py).
+#
+# The per-attempt socket lifecycle lives in these adapters so BOTH realtime
+# transports heal through the ONE driver, :meth:`MessengerService.
+# _listen_healed`: ``open`` is the dial+handshake+subscribe phase, ``pump``
+# the collect-until-deadline phase (raising on a mid-listen drop), ``close``
+# the idempotent best-effort teardown. The driver constructs a FRESH adapter
+# per re-dial — a fresh socket, CONNECT identity and (DGW) device id, the
+# same clean state a first dial starts from.
+# --------------------------------------------------------------------------
+
+class _ListenAttempt(Protocol):
+    """The three lifecycle calls the reconnect driver makes per attempt."""
+
+    def open(self) -> None:
+        """Dial + handshake + subscribe; raises on connection-phase failure."""
+        ...
+
+    def pump(self, deadline: float) -> None:
+        """Collect into the shared buffer until the monotonic ``deadline``."""
+        ...
+
+    def close(self) -> None:
+        """Idempotent best-effort teardown of this attempt's socket."""
+        ...
+
+
+class _MQTTListenAttempt:
+    """One MQIsdp socket inside the reconnect driver (docs/06 §3).
+
+    Wraps :class:`realtime.mqtt.client.MQTTClient` — the module-level
+    ``MQTTClient`` name is resolved at call time, which is the sanctioned
+    test seam (test_messenger_teardown swaps it for a stub).
+    """
+
+    def __init__(self, service: MessengerService, targets: list[str],
+                 collected: list[dict[str, Any]]) -> None:
+        """Bind the attempt to the service, its subscribe set, and the
+        shared frame buffer the driver accumulates across attempts.
+
+        The client is constructed EAGERLY (offline — the constructor never
+        touches the network): a client that fails mid-handshake must stay
+        reachable for ``close()``, because the pre-healing loop closed the
+        constructed client even when ``connect()`` raised (the pinned
+        teardown contract: exactly one best-effort close per listen call).
+        """
+        self._service = service
+        self._targets = targets
+        self._collected = collected
+        self._client: MQTTClient = MQTTClient(
+            service.session.cookies, url=C.MESSENGER_MQTT_WS)
+
+    def open(self) -> None:
+        """Dial the broker: WS upgrade, CONNECT, CONNACK, the SUBSCRIBE set."""
+        client = self._client
+        client.connect(self._service.session.user_id())
+        for packet_id, topic in enumerate(self._targets, start=1):
+            client.subscribe(topic, packet_id=packet_id)
+
+    def pump(self, deadline: float) -> None:
+        """Collect PUBLISH summaries until ``deadline``; a drop raises.
+
+        Frame-dict contract unchanged from the pre-healing loop: one
+        ``{"topic", "kind", "size", "summary"}`` per PUBLISH.
+        """
+        client = self._client
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return
+            frame = client.read(timeout=min(5.0, remaining))
+            if frame is None:
+                continue
+            if frame.kind == "PUBLISH":
+                self._collected.append({
+                    "topic": frame.topic,
+                    "kind": frame.kind,
+                    "size": len(frame.payload),
+                    "summary": frame.thrift_summary(),
+                })
+
+    def close(self) -> None:
+        """Best-effort teardown — never masks a result or original error."""
+        with contextlib.suppress(Exception):
+            self._client.close()
+
+
+class _DGWListenAttempt:
+    """One DGW lightspeed socket inside the reconnect driver (docs/15 §P3-7).
+
+    Wraps :class:`realtime.dgw.requests.LightspeedClient`; the module-level
+    ``LightspeedClient`` name is the test seam. A fresh device uuid is
+    generated per open() — each socket carries its own id (docs/15 §P2-4).
+    """
+
+    def __init__(self, service: MessengerService, channel: str,
+                 targets: list[str], collected: list[dict[str, Any]]) -> None:
+        """Bind the attempt to the service, channel, subscribe targets, and
+        the shared response buffer the driver accumulates across attempts.
+
+        The client is constructed eagerly (offline constructor), so a
+        mid-handshake failure stays reachable for ``close()``; the fresh
+        device uuid below is generated per attempt — each socket carries
+        its own id (docs/15 §P2-4).
+        """
+        self._service = service
+        self._channel = channel
+        self._targets = targets
+        self._collected = collected
+        self._client: LightspeedClient = LightspeedClient(
+            service.session.cookies, channel)
+        self._device_id = str(uuid.uuid4())
+
+    def open(self) -> None:
+        """Dial the gateway: WS upgrade, {'code':200} handshake, subscribe."""
+        client = self._client
+        client.connect(self._service.session.user_id(),
+                       device_id=self._device_id)
+        client.subscribe_threads(self._device_id, self._targets, request_id=1)
+
+    def pump(self, deadline: float) -> None:
+        """Collect typed responses until ``deadline``; a drop raises.
+
+        Response-dict contract unchanged from the pre-healing loop: one
+        ``{"request_id", "payload_type", "payload"}`` per typed response.
+        """
+        client = self._client
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return
+            response = client.read_response(timeout=min(5.0, remaining))
+            if response is None:
+                continue
+            self._collected.append({
+                "request_id": response.request_id,
+                "payload_type": response.payload_type,
+                "payload": _dgw_payload_head(response.payload),
+            })
+
+    def close(self) -> None:
+        """Best-effort teardown — never masks a result or original error."""
+        with contextlib.suppress(Exception):
+            self._client.close()
 
 
 # --------------------------------------------------------------------------

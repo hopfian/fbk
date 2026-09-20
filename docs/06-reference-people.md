@@ -279,6 +279,30 @@ socket is closed idempotently. `Ctrl-C` interrupts early: the socket is
 torn down in the same cleanup path and the process exits 130 with no
 traceback ([03-session-and-auth.md](03-session-and-auth.md) §8).
 
+**Self-healing reconnect.** A connection-phase failure (socket drop, WS
+close, CONNACK refusal, keepalive death — the catch set is
+`MQTTClientError`/`DGWError`/`ConnectionError`/`TimeoutError`/`OSError`)
+no longer kills the listen: the same transport is re-dialed up to the
+`realtime-reconnect` budget — `FBK_HEAL_REALTIME_RECONNECTS`, default 3,
+hard ceiling 10; `FBK_HEAL=off` restores the single-dial behavior. The
+first dial failing heals too — the event trigger names the phase:
+`listen dial failed` for a refused handshake, `listen socket dropped`
+for a session that died mid-collection. Every re-dial is a fresh network
+dial and passes the request governor's gate (lognormal pacing, cooldowns
+and caps enforced — a refused gate ends the listen), and every attempt
+appends a redacted `realtime-reconnect` row to `state/healing.jsonl`
+mirrored to stderr as `[heal] realtime-reconnect: … — re-dial N/M after
+<ExceptionType>` (attempt numbers and exception type names only — never
+payloads or tokens). Frames collected before the drop are preserved and
+the `--seconds` window is one wall-clock budget for the whole session —
+reconnects draw from the remaining window, they never extend it. When
+the budget is spent the ORIGINAL typed error propagates (same exit
+behavior as the pre-healing listen) after a final
+`reconnect budget exhausted (N dial attempts)` event (research doc:
+docs/08-architecture.md, self-healing coordinator). An operator
+interrupt (`Ctrl-C`) and the normal deadline expiry are not failures —
+neither reconnects nor logs anything (see Teardown above).
+
 Live status: both handshakes live-verified 2026-09 — MQTT CONNECT (fresh
 identity and verbatim capture replay both yield CONNACK rc=0; research
 doc: docs/15-live-calibration-findings.md §P3-1) and the DGW `{"code":200}`

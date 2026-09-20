@@ -36,6 +36,7 @@ import hashlib
 import http.cookiejar
 import os
 from collections.abc import Iterable, Mapping
+from pathlib import Path
 from typing import Any
 
 from .headers import cookies_header  # noqa: F401 (canonical home: headers.py)
@@ -45,7 +46,46 @@ class CookieLoadError(Exception):
     """The cookies.txt file is missing or unparseable."""
 
 
-def load_netscape(path: str | os.PathLike[str]) -> dict[str, str]:
+def _tolerant_facebook_rows(text: str) -> tuple[dict[str, str], int]:
+    """Line-level reparse of a Netscape jar the strict loader rejected.
+
+    The self-healing path for a torn jar (one mangled line among good
+    rows — a hand-edited file, a truncated export): rows that carry the
+    canonical seven tab-separated fields (including the ``#HttpOnly_``
+    prefix variant) are parsed directly, mangled lines are dropped and
+    counted. Only the ``name``/``value`` columns are extracted — exactly
+    what the strict loader's output feeds — so the healed result is
+    byte-equivalent to a clean jar's parse.
+
+    Returns:
+        ``(rows, mangled)`` — the facebook.com-scoped ``{name: value}``
+        map (possibly empty) and the count of NON-COMMENT, non-blank
+        lines that failed the seven-field shape (the genuinely damaged
+        rows; comment and blank lines are not damage).
+    """
+    rows: dict[str, str] = {}
+    mangled = 0
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("#HttpOnly_"):
+            stripped = stripped[len("#HttpOnly_"):]
+        elif stripped.startswith("#"):
+            continue  # comment row
+        fields = stripped.split("\t")
+        if len(fields) != 7:
+            mangled += 1  # mangled row: dropped, counted for the heal event
+            continue
+        domain, _flag, _path, _secure, _expiry, name, value = fields
+        if "facebook.com" not in (domain or ""):
+            continue
+        rows[name] = value
+    return rows, mangled
+
+
+def load_netscape(path: str | os.PathLike[str], *,
+                  on_heal: Any = None) -> dict[str, str]:
     """Parse a Netscape-format cookie jar into a flat ``{name: value}`` dict.
 
     The Netscape format (HTTP State Management Mechanism) uses tab-separated
@@ -59,8 +99,21 @@ def load_netscape(path: str | os.PathLike[str]) -> dict[str, str]:
     curl_cffi's session cookie jar, which replicates the browser's own
     policy (docs/12 §4.1).
 
+    Self-healing (src/healing.py): when the strict parse fails on a
+    NON-EMPTY file (one mangled line among good rows — a torn export,
+    a hand-edited jar), a tolerant line-level reparse runs; if it still
+    yields facebook.com rows, the healed map is returned and ``on_heal``
+    (when given) is invoked with the dropped-row count so the coordinator
+    records a ``cookie-jar-heal`` event. A file the tolerant pass cannot
+    rescue (all rows mangled, or zero facebook.com rows) raises exactly
+    as the strict path did — a jar without session cookies must never
+    silently produce an anonymous session.
+
     Args:
         path: Path to the cookie file, typically ``cli/cookies.txt``.
+        on_heal: Optional callback invoked as ``on_heal(detail)`` when the
+            tolerant reparse healed the load; ``detail`` counts the
+            dropped rows (never carries values).
 
     Returns:
         A flat string-to-string dict of facebook.com-scoped cookies, ready
@@ -68,8 +121,9 @@ def load_netscape(path: str | os.PathLike[str]) -> dict[str, str]:
 
     Raises:
         CookieLoadError: If the file is absent, unparseable by
-            ``MozillaCookieJar``, or contains zero facebook.com-scoped rows —
-            an empty jar must never silently produce an anonymous session.
+            ``MozillaCookieJar`` AND unrescuable by the tolerant reparse,
+            or contains zero facebook.com-scoped rows — an empty jar must
+            never silently produce an anonymous session.
     """
     if not os.path.isfile(path):
         raise CookieLoadError(f"cookie file not found: {path}")
@@ -78,9 +132,31 @@ def load_netscape(path: str | os.PathLike[str]) -> dict[str, str]:
         # ignore_discard/ignore_expires: session cookies (no expiry column
         # value) and expired rows are still loaded — the session jar and the
         # operator own expiry policy, not the loader.
-        jar.load(ignore_discard=True, ignore_expires=True)
+        #
+        # The stdlib's _really_load emits a "http.cookiejar bug!" UserWarning
+        # on the unpack failure a mangled row produces (right before raising
+        # LoadError). The tolerant reparse below OWNS that failure path — the
+        # warning is noise on an already-healed input, so it is silenced for
+        # the strict attempt only, and only that exact message.
+        import warnings
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="http.cookiejar bug!",
+                                    category=UserWarning)
+            jar.load(ignore_discard=True, ignore_expires=True)
     except (http.cookiejar.LoadError, OSError) as exc:
-        raise CookieLoadError(f"failed to parse cookies.txt: {exc}") from exc
+        # self-healing: one torn row must not kill the session when the
+        # auth-bearing rows survive — reparse line-level, drop the damage
+        try:
+            text = Path(path).read_text(encoding="utf-8")
+        except OSError:
+            raise CookieLoadError(f"failed to parse cookies.txt: {exc}") from exc
+        healed, mangled = _tolerant_facebook_rows(text)
+        if not healed:
+            raise CookieLoadError(f"failed to parse cookies.txt: {exc}") from exc
+        if on_heal is not None:
+            on_heal(f"strict parse failed; tolerant reparse dropped "
+                    f"{mangled} row(s)")
+        return healed
     cookies: dict[str, str] = {}
     for ck in jar:
         if "facebook.com" not in (ck.domain or ""):

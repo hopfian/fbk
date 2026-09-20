@@ -26,9 +26,16 @@ facade is the single dependency every surface takes):
    are delegated to the session jar, which replicates the browser's policy.
    The jar must carry the auth pair **`c_user` + `xs`** — the server validates
    the pair as a unit (`xs` is the bearer credential, `c_user` the uid claim
-   it must agree with). A missing, unparseable, or zero-facebook.com-row jar
-   raises `CookieLoadError` → exit 7; an empty jar must never silently
-   produce an anonymous session.
+   it must agree with). A torn jar — non-empty but rejected by the strict
+   parse (one mangled line in a hand-edited or truncated export) — now
+   **self-heals**: a tolerant line-level reparse (src/transport/cookies.py,
+   `_tolerant_facebook_rows`) drops the genuinely mangled non-comment lines
+   and keeps the surviving seven-field rows, healing only when `facebook.com`
+   rows still yield; Session records a `cookie-jar-heal` event in
+   `state/healing.jsonl` with the dropped-row count. A jar the reparse cannot
+   rescue — missing, every row mangled, or zero `facebook.com` rows — raises
+   `CookieLoadError` → exit 7; an empty jar must never silently produce an
+   anonymous session.
 3. **Transport construction** — curl_cffi impersonating `chrome136`
    (fallback chain `chrome136 → chrome131 → chrome124 → chrome120`), with
    the client profile's coherence validated at construction. An incoherent
@@ -41,6 +48,16 @@ facade is the single dependency every surface takes):
      format) and `lsd` (the anti-CSRF token; three ship per page, the first
      is the one the browser itself sends), plus viewer identity, deploy
      revision, and the SSR preload registry.
+   * on a cache hit, the entry must agree with the jar: an entry whose
+     `user_id` differs from the jar's `c_user` is discarded *before* use —
+     a cache bound to a swapped jar would otherwise burn one doomed request
+     before the DTSG auto-refresh cured it (§3).
+   * on a cache miss, a degenerate page — classified `unknown`, or
+     `logged_in` while carrying no `fb_dtsg` — earns exactly **one**
+     governed retry (each bootstrap GET is governor-paced); the healthy
+     retry page is adopted, and persistent degeneracy propagates honestly.
+     A `checkpoint` classification is never retried — enforcement is met
+     with disengagement, not retry-escalation.
 5. **GraphQL client armed** — the persisted-query client is built over the
    bootstrap with the registry, endpoint, and CSRF pair wired in.
 
@@ -101,7 +118,10 @@ Behavior details:
   `corrupt: <exception repr>` / `invalid-shape` on a miss), the hook the
   self-healing coordinator reads to tell the benign misses
   (`absent`/`expired`/`stale-state`) from the heal-worthy ones
-  (`corrupt`/`invalid-shape`) without re-reading the file.
+  (`corrupt`/`invalid-shape`) without re-reading the file. Identity
+  coherence is the one check `load_diagnosed` deliberately does **not**
+  perform: it has no cookie jar to compare against, so the entry-vs-jar
+  check lives in `Session` (below).
 * Live DTSG tokens carry their own expiry in the `:1:<unix>` suffix (a
   multi-day validity window), so 15 minutes is far inside server-legal
   reuse.
@@ -115,6 +135,19 @@ invocation, src/healing.py) so the extra bootstrap request is auditable;
 `fbk doctor`'s self-healing check surfaces the census. The benign misses
 (`absent`, `expired`, `stale-state`) are ordinary cache behavior, never
 heal events.
+
+**The identity-mismatch self-heal.** A *fresh* entry can still be wrong in
+one precise way: bound to a different account than the jar now carries —
+you swapped `cookies.txt` while `state/token_cache.json` persisted. The
+coherence check runs in `Session.bootstrap`: an entry whose `user_id`
+differs from the jar's `c_user` is discarded **before use**, so the run
+costs zero wasted requests — previously the stale binding burned one
+doomed API call before the DTSG-rejection auto-refresh cured it. The
+event rides the same `token-cache-rebuild` kind with the trigger
+"token cache identity mismatch — discarded", and it is audit-only and
+uncapped (`HealingContext.log_event`): like the jar and bootstrap heals,
+it records a repair that happened outside the invocation-capped call
+loop.
 
 **The session-level registry heal.** Corruption and staleness now heal at
 the session layer too: when **every** registry tier on disk is corrupt
@@ -299,7 +332,8 @@ The discipline is enforced structurally, not by convention:
 ## Files that feed this guide
 
 - `src/session.py` — the Session facade: composition order, cache-first
-  bootstrap, dry-run raw-seam guard, the registry heal (`adopt_registry`)
+  bootstrap (the identity-mismatch and degenerate-page heals), dry-run
+  raw-seam guard, the registry heal (`adopt_registry`)
 - `src/auth/bootstrap.py` — page bootstrap, token harvest, login-state
   classification, checkpoint signal
 - `src/auth/state.py` — the `LoginState` enum
@@ -309,7 +343,8 @@ The discipline is enforced structurally, not by convention:
   `load_diagnosed` reason tokens)
 - `src/healing.py` — the self-healing coordinator (records the
   `token-cache-rebuild` events)
-- `src/transport/cookies.py` — Netscape jar load, `fingerprint`, `redact`
+- `src/transport/cookies.py` — Netscape jar load (with the tolerant
+  torn-jar reparse), `fingerprint`, `redact`
 - `src/commands/auth.py` — `whoami` / `state` / `logout` handlers
 - `src/commands/cookies.py` — `cookies inspect` handler
 - `src/app.py` — entrypoint, `--debug`, exit mapping

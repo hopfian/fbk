@@ -26,9 +26,12 @@ import commands.doctor as doctor_mod
 from commands.common import run_command
 from commands.doctor import register
 from healing import (
+    KIND_BOOTSTRAP_RETRY,
+    KIND_COOKIE_JAR_HEAL,
     KIND_DOC_ID_RETRY,
     KIND_DOCTOR_FIX,
     KIND_GOVERNOR_STATE_REBUILD,
+    KIND_REALTIME_RECONNECT,
     KIND_REGISTRY_REFRESH,
     KIND_TOKEN_CACHE_REBUILD,
     KIND_TRANSPORT_RETRY,
@@ -120,7 +123,10 @@ class TestSelfHealingCheck:
                                       KIND_TOKEN_CACHE_REBUILD: 0,
                                       KIND_TRANSPORT_RETRY: 0,
                                       KIND_GOVERNOR_STATE_REBUILD: 0,
-                                      KIND_DOCTOR_FIX: 0}
+                                      KIND_DOCTOR_FIX: 0,
+                                      KIND_COOKIE_JAR_HEAL: 0,
+                                      KIND_BOOTSTRAP_RETRY: 0,
+                                      KIND_REALTIME_RECONNECT: 0}
         assert readout["last"] is None
         check = _check(payload, "self-healing")
         assert check["status"] == "pass"
@@ -150,7 +156,10 @@ class TestSelfHealingCheck:
                                       KIND_TOKEN_CACHE_REBUILD: 0,
                                       KIND_TRANSPORT_RETRY: 0,
                                       KIND_GOVERNOR_STATE_REBUILD: 0,
-                                      KIND_DOCTOR_FIX: 0}
+                                      KIND_DOCTOR_FIX: 0,
+                                      KIND_COOKIE_JAR_HEAL: 0,
+                                      KIND_BOOTSTRAP_RETRY: 0,
+                                      KIND_REALTIME_RECONNECT: 0}
         assert readout["last"] == {"ts": now - 3600.0,
                                    "kind": KIND_DOC_ID_RETRY,
                                    "trigger": "1570245-family rejection",

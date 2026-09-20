@@ -76,6 +76,9 @@ KIND_TOKEN_CACHE_REBUILD = "token-cache-rebuild"  # corrupt cache -> bootstrap
 KIND_TRANSPORT_RETRY = "transport-retry"     # read-only connection-phase retry
 KIND_GOVERNOR_STATE_REBUILD = "governor-state-rebuild"  # corrupt counters reset
 KIND_DOCTOR_FIX = "doctor-fix"               # `fbk doctor --fix` quarantine
+KIND_COOKIE_JAR_HEAL = "cookie-jar-heal"     # tolerant reparse of a torn jar
+KIND_BOOTSTRAP_RETRY = "bootstrap-retry"     # degenerate page -> one retry
+KIND_REALTIME_RECONNECT = "realtime-reconnect"  # listen drop -> governed re-dial
 
 #: Per-invocation attempt caps. The registry re-harvest and the doc-id retry
 #: are one-shot recoveries per command run — a second failure means the heal
@@ -95,6 +98,12 @@ ENV_TRANSPORT_RETRIES = "FBK_HEAL_TRANSPORT_RETRIES"  # read retries per call
 DEFAULT_REGISTRY_HOURS = 6.0
 DEFAULT_MAX_BUNDLES = 60
 DEFAULT_TRANSPORT_RETRIES = 1
+DEFAULT_REALTIME_RECONNECTS = 3
+
+#: Realtime reconnect ceiling for one listen session (env-overridable via
+#: FBK_HEAL_REALTIME_RECONNECTS; a persistent broker outage must terminate
+#: the listen, not loop forever).
+MAX_REALTIME_RECONNECTS = 10
 
 #: Verification floor for a healed registry: a re-harvest producing fewer
 #: pairs than this is treated as a degenerate parse (soft-blocked or
@@ -147,6 +156,21 @@ def transport_retry_limit() -> int:
     if not healing_enabled():
         return 0
     return min(_env_int(ENV_TRANSPORT_RETRIES, DEFAULT_TRANSPORT_RETRIES), 3)
+
+
+def realtime_reconnect_limit() -> int:
+    """Bounded reconnects one listen session may spend on drops.
+
+    ``FBK_HEAL_REALTIME_RECONNECTS`` overrides the default (3); values
+    above the hard ceiling (10) clamp, malformed values keep the default,
+    and the master switch off returns 0 — a listen under FBK_HEAL=off
+    keeps its pre-healing single-dial behavior.
+    """
+    if not healing_enabled():
+        return 0
+    return min(_env_int("FBK_HEAL_REALTIME_RECONNECTS",
+                        DEFAULT_REALTIME_RECONNECTS),
+               MAX_REALTIME_RECONNECTS)
 
 
 @dataclass(frozen=True)
@@ -390,6 +414,20 @@ class HealingContext:
         if kind not in _INVOCATION_CAPS:
             raise ValueError(f"unknown healing kind {kind!r}")
         self._attempts[kind] = self._attempts.get(kind, 0) + 1
+        self.log.append(kind, trigger, detail)
+
+    def log_event(self, kind: str, trigger: str, detail: str = "") -> None:
+        """Record an uncapped, audit-only healing event (master-switch aware).
+
+        The audit-only kinds (``governor-state-rebuild``,
+        ``cookie-jar-heal``, ``bootstrap-retry`` — events describing
+        self-repair that happened outside the invocation-capped flows) go
+        through this: they honor the ``FBK_HEAL`` master switch but carry
+        no per-invocation cap, because the repairs they record happen at
+        construction/loading time, not in the call loop.
+        """
+        if not healing_enabled():
+            return
         self.log.append(kind, trigger, detail)
 
     # ------------------------------------------------------------- the heals

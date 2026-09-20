@@ -45,9 +45,12 @@ from constants import AUTH_COOKIES
 from graphql.errors import RegistryLoadError, RegistryMissError
 from graphql.registry import DocIdRegistry
 from healing import (
+    KIND_BOOTSTRAP_RETRY,
+    KIND_COOKIE_JAR_HEAL,
     KIND_DOC_ID_RETRY,
     KIND_DOCTOR_FIX,
     KIND_GOVERNOR_STATE_REBUILD,
+    KIND_REALTIME_RECONNECT,
     KIND_REGISTRY_REFRESH,
     KIND_TOKEN_CACHE_REBUILD,
     KIND_TRANSPORT_RETRY,
@@ -85,7 +88,9 @@ _HEALING_LOG = "healing.jsonl"
 _HEALING_WINDOW_S = 86400.0
 _HEALING_KINDS = (KIND_REGISTRY_REFRESH, KIND_DOC_ID_RETRY,
                   KIND_TOKEN_CACHE_REBUILD, KIND_TRANSPORT_RETRY,
-                  KIND_GOVERNOR_STATE_REBUILD, KIND_DOCTOR_FIX)
+                  KIND_GOVERNOR_STATE_REBUILD, KIND_DOCTOR_FIX,
+                  KIND_COOKIE_JAR_HEAL, KIND_BOOTSTRAP_RETRY,
+                  KIND_REALTIME_RECONNECT)
 
 
 @dataclass

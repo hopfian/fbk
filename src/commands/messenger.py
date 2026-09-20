@@ -5,8 +5,10 @@ Reads (threads/history) ride the GraphQL message-range family
 (docs/02 §2.2); `send` fires the live-verified CometSendMessageMutation
 with an E2EE guard (docs/15 §P7); `listen` subscribes to the realtime
 bus — the MQIsdp MQTT bus by default, or the DGW lightspeed socket
-with ``--dgw`` (docs/15 §P3-7). Human output never prints message
-bodies verbatim — heads only (see _head).
+with ``--dgw`` (docs/15 §P3-7) — and self-heals a dropped socket with
+bounded, governor-paced reconnects (healing kind ``realtime-reconnect``,
+src/healing.py). Human output never prints message bodies verbatim —
+heads only (see _head).
 
 USER-DOC ANCHOR: cli/docs/06-reference-people.md — ship a matching edit to
 that guide in the same change whenever this module's behavior changes.
@@ -17,6 +19,7 @@ import argparse
 from datetime import UTC, datetime
 from typing import Any
 
+from healing import HealingLog
 from session import Session
 from surfaces.messenger import MessengerService
 
@@ -191,14 +194,25 @@ def cmd_listen(args: argparse.Namespace) -> int:
     size, and payload key names only — delta contents stay in the
     --json payload; DGW lines print the decoded payload directly.
 
+    Self-healing (src/healing.py): the surface's listen loop reconnects a
+    dropped socket up to the ``realtime-reconnect`` budget
+    (``FBK_HEAL_REALTIME_RECONNECTS``, default 3; ``FBK_HEAL=off``
+    disables) with every re-dial governor-paced; each attempt appends a
+    redacted row to ``state/healing.jsonl`` and mirrors a
+    ``[heal] realtime-reconnect: …`` line to stderr. ``Ctrl-C`` and the
+    normal ``--seconds`` expiry are not failures — no reconnect, no heal
+    events (exit 130 on interrupt, per docs/03 §8).
+
     Returns:
         0 — a silent bus (zero frames) is a valid observation, not a
         connection failure.
     """
     with with_session(new_session(args)) as session:
         service = _service(session)
+        healing_log = HealingLog(session.config.journal_dir / "healing.jsonl")
         if args.dgw:
-            frames = service.listen_dgw(seconds=args.seconds)
+            frames = service.listen_dgw(seconds=args.seconds,
+                                        healing_log=healing_log)
             for index, frame in enumerate(frames, start=1):
                 print(f"[{index}] rid={frame['request_id']} "
                       f"{frame['payload_type']} {frame['payload']}")
@@ -207,7 +221,8 @@ def cmd_listen(args: argparse.Namespace) -> int:
         topics: list[str] | None = None
         if args.topics:
             topics = [t.strip() for t in args.topics.split(",") if t.strip()]
-        frames = service.listen(topics, seconds=args.seconds)
+        frames = service.listen(topics, seconds=args.seconds,
+                                healing_log=healing_log)
         for index, frame in enumerate(frames, start=1):
             summary: Any = frame["summary"]
             keys = ",".join(summary.keys()) if isinstance(summary, dict) else ""

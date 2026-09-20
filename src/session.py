@@ -38,7 +38,13 @@ from config import Config
 from governor import default_governor
 from graphql.errors import DryRunRawSeamError, RegistryLoadError
 from graphql.registry import DocIdRegistry
-from healing import HealingContext
+from healing import (
+    KIND_BOOTSTRAP_RETRY,
+    KIND_COOKIE_JAR_HEAL,
+    KIND_TOKEN_CACHE_REBUILD,
+    HealingContext,
+    healing_enabled,
+)
 from journal.recorder import JSONLJournal
 from token_cache import TokenCache
 from transport.cookies import load_netscape
@@ -57,6 +63,22 @@ if TYPE_CHECKING:
 # patch ``session.FBTransport`` with a transport stub while keeping the
 # module import free of the curl_cffi import chain entirely.
 FBTransport: type[_FBTransportClass] | None = None
+
+
+def _bootstrap_degenerate(boot: Bootstrap) -> bool:
+    """Whether a fresh homepage bootstrap is a poisoned shell, not a login.
+
+    The degenerate signatures the self-healing retry exists for (src/
+    healing.py): the page classified UNKNOWN (marker-less parse — a
+    soft-blocked or drifted shell), or classified LOGGED_IN while
+    carrying NO fb_dtsg (an unusable harvest — GraphQL cannot run and
+    the cache must not record it). A CHECKPOINT classification is never
+    degenerate: a challenge is enforcement, not a transient parse — the
+    mandated response is disengagement, not a retry (docs/11 §5).
+    """
+    if boot.state == LoginState.UNKNOWN:
+        return True
+    return boot.state == LoginState.LOGGED_IN and boot.fb_dtsg is None
 
 
 def _resolve_transport() -> type[_FBTransportClass]:
@@ -117,7 +139,14 @@ class Session:
                 around an empty jar.
         """
         self.config = config or Config.discover()
-        self.cookies = load_netscape(self.config.cookies_path)
+        # the self-healing coordinator is constructed FIRST so the cookie
+        # load below can record a jar heal into it (src/healing.py)
+        self.healer = HealingContext(
+            self.config, log_path=self.config.journal_dir / "healing.jsonl")
+        self.cookies = load_netscape(
+            self.config.cookies_path,
+            on_heal=lambda detail: self.healer.log_event(
+                KIND_COOKIE_JAR_HEAL, "cookie jar tolerant reparse", detail))
         profile = load_or_default(str(self.config.profile_path)
                                   if self.config.profile_path else None)
         self.journal: JSONLJournal | None = (
@@ -136,11 +165,6 @@ class Session:
         self._registry: DocIdRegistry | None = None
         self.token_cache = TokenCache(
             self.config.journal_dir / "token_cache.json")
-        # the self-healing coordinator (src/healing.py): capped, cooled
-        # down, log-backed recovery for registry rotation, corrupt state
-        # files, and transport blips. Wired into the GraphQL client below.
-        self.healer = HealingContext(
-            self.config, log_path=self.config.journal_dir / "healing.jsonl")
         self.transport.healing_log = self.healer.log
         self._bootstrap: Bootstrap | None = None
         self._graphql: GraphQLClient | None = None
@@ -220,8 +244,14 @@ class Session:
         Called by the heal paths (this property, the surface doc_id
         resolver, the GraphQL client) after a verified re-harvest so every
         later lookup in this invocation resolves against the rotated ids.
+        Precision: the LIVE GraphQL client's registry handle is updated
+        too — the client captured the registry object at construction, and
+        a surface-layer heal that left it stale would send a subsequent
+        client-side by-name call against the pre-rotation ids.
         """
         self._registry = fresh
+        if self._graphql is not None:
+            self._graphql.registry = fresh
 
     def reload_registry(self) -> DocIdRegistry:
         """Drop the memoized registry and re-parse from assets.
@@ -269,16 +299,29 @@ class Session:
         # cache-first: a fresh entry means ZERO bootstrap requests
         cached, reason = self.token_cache.load_diagnosed()
         if cached is not None:
-            self._bootstrap = Bootstrap(
-                state=LoginState.LOGGED_IN,
-                fb_dtsg=cached.fb_dtsg,
-                lsd=cached.lsd,
-                user_id=cached.user_id,
-                user_name=cached.user_name,
-                revision=cached.revision,
-                markers_seen=["token_cache"],
-            )
-            return self._bootstrap
+            # identity coherence (the precise heal): a cache entry bound to
+            # a DIFFERENT account than the jar's c_user would burn one
+            # doomed request before the DTSG-rejection auto-refresh cured
+            # it — discard here instead, and record the heal
+            jar_user = self.cookies.get("c_user", "")
+            if (cached.user_id and jar_user
+                    and cached.user_id != jar_user):
+                self.healer.log_event(
+                    KIND_TOKEN_CACHE_REBUILD,
+                    "token cache identity mismatch — discarded",
+                    "cache user != jar user; fresh bootstrap re-binds "
+                    "the tokens")
+            else:
+                self._bootstrap = Bootstrap(
+                    state=LoginState.LOGGED_IN,
+                    fb_dtsg=cached.fb_dtsg,
+                    lsd=cached.lsd,
+                    user_id=cached.user_id,
+                    user_name=cached.user_name,
+                    revision=cached.revision,
+                    markers_seen=["token_cache"],
+                )
+                return self._bootstrap
         if reason in ("corrupt", "invalid-shape"):
             # a damaged cache file was discarded: the full bootstrap below
             # regenerates it — record the heal so the extra request is
@@ -286,8 +329,22 @@ class Session:
             self.healer.record_token_cache_rebuild(
                 f"token_cache.json {reason} — discarded")
 
-        # cache miss: full bootstrap (the expensive path)
-        self._bootstrap = bootstrap_homepage(self.transport, self.cookies)
+        # cache miss: full bootstrap (the expensive path), with the
+        # degenerate-page retry: a soft-blocked or shape-drifted homepage
+        # can classify logged-in while carrying no usable token (or land
+        # in UNKNOWN) — one governed retry (each bootstrap GET is paced)
+        # before the poisoned page propagates (src/healing.py)
+        boot = bootstrap_homepage(self.transport, self.cookies)
+        if (healing_enabled() and _bootstrap_degenerate(boot)):
+            self.healer.log_event(
+                KIND_BOOTSTRAP_RETRY,
+                "degenerate bootstrap — one governed retry",
+                f"state={boot.state.value}; "
+                f"dtsg={'absent' if boot.fb_dtsg is None else 'present'}")
+            retry = bootstrap_homepage(self.transport, self.cookies)
+            if not _bootstrap_degenerate(retry):
+                boot = retry
+        self._bootstrap = boot
         self.token_cache.save(self._bootstrap)
         if self.journal:
             self.journal.session_start(

@@ -43,8 +43,10 @@ reviews.
    override the jar path. Every derived path (`data/`, `state/`,
    `cookies.txt`, `profile.json`) lands inside that root.
 3. **Session construction.** `Session.__init__` wires the stack in order:
-   `load_netscape` parses the jar (facebook.com rows only; zero rows →
-   `CookieLoadError` → exit 7), `load_or_default` loads/validates the
+   the `HealingContext` **first** (the cookie load below records jar heals
+   into it), then `load_netscape` parses the jar (facebook.com rows only;
+   a torn jar self-heals via the tolerant reparse — a zero-row rescue
+   raises `CookieLoadError` → exit 7), `load_or_default` loads/validates the
    client profile, the JSONL journal binds to `state/<command>.jsonl`
    (here `state/feed.jsonl`) unless `--no-journal`, then — lazily, never
    at module import — `_resolve_transport()` imports `transport.session`
@@ -53,8 +55,10 @@ reviews.
    `state/token_cache.json`.
 4. **Bootstrap, cache-first.** `FeedService(session).read()` needs
    `session.graphql`, which first calls `session.bootstrap()`. The token
-   cache is checked first: a fresh entry (15-minute TTL) builds the
-   `Bootstrap` with **zero HTTP requests**. Only on cache miss does
+   cache is checked first: a fresh entry (15-minute TTL) whose `user_id`
+   agrees with the jar's `c_user` builds the `Bootstrap` with **zero HTTP
+   requests** (an identity-mismatched entry is discarded before use —
+   Self-healing below). Only on cache miss does
    `bootstrap_homepage` run — one governed GET of
    `https://www.facebook.com/`, classified into a `LoginState`
    (marker sets, the authoritative `"is_checkpointed":true` flag, the
@@ -193,19 +197,22 @@ also exits 2.
 
 ## Self-healing
 
-`src/healing.py` automates the three manual recovery actions that dominate
-fbk's failure modes. Three inputs decay: the doc_id registry (Facebook
+`src/healing.py` automates the manual recovery actions that dominate
+fbk's failure modes. The decaying inputs: the doc_id registry (Facebook
 rotates persisted-query registrations on every build push — docs/13 §2,
 docs/04 §10), the persistent token cache (a corrupt or identity-mismatched
-entry), and the network itself (transient TLS/connect blips no behavioural
-discipline can prevent). Each used to surface as a typed error plus a
-manual remedy (`fbk registry refresh --save`, delete the cache file,
-rerun); the healing coordinator executes those same actions automatically —
-paced by the governor, capped per invocation, cooled down across
-invocations, and every action recorded. Healing is **ON by default**;
-`FBK_HEAL=off` (also `0` or `false`) disables every heal.
+entry), the network itself (transient TLS/connect blips no behavioural
+discipline can prevent, on both the HTTP and realtime planes), and — as of
+round three — the session inputs themselves: a torn cookie jar, a cache
+bound to a swapped jar, a degenerate homepage bootstrap. Each used to
+surface as a typed error plus a manual remedy (`fbk registry refresh
+--save`, delete the cache file, re-export the jar, rerun); the healing
+coordinator executes those same actions automatically — paced by the
+governor, capped per invocation, cooled down across invocations, and every
+action recorded. Healing is **ON by default**; `FBK_HEAL=off` (also `0` or
+`false`) disables every heal.
 
-### The six healing kinds
+### The nine healing kinds
 
 The kind set is closed (stable `KIND_*` tags used in the log, the stderr
 mirror, and the doctor readout — a typo must fail visibly, not heal
@@ -215,22 +222,36 @@ silently):
 |---|---|---|---|---|
 | `registry-refresh` | `RegistryMissError` on by-name dispatch; `DocIdStaleError` mid-call | governed re-harvest of the live deploy's bundles + v3 rewrite, then adopt the fresh registry | 1 | 6 h across invocations (`FBK_HEAL_REGISTRY_HOURS`) |
 | `doc-id-retry` | the fresh registry carries a *different* id for the rejected name | re-fire the call exactly once on the fresh doc_id | 1 | — |
-| `token-cache-rebuild` | `state/token_cache.json` classified `corrupt`/`invalid-shape` | the discard IS the heal — the next bootstrap regenerates the file | 2 | — |
+| `token-cache-rebuild` | `state/token_cache.json` classified `corrupt`/`invalid-shape`; a cache entry whose `user_id` differs from the jar's `c_user` | the discard IS the heal — the next bootstrap regenerates the file | 2 (the capped coordinator path; the identity-mismatch event below is audit-only) | — |
 | `transport-retry` | connection-phase failure (curl_cffi `Timeout`/`ConnectionError`) on a READ | re-send the same request at the transport layer | `FBK_HEAL_TRANSPORT_RETRIES` per logical call (default 1, ceiling 3) | — |
 | `governor-state-rebuild` | corrupt `state/governor_state.json` discarded at governor construction | the discard IS the heal — fresh counters; caps re-arm, recorded via the governor's `healing_log` handle | — | — |
 | `doctor-fix` | `fbk doctor --fix` on a corrupt state file | quarantine — rename aside to `<name>.corrupt-<epoch>`, never delete — + log | — | — |
+| `cookie-jar-heal` | a non-empty jar the strict `MozillaCookieJar` parse rejects | tolerant line-level reparse (`_tolerant_facebook_rows`): drop the genuinely mangled rows, keep the survivors; heals only when `facebook.com` rows still yield | — | — |
+| `bootstrap-retry` | a degenerate homepage bootstrap (state `UNKNOWN`, or `LOGGED_IN` with no `fb_dtsg` — `CHECKPOINT` is never degenerate) | exactly one governed retry; each bootstrap GET is governor-paced | — | — |
+| `realtime-reconnect` | a dropped listen socket (MQTT or DGW) | governed re-dial of the same transport, up to `FBK_HEAL_REALTIME_RECONNECTS` (default 3, hard ceiling 10) | reconnect budget per listen, not per invocation | — |
 
-The last two are audit events rather than coordinator recoveries — recorded
-straight into the log, with no attempt counter and no cooldown:
-`governor-state-rebuild` fires at governor construction (wired by
-`default_governor()` whenever healing is enabled; `FBK_HEAL=off` keeps the
-old silent-soft discard), `doctor-fix` from the `--fix` quarantine pass.
+Five of the nine are audit events rather than coordinator recoveries —
+appended straight into the log, with no attempt counter and no cooldown.
+Two of them go through `HealingContext.log_event` (uncapped, audit-only,
+honoring the `FBK_HEAL` master switch — the repairs they record happen at
+construction/loading time, outside the invocation-capped call loop):
+`cookie-jar-heal` fires from the `on_heal` callback `Session.__init__`
+wires into the cookie load (a healed jar is known before any request
+exists to cap), and `bootstrap-retry` fires inside `Session.bootstrap`.
+The other three append directly: `governor-state-rebuild` from the
+governor's own wired `healing_log` handle at construction
+(`default_governor()` wires the handle only when healing is enabled;
+`FBK_HEAL=off` keeps the old silent-soft discard), `doctor-fix` from the
+`--fix` quarantine pass, and `realtime-reconnect` from the listen loop's
+wired `HealingLog` — uncapped per invocation but bounded by its own
+reconnect budget, so a flapping broker cannot loop forever either.
 
 Policy knobs mirror the governor's `FBK_GOVERNOR_*` convention (a malformed
 or negative value silently keeps the safe default): `FBK_HEAL` master
 switch, `FBK_HEAL_REGISTRY_HOURS` (default 6), `FBK_HEAL_MAX_BUNDLES`
 (per-harvest bundle cap, default 60 — `0`/malformed falls back to the
-default), `FBK_HEAL_TRANSPORT_RETRIES` (default 1, ceiling 3).
+default), `FBK_HEAL_TRANSPORT_RETRIES` (default 1, ceiling 3),
+`FBK_HEAL_REALTIME_RECONNECTS` (default 3, hard ceiling 10).
 
 ### Recursive but terminating
 
@@ -240,8 +261,10 @@ naive implementation could recurse forever on a persistent fault.
 Termination is structural, not hopeful:
 
 * per-kind attempt counters cap every coordinator kind per invocation
-  (the two audit kinds — `governor-state-rebuild`, `doctor-fix` — are
-  recorded uncapped, straight into the log); a kind that has spent its
+  (the audit-only kinds — `governor-state-rebuild`, `cookie-jar-heal`,
+  `bootstrap-retry`, `doctor-fix`, `realtime-reconnect` — are recorded
+  uncapped, straight into the log; the reconnect kind is bounded by its
+  own reconnect budget instead); a kind that has spent its
   quota re-raises the original error;
 * the expensive kind (registry re-harvest) additionally carries a
   cross-invocation cooldown read from the healing log, so a broken deploy
@@ -258,12 +281,31 @@ Termination is structural, not hopeful:
 |---|---|
 | `GraphQLClient.call_by_name` | `RegistryMissError` → one capped, cooled re-harvest → adopt the fresh registry → re-resolve; a miss surviving the fresh registry (a lazy operation outside the homepage harvest's reach) propagates |
 | `GraphQLClient.call` | `DocIdStaleError` (1570245 family) → the same re-harvest, then retry **exactly once** — and only when the fresh registry carries a *different* id; re-firing the same id is refused (same-id drift is shape drift, a caller bug — docs/04 §10) |
-| `Session` | constructs the `HealingContext` over `state/healing.jsonl`, wires it into the client and the transport (`healing_log` handle), records `token-cache-rebuild` events when `TokenCache.load_diagnosed` reports `corrupt`/`invalid-shape`, exposes `reload_registry()` and the `adopt_registry()` hook |
+| `Session` | constructs the `HealingContext` **before** the cookie load (so the jar heal can record into it), wires it into the client and the transport (`healing_log` handle), records `token-cache-rebuild` events when `TokenCache.load_diagnosed` reports `corrupt`/`invalid-shape`, exposes `reload_registry()` and the `adopt_registry()` hook |
+| `Session` cookie load (`transport/cookies.load_netscape`) | the torn-jar heal: strict `MozillaCookieJar` parse first; on a non-empty-but-unparseable jar, a tolerant line-level reparse (`_tolerant_facebook_rows`) drops the genuinely mangled rows and keeps the survivors — healing only when `facebook.com` rows still yield, else the same typed `CookieLoadError`; the wired `on_heal` callback records `cookie-jar-heal` at Session construction |
+| `Session.bootstrap` | two precise input heals. **Identity check** — a fresh cache entry whose `user_id` differs from the jar's `c_user` is discarded before use (a cache bound to a swapped jar would burn one doomed request before the DTSG auto-refresh cured it; now zero requests + a `token-cache-rebuild` event "identity mismatch"). **Degenerate bootstrap retry** — `_bootstrap_degenerate()` (state `UNKNOWN`, or `LOGGED_IN` with no `fb_dtsg`; `CHECKPOINT` is never degenerate — enforcement is met with disengagement, not retry) triggers exactly one governed retry; recovery adopts the healthy page, persistent degeneracy propagates honestly after one `bootstrap-retry` event |
+| `Session.adopt_registry` | pushes the fresh registry into the **live GraphQL client handle** too — the client captured the registry object at construction, and a surface-layer heal that left it stale would send a subsequent by-name call against the pre-rotation ids |
 | `Session.registry` (property) | `RegistryLoadError` — every registry tier corrupt, the one failure the per-file fail-soft descent cannot route around → the same capped, cooled re-harvest → adopt the fresh registry; the original error propagates when the heal is unavailable |
 | `Surface.doc_id` (surfaces/base.py) | the chokepoint every surface resolves doc-ids through: `RegistryMissError` → the same capped, cooled re-harvest → `session.adopt_registry()` → re-resolve; a miss surviving the fresh registry propagates; dry-run never heals |
 | `RequestGovernor.__init__` | a corrupt `governor_state.json` discard records `governor-state-rebuild` via the governor's `healing_log` handle — "counters reset to zero; caps re-arm (audited)" |
+| `MessengerService._listen_healed` (surfaces/messenger.py) | the listen reconnect loop behind `fbk messenger listen` (both MQTT and `--dgw`): a connection-phase drop (`MQTTClientError`/`DGWError`/`ConnectionError`/`TimeoutError`/`OSError`) re-dials up to `realtime_reconnect_limit()` (healing.py), every re-dial through `session.transport.governor.before_request` (lognormal pacing; a fixed 2 s backoff only for transport-less stubs), the `--seconds` wall-clock budget set once after the first successful dial and never recomputed, frames accumulating across attempts into one buffer; budget exhausted → a final `reconnect budget exhausted (N dial attempts)` event and the ORIGINAL typed error propagates. `KeyboardInterrupt` and normal deadline expiry reconnect nothing and log nothing |
 | `FBTransport._send_with_retry` | read-only connection-phase retry: `get()` always retryable, `post_graphql()` only for reads; **mutations are never retried** (a timeout after send cannot distinguish "request lost" from "response lost" — the double-post hazard outweighs the recovery, docs/11 §5); the governor gate runs once per logical call, so a retry never re-debits a budget or re-sleeps the inter-arrival gap |
 | `fbk doctor` | the self-healing check: the ambient `FBK_HEAL` switch + a read-only `healing.jsonl` census (below); `--fix` quarantines corrupt offline-state files (governor state, token cache, torn healing log), each logged as a `doctor-fix` event into the fresh log |
+
+**The session inputs heal.** The three newest kinds walk the session
+pipeline itself, in load order. First the jar: a torn `cookies.txt` (one
+mangled line in a hand-edited or truncated export) is reparsed
+line-level at Session construction — the mangled rows are dropped and
+counted, the surviving `facebook.com` rows keep the session alive, and a
+`cookie-jar-heal` event records it. Then the cache: a token-cache entry
+carrying a different `user_id` than the jar's `c_user` is discarded
+before a single request is spent on it (identity coherence is checked in
+`Session.bootstrap`, not in `TokenCache` — the cache loader has no jar to
+compare against). Then the bootstrap page: a homepage that classifies
+`UNKNOWN` or claims `LOGGED_IN` without a usable `fb_dtsg` earns exactly
+one governed retry before its poisoned state propagates. Jar → cache
+identity → bootstrap: each input is validated *before* the request that
+would consume it.
 
 **Dry-run never heals.** A plan touches no edge (docs/11 §8), so
 triggering a bundle harvest from plan mode would debit exactly what
@@ -288,7 +330,13 @@ the heal. The event records it (`degenerate harvest refused — rolled
 back` / `harvest verification failed — rolled back`). A backup-creation
 failure skips the heal entirely — no overwrite without a rollback path.
 A verified success reads `doc_id registry re-harvested (verified)` with
-a `pairs=N` detail.
+a `pairs=N` detail. The rollback primitive is now uniform across both
+overwrite paths: the manual `fbk registry refresh --save` performs the
+same bit-for-bit backup-on-write (`_write_v3`, best-effort), so a bad
+harvest is reversible whichever way it was produced — the
+`doc_id_registry_v3.prev.json` file both paths leave in `data/` is
+harmless (registry diff/audit ignore it; it is not in the `_PRIORITY`
+descent).
 
 ### The healing log
 
