@@ -1,0 +1,624 @@
+{
+ "data": {
+  "marketplace_home_feed": {
+   "edges": [
+    {
+     "node": {
+      "id": "569922959972995827:IN_MEMORY_MARKETPLACE_FEED_STORY_ENT:MarketplaceFeedStoryBase:501",
+      "__typename": "MarketplaceFeedTopPicksUnit",
+      "story_key": "569922959972995827",
+      "story_type": "TOP_PICKS",
+      "tracking": "{\"qid\":\"-6137702118423862261\",\"mf_story_key\":\"569922959972995827\",\"top_level_post_id\":\"569922959972995827\",\"commerce_rank_obj\":\"{\\\"target_id\\\":569922959972995827,\\\"target_type\\\":6,\\\"primary_position\\\":0,\\\"ranking_signature\\\":29710167408437957,\\\"ranking_region\\\":\\\"dkl\\\",\\\"ranking_request_id\\\":974500014167653287,\\\"commerce_channel\\\":501,\\\"value\\\":0,\\\"upsell_type\\\":21,\\\"candidate_retrieval_source_map\\\":{\\\"28584947437862575\\\":3001,\\\"28801468499438531\\\":3021,\\\"28138310715789773\\\":3021,\\\"38601543246157442\\\":3021,\\\"28459683730334677\\\":3021,\\\"29411559425099690\\\":3021,\\\"28445744065085485\\\":3021,\\\"28490471243918745\\\":3021,\\\"28791228557167533\\\":3021},\\\"candidate_write_path_source_map\\\":null,\\\"candidate_seller_rerank_version_id_map\\\":{\\\"28584947437862575\\\":0,\\\"28801468499438531\\\":0,\\\"28138310715789773\\\":0,\\\"38601543246157442\\\":0,\\\"28459683730334677\\\":0,\\\"29411559425099690\\\":0,\\\"28445744065085485\\\":0,\\\"28490471243918745\\\":0,\\\"28791228557167533\\\":0},\\\"delivery_flow_path\\\":\\\"TOP_PICKS_LIGHT_PATH\\\",\\\"grouping_info\\\":null,\\\"is_prefetch\\\":false,\\\"request_fetch_reason\\\":null}\"}",
+      "marketplace_listings": [
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "1812633543386693",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1788753999,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-1.jpg"
+         },
+         "id": "1423219443104879"
+        },
+        "listing_price": {
+         "amount": "0.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "110501692302090"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "895487550471874",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "2114956815772834",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789724426,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-2.jpg"
+         },
+         "id": "2929539017426620"
+        },
+        "listing_price": {
+         "amount": "0.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "110501692302090"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "1670493229902393",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "1332859035468367",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1788700224,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-3.jpg"
+         },
+         "id": "2229695394609966"
+        },
+        "listing_price": {
+         "amount": "6.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "108279182527479"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON",
+         "SHIPPING_OFFSITE",
+         "PUBLIC_MEETUP",
+         "DOOR_PICKUP",
+         "DOOR_DROPOFF"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "2629145460837073",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789571970,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-4.jpg"
+         },
+         "id": "1729365741624227"
+        },
+        "listing_price": {
+         "amount": "26.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "112115945481421"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "1061928863361125",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1788750345,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-5.jpg"
+         },
+         "id": "1060282886923662"
+        },
+        "listing_price": {
+         "amount": "499.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "112115945481421"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "1263136395919271",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789454911,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-6.jpg"
+         },
+         "id": "2078451750211363"
+        },
+        "listing_price": {
+         "amount": "55.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "108279182527479"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON",
+         "SHIPPING_OFFSITE",
+         "PUBLIC_MEETUP",
+         "DOOR_PICKUP",
+         "DOOR_DROPOFF"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "2972285979783543",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789701917,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-7.jpg"
+         },
+         "id": "2291141631659988"
+        },
+        "listing_price": {
+         "amount": "100.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "112115945481421"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "1585618489711119",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789572166,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-8.jpg"
+         },
+         "id": "1058741233460508"
+        },
+        "listing_price": {
+         "amount": "26.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "112115945481421"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       },
+       {
+        "__typename": "GroupCommerceProductItem",
+        "id": "2107199463204941",
+        "__isMarketplaceListingWithTagging": "GroupCommerceProductItem",
+        "listing_tags": [],
+        "__isMarketplaceListingRenderable": "GroupCommerceProductItem",
+        "creation_time": 1789572462,
+        "primary_listing_photo": {
+         "__typename": "CatalogMarketplaceEnhancementTransformedImage",
+         "image": {
+          "uri": "https://example.com/media/photo-9.jpg"
+         },
+         "id": "1473426984614862"
+        },
+        "listing_price": {
+         "amount": "26.00"
+        },
+        "formatted_price": {
+         "text": "fixture"
+        },
+        "location": {
+         "reverse_geocode": {
+          "city": "fixture",
+          "state": "",
+          "city_page": {
+           "display_name": "fixture",
+           "id": "112115945481421"
+          }
+         }
+        },
+        "is_hidden": false,
+        "is_live": true,
+        "is_pending": false,
+        "is_sold": false,
+        "is_viewer_seller": false,
+        "min_listing_price": null,
+        "max_listing_price": null,
+        "marketplace_listing_category_id": "931157863635831",
+        "marketplace_listing_title": "fixture",
+        "custom_title": null,
+        "custom_sub_titles_with_rendering_flags": [],
+        "origin_group": null,
+        "listing_video": null,
+        "__isMarketplaceListingWithChildListings": "GroupCommerceProductItem",
+        "parent_listing": null,
+        "__isMarketplaceListingWithDeliveryOptions": "GroupCommerceProductItem",
+        "delivery_types": [
+         "IN_PERSON"
+        ],
+        "__isMarketplaceListingWithPulseAttribution": "GroupCommerceProductItem",
+        "created_with_seller_app": false,
+        "media_config": {
+         "video_renderable": null
+        }
+       }
+      ],
+      "viewer": {
+       "marketplace_settings": {
+        "current_marketplace": {
+         "__typename": "Marketplace",
+         "is_metric_base": true,
+         "id": "803449530434397"
+        },
+        "id": "TWFya2V0cGxhY2VTZXR0aW5nczoxMjM0NTY3ODkwMTIzNA=="
+       },
+       "marketplace_feed_stories": {
+        "buy_location": {
+         "display_name": "fixture",
+         "location": {
+          "reverse_geocode": {
+           "city": "fixture"
+          }
+         },
+         "id": "112115945481421"
+        }
+       }
+      }
+     },
+     "cursor": "\""
+    }
+   ]
+  },
+  "page_info": {
+   "end_cursor": "{\"basic\":{\"item_index\":777,\"feed_slice_number\":1},\"ads\":{\"items_since_last_ad\":9,\"items_retrieved\":1,\"ad_index\":0,\"ad_slot\":0,\"dynamic_gap_rule\":0,\"counted_organic_items\":0,\"average_organic_score\":0,\"is_dynamic_gap_rule_set\":false,\"first_organic_score\":0,\"is_dynamic_initial_gap_set\":false,\"iterated_organic_items\":1,\"top_organic_score\":0,\"feed_slice_number\":0,\"feed_retrieved_items\":0,\"ad_req_id\":2277740276087784291,\"refresh_ts\":1789732871,\"cursor_id\":51420,\"mc_id\":0,\"ad_index_e2e\":0,\"seen_ads\":{\"ad_ids\":[],\"page_ids\":[],\"campaign_ids\":[]},\"has_ad_index_been_reset\":false,\"is_reconsideration_ads_dropped\":false,\"fmtc\":0,\"lfms\":-1},\"boosted_ads\":{\"items_since_last_ad\":0,\"items_retrieved\":0,\"ad_index\":0,\"ad_slot\":0,\"dynamic_gap_rule\":0,\"counted_organic_items\":0,\"average_organic_score\":0,\"is_dynamic_gap_rule_set\":false,\"first_organic_score\":0,\"is_dynamic_initial_gap_set\":false,\"iterated_organic_items\":0,\"top_organic_score\":0,\"feed_slice_number\":0,\"feed_retrieved_items\":0,\"ad_req_id\":0,\"refresh_ts\":0,\"cursor_id\":31325,\"mc_id\":0,\"ad_index_e2e\":0,\"seen_ads\":{\"ad_ids\":[],\"page_ids\":[]},\"has_ad_index_been_reset\":false,\"is_reconsideration_ads_dropped\":false,\"fmtc\":0,\"lfms\":-1},\"lightning\":{\"initial_request\":false,\"top_unit_item_ids\":[28584947437862575,28801468499438531,28138310715789773,38601543246157442,28459683730334677,29411559425099690,28445744065085485,28490471243918745,28791228557167533],\"ranking_signature\":29710167408437957,\"qid\":-6137702118423862261}}",
+   "has_next_page": true
+  }
+ },
+ "extensions": {
+  "prefetch_uris_v2": [
+   {
+    "uri": "https://example.com/media/photo-7.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-9.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-6.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-2.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-4.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-8.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-1.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-3.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   },
+   {
+    "uri": "https://example.com/media/photo-5.jpg",
+    "label": null,
+    "width": null,
+    "height": null,
+    "surface": null
+   }
+  ],
+  "server_metadata": {
+   "request_start_time_ms": 1789732871003,
+   "time_at_flush_ms": 1789732872482
+  },
+  "is_final": true
+ },
+ "label": "fixture",
+ "path": [
+  "marketplace_home_feed"
+ ]
+}

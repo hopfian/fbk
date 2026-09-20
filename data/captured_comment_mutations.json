@@ -1,0 +1,137 @@
+{
+ "mutations": [
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StartMutation",
+   "doc_id": "9815271091886179",
+   "variables": {
+    "input": {
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StopMutation",
+   "doc_id": "9972315006159780",
+   "variables": {
+    "input": {
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "2"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useCometUFICreateCommentMutation",
+   "doc_id": "28882491998025365",
+   "variables": {
+    "feedLocation": "POST_PERMALINK_DIALOG",
+    "feedbackSource": 2,
+    "groupID": "12345678901234567",
+    "input": {
+     "client_mutation_id": "1",
+     "attachments": null,
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "formatting_style": null,
+     "is_inline_vote_enabled_for_qna": false,
+     "message": {
+      "ranges": [],
+      "text": "\ud83d\udc4d"
+     },
+     "attribution_id_v2": "CometSinglePostDialogRoot.react,comet.post.single_dialog,unexpected,1789729322369,916215,,,;CometHomeRoot.react,comet.home,unexpected,1789729318461,482067,4748854339,,;CometSinglePostDialogRoot.react,comet.post.single_dialog,via_cold_start,1789729309987,738257,,,",
+     "vod_video_timestamp": null,
+     "is_tracking_encrypted": true,
+     "tracking": [
+      "AZhwr5VXl-U6M22sriod_XAL9-Fg_4J-1WNkKi7VR9f-0XbZnRNNgw6Y1fKH2Q6KgL8Vr30owN8I5lwY5dH4T_jh0iuhCPllBKvx56iALWVPUf9DvCmamwBjn-QWlnWaXz9KA9ErHCc4Xcnf70qYqDD3E3xiDu1sjw5KwzBTDzIR23ITmtOBmR4GKKoGPyHa8qdM0TyPww3C_XiGPBF4MtzdmtXh2h6R6TxkNPfCYy6rzSF39Pz0oGoERoN3Hza2mau03XzNtFJKNGFBIdSppn9r9nVdBSdnn1TWyhpBdDroI8WCXxbMsHzPwV5lk3l6qhWhPhBtWa487abB92xtb8LaOLYH_2C5b4nT17KR5kLYrjlAz5gWoJTGpWTfr8MG5-bQlKZMR2Rv4fOw1ESh3vYGGd1PslDxoh-I9Zq3MvfA-eDJauugV4V1K_RVgWnh2-GHF49umxNuw_QSfPQVCDnZKfW5h1USSROOINR6EcvSTEoGuWNqAOpJXICNGq7r4HiaAGvqQgbHjMRo97Ix2pOs021NB2yoqfICfGVfPXibYZ5AIHomROsceNDCqkv296qBsl6t1HtggB2g-CKSIvgW6cjVkc0DuxMzic3fV9WQYA6stzEevV3wwBqnMf3XZcHGbBI5ZaExI-CTrHyKOOZ9NQPBRCVucgS1q9EpNc0EOEdh3ATyucF96G6FwyTys3Qo52rYPBktymotL7H2XF9P8L15PbUa92nE-uhKA3iMhIFWyqV-1PE9C73AmMchF3TZdlseajH4MQDutxN5R5gZyV_Ztx6IRyN2_NqH_NCsPlCKtBqVsNEI5U3dGmlXfhyqOdDwyBFGp3CHtmn7LmDU6QmaUtU5YZZuHYw3STbTZSDdCXID5IU3KRPfSxUFYytJjfqsdh6LrKU9le3ABo_pLw2TGXi3RmLg1hBckcH1yt3lTG6c_b8sAlm7V_-kS3kNFVCrNnlfc0qRx-DgdG0BnS0MVqwM4P7RRdHsvIrW9J02TMBowkyVQUwp9Dpk2T4TyxfrKgZhLfMbK5-Plm8ZbS2sWYviiQkf4tYeJb6z_M6yaKHoLCnh4woyY5ko35Gj5DD-zehab2Rozjj9NimsVA6CmmMBPZ-flowPVqyFokYWECDOPxaD8SPVN-m3yjn4TrIvjxyHQHZ54xbBlaVYm90KwDUZpuolnhhqPwYLubNKtMwjqDJ3gAxUzvtzn0aix8ZIhMkibSN3UaabR60nfp0h-1-5ZFSZo5R957UBlmmKSCtgntu41-ebvssHyjKKe6N6rlqWreX6ajFOozTwTK7pbaCHuvA5gQeCqNxSh4-vZiPlFuD-cRmACrPPj17cf2n8hyvYqVrgMi6t4WddfeLRLocYXHKd-aQb7NrbJt8C6taY0PEWPh0apqtUYuXIiGVWnhIQwxaI00yxl9g7T1R10YtteGYQisis7C558OvCin-cy1hUDH7NLkOdeD7BQKVbr9SAAq6JeaJJL4ha13SnRrBALgWhuws6lFTyMpBmgPaFfo4tgxnFoKkuvrD_UuX5uMq5KuvlGxRO78FmWXv4atQla6LjzEojBRjJPr6tmh2gsez33yIJiNHNvwPhsdvbjukcU5X-SyRAZhVvVRRE9lHLjmX26JMKMLUZiqGJKGEqfIfGqE3bsbyaUaSlac4zzf-lxxRJzPNubq5hEyfnfnU28LERvu8uIfZd6jjfjRChy198JBDmq3K8j2fHEO3RpzE8H8FoOyyzBxm-ukJHSlQkRL6qnpkGxE4T9G10jXKv4TKQS60dvkhA9-4uCHZQQxYK-wMW3Ylq0iZAA3MQAXlU29CyQQgdxvlNrNZzli_nfasRj9yvtfG1s2ZfUlHKowhgBN37Lu5F3fE-lnOLU-qFUMbURWjaFT8JqV0czndriEDHF_SjyII9LpkL7lFxyLq7wg0Tck15YIU_gLFjS6N4cLOcbbe-LPUBD1MxgBI18M7c5ozyOH95rjbZMWsGmNz6FV1_iJ3gUz_IjqmezsGemXisZdWlT_3efLG0Aw1unSfc-AtJlPiwVdXP3Rw9WwFMcwB5XgY82BLR_AK8yKhP5-bqrTEN7dtfBpIf4jIMubQ-4wfciBO4lLW2LvGMovhJu4ZPMbbjFMNkb0I5I3sVOhFbh8bTYkt--c_taGUaBb5V1wrDFWqkYa2j6qFan-Ivzc1NH2C_n_HMGXW3isyo1bovcgYvzATTlZFHi2ucv9qwPsScox4OZhGLp2vJ9-qPKpi7cwkiOfznmok6bNonctcRjE9vbn7Ep_I_lwRyek8q1snR2CsDsB9wI04SAacxOI_fNQVAAicNksLCUzXnmrJF3Ux8wxxBFk7y_Kh89nxSRlWuI_9-gBPlmkW3zkXx9ZtEMGNh32gp42Q9avUl3aJZVmgegRinbbHVWOHM2zyI1cmjjZr7upEg1PhYHlmUrwJOeT8XGXRxYaUx24YFLw-IsYIir6HI8mn8qMAOdY4jDh4H5xJec9qdPmKPwQe_0dv-xlyX62mm8vGyliK2kFfqH5m0e6drWFEib74S1e8ILXntS07M2JiGcIRdmGOrOU-nuNeQvCpKFZ6y4U2_lQPUeFOnLpWFZVEh_sy2x90Sfnd2mEKg2LzmhAjTkOGHTbmSZRugLVRH7HDY7JaY5ahQwv5poaYmgnbpp-YWqcSbIPpcuf0E0hcQ8dr3o28tTjdTPxY-h2gV1qVTADQ1vxa7Z4mSpajtGGHAT1b9JJEkFhFLYZtHy3h03zLtcsnyLfMZBzwqkUYL0IIYcOIMurZCKGu2v3AZELlgQlYsk8x56AFI",
+      "{\"assistant_caller\":\"comet_above_composer\",\"conversation_guide_session_id\":\"2207beac-883e-4ac4-bda6-e0051b61a3f8\",\"conversation_guide_shown\":null}"
+     ],
+     "feedback_source": "OBJECT",
+     "idempotence_token": "client:c34d1b66-e5ec-48b2-8ed2-a876c730b209",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "downstream_share_session_id": "91047c1e-02d9-4f13-bb7a-685bd1f49f84",
+     "downstream_share_session_origin_uri": "https://www.facebook.com/sample.page/posts/pfbid02SampleSyntheticPostToken0123456789abcdef",
+     "downstream_share_session_start_time": "1789729310366"
+    },
+    "inviteShortLinkKey": null,
+    "renderLocation": null,
+    "scale": 1,
+    "useDefaultActor": false,
+    "focusCommentID": null,
+    "translationType": "AUTO_TRANSLATE",
+    "canUseNicknameOnComet": false,
+    "__relay_internal__pv__groups_comet_use_glvrelayprovider": false,
+    "__relay_internal__pv__CometUFICommentActionLinksRewriteEnabledrelayprovider": true,
+    "__relay_internal__pv__CometUFICommentAvatarStickerAnimatedImagerelayprovider": false,
+    "__relay_internal__pv__IsWorkUserrelayprovider": false,
+    "__relay_internal__pv__CometUFICommentAutoTranslationTyperelayprovider": "AUTO_TRANSLATE"
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StartMutation",
+   "doc_id": "9815271091886179",
+   "variables": {
+    "input": {
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "3"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StartMutation",
+   "doc_id": "9815271091886179",
+   "variables": {
+    "input": {
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "4"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StopMutation",
+   "doc_id": "9972315006159780",
+   "variables": {
+    "input": {
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzM0MTU2NjQwODk3OQ==",
+     "session_id": "ab1066e3-a2f1-453c-ba08-4536f0dc114e",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "5"
+    }
+   },
+   "q": null
+  }
+ ],
+ "all_friendly_names": [
+  "FBYRPTimeLimitsEnforcementQuery",
+  "fetchMWChatVideoAutoplaySettingQuery",
+  "OhaiWebPublicKeyConfigQuery",
+  "CometSearchBootstrapKeywordsDataSourceQuery",
+  "RTWebCallBlockSettingHooksQuery",
+  "useMWEncryptedBackupsFetchBackupIdsV2Query",
+  "usePseudoBlockedUserInterstitialF3Query",
+  "MAWVerifyThreadCutover_ContactCapabilities2Query",
+  "CometSinglePostDialogContentQuery",
+  "CometSinglePostDialogContentQuery",
+  "useGroupsCometMentionsBootloadDataSourceWithTaggingTransparencyQuery",
+  "useGroupsCometMentionsNullstateDataSourceWithTaggingTransparencyQuery",
+  "useGroupsCometTypeaheadBootloadDataSourceQuery",
+  "CometUFIConversationGuideContainerQuery",
+  "CometUFILiveTypingBroadcastMutation_StartMutation",
+  "CometUFILiveTypingBroadcastMutation_StopMutation",
+  "useCometUFICreateCommentMutation",
+  "CometUFILiveTypingBroadcastMutation_StartMutation",
+  "CometUFILiveTypingBroadcastMutation_StartMutation",
+  "CometUFILiveTypingBroadcastMutation_StopMutation"
+ ]
+}

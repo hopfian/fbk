@@ -1,0 +1,517 @@
+{
+ "mutations": [
+  {
+   "friendly_name": "useHasSeenUnifiedVideoCreationPrivacyDisclaimerMutation",
+   "doc_id": "9661653313929909",
+   "variables": {
+    "input": {
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1",
+     "has_seen_privacy_merge_disclaimer": true,
+     "privacy_merge_metadata_id": "122100843393458110"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometPrivacySelectorSavePrivacyMutation",
+   "doc_id": "27802157519437974",
+   "variables": {
+    "input": {
+     "privacy_mutation_token": null,
+     "privacy_row_input": {
+      "allow": [],
+      "base_state": "FRIENDS",
+      "deny": [],
+      "tag_expansion_state": "TAGGEES"
+     },
+     "privacy_write_id": "cHJpdmFjeV9zY29wZV9yZW5kZXJlcjp7ImlkIjo4Nzg3NjcwNzMzfQ",
+     "render_location": "COMET_RESOLVE_DEFAULT_FEED_AND_REELS_PRIVACY_CONFLICT",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1"
+    },
+    "privacySelectorRenderLocation": "COMET_RESOLVE_DEFAULT_FEED_AND_REELS_PRIVACY_CONFLICT",
+    "scale": 1,
+    "storyRenderLocation": null,
+    "tags": null,
+    "__relay_internal__pv__CometUFIShareActionMigrationrelayprovider": true,
+    "__relay_internal__pv__CometUFISingleLineUFIrelayprovider": true
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "ComposerStoryCreateMutation",
+   "doc_id": "28778531428503134",
+   "variables": {
+    "input": {
+     "composer_entry_point": "inline_composer",
+     "composer_source_surface": "newsfeed",
+     "composer_type": "feed",
+     "idempotence_token": "be80ba06-2640-452b-a5f7-1fb89e84aa7b_FEED",
+     "source": "WWW",
+     "ai_generated_self_disclosure_metadata": {
+      "was_self_disclosed_as_ai_generated": false
+     },
+     "audience": {
+      "privacy": {
+       "allow": [],
+       "base_state": "FRIENDS",
+       "deny": [],
+       "tag_expansion_state": "TAGGEES"
+      }
+     },
+     "message": {
+      "ranges": [],
+      "text": "Protocol ground-truth test post \u2014 will be deleted immediately."
+     },
+     "inline_activities": [],
+     "text_format_preset_id": "0",
+     "publishing_flow": {
+      "supported_flows": [
+       "ASYNC_SILENT",
+       "ASYNC_NOTIF",
+       "FALLBACK"
+      ]
+     },
+     "reels_remix": {
+      "is_original_audio_reusable": true,
+      "remix_status": "ENABLED"
+     },
+     "post_publish_story_data": {
+      "reshare_post_as_sticker": "DISABLED"
+     },
+     "logging": {
+      "composer_session_id": "be80ba06-2640-452b-a5f7-1fb89e84aa7b"
+     },
+     "navigation_data": {
+      "attribution_id_v2": "CometHomeRoot.react,comet.home,via_cold_start,1789730814116,59358,4748854339,,"
+     },
+     "tracking": [
+      null
+     ],
+     "event_share_metadata": {
+      "surface": "newsfeed"
+     },
+     "actor_id": "12345678901234",
+     "client_mutation_id": "2"
+    },
+    "feedLocation": "NEWSFEED",
+    "feedbackSource": 1,
+    "focusCommentID": null,
+    "gridMediaWidth": null,
+    "groupID": null,
+    "scale": 1,
+    "privacySelectorRenderLocation": "COMET_STREAM",
+    "checkPhotosToReelsUpsellEligibility": true,
+    "referringStoryRenderLocation": null,
+    "renderLocation": "homepage_stream",
+    "useDefaultActor": false,
+    "inviteShortLinkKey": null,
+    "isFeed": true,
+    "isFundraiser": false,
+    "isFunFactPost": false,
+    "isGroup": false,
+    "isEvent": false,
+    "isTimeline": false,
+    "isSocialLearning": false,
+    "isPageNewsFeed": false,
+    "isProfileReviews": false,
+    "isWorkSharedDraft": false,
+    "__relay_internal__pv__CometUFIShareActionMigrationrelayprovider": true,
+    "__relay_internal__pv__GHLShouldChangeSponsoredDataFieldNamerelayprovider": true,
+    "__relay_internal__pv__GHLShouldChangeAdIdFieldNamerelayprovider": true,
+    "__relay_internal__pv__CometUFI_dedicated_comment_routable_dialog_gkrelayprovider": true,
+    "__relay_internal__pv__CometUFICommentAutoTranslationTyperelayprovider": "AUTO_TRANSLATE",
+    "__relay_internal__pv__CometUFICommentAvatarStickerAnimatedImagerelayprovider": false,
+    "__relay_internal__pv__CometUFICommentActionLinksRewriteEnabledrelayprovider": true,
+    "__relay_internal__pv__IsWorkUserrelayprovider": false,
+    "__relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider": false,
+    "__relay_internal__pv__CometUFISingleLineUFIrelayprovider": true,
+    "__relay_internal__pv__CometFeedStory_enable_reactor_facepilerelayprovider": false,
+    "__relay_internal__pv__CometFeedStory_enable_social_bubblesrelayprovider": false,
+    "__relay_internal__pv__CometFeedStory_enable_post_permalink_white_space_clickrelayprovider": false,
+    "__relay_internal__pv__TestPilotShouldIncludeDemoAdUseCaserelayprovider": false,
+    "__relay_internal__pv__FBReels_deprecate_short_form_video_context_gkrelayprovider": true,
+    "__relay_internal__pv__FBReels_enable_view_dubbed_audio_type_gkrelayprovider": true,
+    "__relay_internal__pv__CometFeedShareMedia_shouldPrefetchShareImagerelayprovider": false,
+    "__relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider": false,
+    "__relay_internal__pv__WorkCometIsEmployeeGKProviderrelayprovider": false,
+    "__relay_internal__pv__IsMergQAPollsrelayprovider": false,
+    "__relay_internal__pv__FBReelsMediaFooter_comet_enable_reels_ads_gkrelayprovider": true,
+    "__relay_internal__pv__relay_provider_comet_ufi_ssr_seo_deferrelayprovider": true,
+    "__relay_internal__pv__ReelsIFUCard_reelsIFULikeCountrelayprovider": false,
+    "__relay_internal__pv__FBReelsIFUTileContent_reelsIFUPlayOnHoverrelayprovider": true,
+    "__relay_internal__pv__GroupsCometGYSJFeedItemHeightrelayprovider": 206,
+    "__relay_internal__pv__StoriesShouldEnablePhotosensitiveContentWarningrelayprovider": false,
+    "__relay_internal__pv__ShouldEnableBakedInTextStoriesrelayprovider": false,
+    "__relay_internal__pv__StoriesShouldIncludeFbNotesrelayprovider": true,
+    "__relay_internal__pv__groups_comet_use_glvrelayprovider": false,
+    "__relay_internal__pv__GHLShouldChangeSponsoredAuctionDistanceFieldNamerelayprovider": true,
+    "__relay_internal__pv__GHLShouldUseSponsoredAuctionLabelFieldNameV1relayprovider": true,
+    "__relay_internal__pv__GHLShouldUseSponsoredAuctionLabelFieldNameV2relayprovider": false
+   },
+   "q": null
+  }
+ ],
+ "calls": [
+  {
+   "friendly_name": "FBYRPTimeLimitsEnforcementQuery",
+   "doc_id": "26231556423171691",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "fetchMWChatVideoAutoplaySettingQuery",
+   "doc_id": "9713919638685405",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "OhaiWebPublicKeyConfigQuery",
+   "doc_id": "26996952523264441",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "CometSearchBootstrapKeywordsDataSourceQuery",
+   "doc_id": "27797631676573850",
+   "variables": {
+    "first": 2000
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "RTWebCallBlockSettingHooksQuery",
+   "doc_id": "9989124061109700",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "useMWEncryptedBackupsFetchBackupIdsV2Query",
+   "doc_id": "25220416984279164",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "usePseudoBlockedUserInterstitialF3Query",
+   "doc_id": "27255340990751033",
+   "variables": {},
+   "q": null
+  },
+  {
+   "friendly_name": "MAWVerifyThreadCutover_ContactCapabilities2Query",
+   "doc_id": "9948369021930229",
+   "variables": {
+    "id": "12345678901234"
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "FeedComposerCometRootQuery",
+   "doc_id": "28589289654028708",
+   "variables": {
+    "callerName": "fx_product_foundation_client_FXOnline_client_cache",
+    "customPartnerParams": [
+     {
+      "key": "CROSSPOSTING_DESTINATION_APP",
+      "value": "IG"
+     },
+     {
+      "key": "CROSSPOSTING_SHARE_TO_SURFACE",
+      "value": "FEED"
+     },
+     {
+      "key": "SHOULD_RETURN_AUTO_XPOST_SETTING",
+      "value": "true"
+     }
+    ],
+    "hasStory": false,
+    "isBizWeb": false,
+    "isLinksInPostEnabled": false,
+    "privacySelectorRenderLocation": "COMET_COMPOSER",
+    "profileID": "12345678901234",
+    "scale": 1,
+    "serviceNames": [
+     "CROSS_POSTING_SETTING"
+    ],
+    "storyID": "",
+    "__relay_internal__pv__ShouldEnableSimplifiedComposerIconsrelayprovider": false,
+    "__relay_internal__pv__CometUnifiedVideoCreation_showPrivacyMergerelayprovider": true,
+    "__relay_internal__pv__CometUGCPublicCreation_showComposerPublicAwarenessTooltiprelayprovider": false,
+    "__relay_internal__pv__FeedComposerCometRoot_shouldFetchCrosspostMetadatarelayprovider": false
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useHasSeenUnifiedVideoCreationPrivacyDisclaimerMutation",
+   "doc_id": "9661653313929909",
+   "variables": {
+    "input": {
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1",
+     "has_seen_privacy_merge_disclaimer": true,
+     "privacy_merge_metadata_id": "122100843393458110"
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometPrivacySelectorSavePrivacyMutation",
+   "doc_id": "27802157519437974",
+   "variables": {
+    "input": {
+     "privacy_mutation_token": null,
+     "privacy_row_input": {
+      "allow": [],
+      "base_state": "FRIENDS",
+      "deny": [],
+      "tag_expansion_state": "TAGGEES"
+     },
+     "privacy_write_id": "cHJpdmFjeV9zY29wZV9yZW5kZXJlcjp7ImlkIjo4Nzg3NjcwNzMzfQ",
+     "render_location": "COMET_RESOLVE_DEFAULT_FEED_AND_REELS_PRIVACY_CONFLICT",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1"
+    },
+    "privacySelectorRenderLocation": "COMET_RESOLVE_DEFAULT_FEED_AND_REELS_PRIVACY_CONFLICT",
+    "scale": 1,
+    "storyRenderLocation": null,
+    "tags": null,
+    "__relay_internal__pv__CometUFIShareActionMigrationrelayprovider": true,
+    "__relay_internal__pv__CometUFISingleLineUFIrelayprovider": true
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsBootloadDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "25872647982320641",
+   "variables": {
+    "limit": 2,
+    "profile_id": "12345678901234",
+    "mention_types": [
+     "USER",
+     "WORKROOMS_USER",
+     "GROUP",
+     "EVENT",
+     "PAGE"
+    ],
+    "tag_type": "MENTION",
+    "session_id": "be80ba06-2640-452b-a5f7-1fb89e84aa7b",
+    "scale": 1,
+    "post_id": "",
+    "surface": "FEED_COMPOSER"
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsNullstateDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "25151629731161691",
+   "variables": {
+    "limit": 10,
+    "profile_id": "12345678901234",
+    "mention_types": [
+     "user",
+     "workrooms_user",
+     "group",
+     "event",
+     "page"
+    ],
+    "tag_type": "MENTION",
+    "session_id": "be80ba06-2640-452b-a5f7-1fb89e84aa7b",
+    "scale": 1,
+    "surface": "FEED_COMPOSER",
+    "post_id": ""
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsBootloadDataSourceQuery",
+   "doc_id": "24037885915835927",
+   "variables": {
+    "include_viewer": true,
+    "options": [
+     "FRIENDS_ONLY"
+    ],
+    "scale": 1,
+    "typeahead_context": "mentions",
+    "typeaheadFirstDegreeFilters": [
+     "USER",
+     "WORKROOMS_USER"
+    ],
+    "canUseSections": null
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometPrivacySelectorPickerContainerQuery",
+   "doc_id": "27798272093189008",
+   "variables": {
+    "localPrivacyRow": null,
+    "privacyWriteID": "cHJpdmFjeV9zY29wZV9yZW5kZXJlcjp7ImlkIjo4Nzg3NjcwNzMzfQ",
+    "renderLocation": "COMET_COMPOSER",
+    "scale": 1
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "useSavedCustomContextQuery",
+   "doc_id": "28279767948278382",
+   "variables": {
+    "ids": {
+     "friendlists": [],
+     "users": []
+    }
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "ComposerStoryCreateMutation",
+   "doc_id": "28778531428503134",
+   "variables": {
+    "input": {
+     "composer_entry_point": "inline_composer",
+     "composer_source_surface": "newsfeed",
+     "composer_type": "feed",
+     "idempotence_token": "be80ba06-2640-452b-a5f7-1fb89e84aa7b_FEED",
+     "source": "WWW",
+     "ai_generated_self_disclosure_metadata": {
+      "was_self_disclosed_as_ai_generated": false
+     },
+     "audience": {
+      "privacy": {
+       "allow": [],
+       "base_state": "FRIENDS",
+       "deny": [],
+       "tag_expansion_state": "TAGGEES"
+      }
+     },
+     "message": {
+      "ranges": [],
+      "text": "Protocol ground-truth test post \u2014 will be deleted immediately."
+     },
+     "inline_activities": [],
+     "text_format_preset_id": "0",
+     "publishing_flow": {
+      "supported_flows": [
+       "ASYNC_SILENT",
+       "ASYNC_NOTIF",
+       "FALLBACK"
+      ]
+     },
+     "reels_remix": {
+      "is_original_audio_reusable": true,
+      "remix_status": "ENABLED"
+     },
+     "post_publish_story_data": {
+      "reshare_post_as_sticker": "DISABLED"
+     },
+     "logging": {
+      "composer_session_id": "be80ba06-2640-452b-a5f7-1fb89e84aa7b"
+     },
+     "navigation_data": {
+      "attribution_id_v2": "CometHomeRoot.react,comet.home,via_cold_start,1789730814116,59358,4748854339,,"
+     },
+     "tracking": [
+      null
+     ],
+     "event_share_metadata": {
+      "surface": "newsfeed"
+     },
+     "actor_id": "12345678901234",
+     "client_mutation_id": "2"
+    },
+    "feedLocation": "NEWSFEED",
+    "feedbackSource": 1,
+    "focusCommentID": null,
+    "gridMediaWidth": null,
+    "groupID": null,
+    "scale": 1,
+    "privacySelectorRenderLocation": "COMET_STREAM",
+    "checkPhotosToReelsUpsellEligibility": true,
+    "referringStoryRenderLocation": null,
+    "renderLocation": "homepage_stream",
+    "useDefaultActor": false,
+    "inviteShortLinkKey": null,
+    "isFeed": true,
+    "isFundraiser": false,
+    "isFunFactPost": false,
+    "isGroup": false,
+    "isEvent": false,
+    "isTimeline": false,
+    "isSocialLearning": false,
+    "isPageNewsFeed": false,
+    "isProfileReviews": false,
+    "isWorkSharedDraft": false,
+    "__relay_internal__pv__CometUFIShareActionMigrationrelayprovider": true,
+    "__relay_internal__pv__GHLShouldChangeSponsoredDataFieldNamerelayprovider": true,
+    "__relay_internal__pv__GHLShouldChangeAdIdFieldNamerelayprovider": true,
+    "__relay_internal__pv__CometUFI_dedicated_comment_routable_dialog_gkrelayprovider": true,
+    "__relay_internal__pv__CometUFICommentAutoTranslationTyperelayprovider": "AUTO_TRANSLATE",
+    "__relay_internal__pv__CometUFICommentAvatarStickerAnimatedImagerelayprovider": false,
+    "__relay_internal__pv__CometUFICommentActionLinksRewriteEnabledrelayprovider": true,
+    "__relay_internal__pv__IsWorkUserrelayprovider": false,
+    "__relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider": false,
+    "__relay_internal__pv__CometUFISingleLineUFIrelayprovider": true,
+    "__relay_internal__pv__CometFeedStory_enable_reactor_facepilerelayprovider": false,
+    "__relay_internal__pv__CometFeedStory_enable_social_bubblesrelayprovider": false,
+    "__relay_internal__pv__CometFeedStory_enable_post_permalink_white_space_clickrelayprovider": false,
+    "__relay_internal__pv__TestPilotShouldIncludeDemoAdUseCaserelayprovider": false,
+    "__relay_internal__pv__FBReels_deprecate_short_form_video_context_gkrelayprovider": true,
+    "__relay_internal__pv__FBReels_enable_view_dubbed_audio_type_gkrelayprovider": true,
+    "__relay_internal__pv__CometFeedShareMedia_shouldPrefetchShareImagerelayprovider": false,
+    "__relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider": false,
+    "__relay_internal__pv__WorkCometIsEmployeeGKProviderrelayprovider": false,
+    "__relay_internal__pv__IsMergQAPollsrelayprovider": false,
+    "__relay_internal__pv__FBReelsMediaFooter_comet_enable_reels_ads_gkrelayprovider": true,
+    "__relay_internal__pv__relay_provider_comet_ufi_ssr_seo_deferrelayprovider": true,
+    "__relay_internal__pv__ReelsIFUCard_reelsIFULikeCountrelayprovider": false,
+    "__relay_internal__pv__FBReelsIFUTileContent_reelsIFUPlayOnHoverrelayprovider": true,
+    "__relay_internal__pv__GroupsCometGYSJFeedItemHeightrelayprovider": 206,
+    "__relay_internal__pv__StoriesShouldEnablePhotosensitiveContentWarningrelayprovider": false,
+    "__relay_internal__pv__ShouldEnableBakedInTextStoriesrelayprovider": false,
+    "__relay_internal__pv__StoriesShouldIncludeFbNotesrelayprovider": true,
+    "__relay_internal__pv__groups_comet_use_glvrelayprovider": false,
+    "__relay_internal__pv__GHLShouldChangeSponsoredAuctionDistanceFieldNamerelayprovider": true,
+    "__relay_internal__pv__GHLShouldUseSponsoredAuctionLabelFieldNameV1relayprovider": true,
+    "__relay_internal__pv__GHLShouldUseSponsoredAuctionLabelFieldNameV2relayprovider": false
+   },
+   "q": null
+  },
+  {
+   "friendly_name": "CometFeedStoryMenuQuery",
+   "doc_id": "28591722730462183",
+   "variables": {
+    "crosspostCallerName": "fx_product_foundation_client_FXOnline_client_cache",
+    "crosspostCustomPartnerParams": [
+     {
+      "key": "CROSSPOSTING_DESTINATION_APP",
+      "value": "IG"
+     },
+     {
+      "key": "CROSSPOSTING_SHARE_TO_SURFACE",
+      "value": ""
+     },
+     {
+      "key": "SHOULD_RETURN_AUTO_XPOST_SETTING",
+      "value": "true"
+     }
+    ],
+    "crosspostServiceNames": [
+     "CROSS_POSTING_SETTING"
+    ],
+    "feed_location": "NEWSFEED",
+    "feed_menu_icon_variant": "FILLED",
+    "id": "UzpfSTYxNTkzNzQzMzIwODY0OjEyMjExMTQ1NTkwNTQ1ODExMDoxMjIxMTE0NTU5MDU0NTgxMTA=",
+    "renderLocation": "homepage_stream",
+    "scale": 1,
+    "serialized_frtp_identifiers": null,
+    "shouldFetchCrosspostMetadata": false,
+    "story_debug_info": null,
+    "__relay_internal__pv__CometFeedStoryCopyLinkMenuItem_isLinkSharingEnabledrelayprovider": true
+   },
+   "q": null
+  }
+ ],
+ "privacy_picker_responses": {
+  "CometPrivacySelectorPickerContainerQuery": "{\"data\":{\"privacy_selector\":{\"privacy_scope_renderer\":{\"__typename\":\"PrivacyScopeEditableRenderer\",\"privacy_scope_for_location\":{\"comet_save_confirmation_dialog_type\":null,\"options\":[{\"id\":\"bdff9b0b033fc392c126c8962c27722c\",\"post_param\":\"300645083384735\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionLockedProfileDisabledOptionRenderer\",\"option\":{\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y0/r/qS_ca2ZMCCb.webp\",\"width\":20,\"name\":\"everyone\"},\"current_tag_expansion\":\"NONE\",\"explanation\":\"Anyone on or off Facebook\",\"explanation_with_tag_expansion\":\"Anyone on or off Facebook\",\"info_type\":\"BASIC\",\"label\":\"Public\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"EVERYONE\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"id\":\"bdff9b0b033fc392c126c8962c27722c\"}},\"description\":\"Public\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yY/r/w9qu7-Zte67.webp\",\"width\":12},\"icon_image\":{\"name\":\"everyone\"}},{\"id\":\"f0d7541e97bcfb2f1576d36ec41a78e5\",\"post_param\":\"{\\\"allow\\\":[247124075410460],\\\"settings\\\":{\\\"no_tag_expansion\\\":true}}\",\"setting_supervision_access\":null,\"is_selected\":true,\"renderer\":{\"__typename\":\"PrivacyOptionBasicOptionRenderer\",\"option\":{\"current_tag_expansion\":\"FRIENDS_TAGGED\",\"explanation\":\"Your friends on Facebook\",\"explanation_with_tag_expansion\":\"Your friends on Facebook\",\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yU/r/0USmaotNp0w.webp\",\"width\":20,\"name\":\"friends\"},\"id\":\"f0d7541e97bcfb2f1576d36ec41a78e5\",\"info_type\":\"BASIC\",\"label\":\"Friends\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"FRIENDS\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"TAGGEES\"},\"post_param\":\"{\\\"allow\\\":[247124075410460],\\\"settings\\\":{\\\"no_tag_expansion\\\":true}}\"}},\"description\":\"Friends\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y7/r/OjzrEPbbX0p.webp\",\"width\":12},\"icon_image\":{\"name\":\"friends\"}},{\"id\":\"9ff61289e08284e4351daf8bbe1b4e72\",\"post_param\":\"122100842241458110\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionCloseFriendsOptionRenderer\",\"close_friends_count\":0,\"dialog_title\":\"Close Friends\",\"has_onboarded\":false,\"id\":\"PrivacyOptionCloseFriendsOptionRenderer:122100842241458110\",\"option\":{\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yZ/r/aGTBlpX6z7L.webp\",\"width\":20,\"name\":\"close_friends_v2\"},\"id\":\"9ff61289e08284e4351daf8bbe1b4e72\",\"info_type\":\"BASIC\",\"label\":\"Close friends\",\"privacy_row_input\":{\"allow\":[\"122100842241458110\"],\"base_state\":\"SELF\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"post_param\":\"122100842241458110\"}},\"description\":\"Close friends\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yY/r/IWPEvDVNxBg.webp\",\"width\":12},\"icon_image\":{\"name\":\"close_friends_v2\"}},{\"id\":\"924058cc93fbd8d9eb0b940630c21c3e\",\"post_param\":\"291667064279714\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionSavedCustomOptionRenderer\",\"saved_custom_type\":\"FRIENDS_EXCEPT\",\"option\":{\"included_members\":[],\"excluded_members\":[],\"id\":\"924058cc93fbd8d9eb0b940630c21c3e\",\"current_tag_expansion\":\"FRIENDS_TAGGED\",\"explanation\":\"Don't show to some friends\",\"explanation_with_tag_expansion\":\"Don't show to some friends\",\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yo/r/HPmY4s6hmCp.webp\",\"width\":20,\"name\":\"friends_except\"},\"info_type\":\"EXPANDABLE\",\"label\":\"Don't show to...\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"FRIENDS\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"post_param\":\"291667064279714\"},\"dialog_title\":\"Don't show to...\"},\"description\":\"Don't show to some friends\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yg/r/-e18JwiFk5T.webp\",\"width\":12},\"icon_image\":{\"name\":\"friends_except\"}},{\"id\":\"cf9f3fc03025799a3602f822ec6127d3\",\"post_param\":\"286958161406148\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionSavedCustomOptionRenderer\",\"saved_custom_type\":\"SPECIFIC_FRIENDS\",\"option\":{\"included_members\":[],\"excluded_members\":[],\"id\":\"cf9f3fc03025799a3602f822ec6127d3\",\"current_tag_expansion\":\"NONE\",\"explanation\":\"Only show to some friends\",\"explanation_with_tag_expansion\":\"Only show to some friends\",\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yd/r/U40HrlTQjbC.webp\",\"width\":20,\"name\":\"specific_friends\"},\"info_type\":\"EXPANDABLE\",\"label\":\"Only show to...\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"SELF\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"post_param\":\"286958161406148\"},\"dialog_title\":\"Only show to...\"},\"description\":\"Only show to some friends\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y7/r/r4kzba8j8Nx.webp\",\"width\":12},\"icon_image\":{\"name\":\"specific_friends\"}},{\"id\":\"2fa037826c9025f48499af9e58348f23\",\"post_param\":\"286958161406148\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionBasicOptionRenderer\",\"option\":{\"current_tag_expansion\":\"NONE\",\"explanation\":\"Only me\",\"explanation_with_tag_expansion\":\"Only me\",\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y_/r/k6caZdrdhMJ.webp\",\"width\":20,\"name\":\"only_me\"},\"id\":\"2fa037826c9025f48499af9e58348f23\",\"info_type\":\"BASIC\",\"label\":\"Only me\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"SELF\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"post_param\":\"286958161406148\"}},\"description\":\"Only me\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yv/r/-JlLjhBdGXG.webp\",\"width\":12},\"icon_image\":{\"name\":\"only_me\"}},{\"id\":\"9254d94c57649089cb62cfcdb4e6e05f\",\"post_param\":\"286958161406148\",\"setting_supervision_access\":null,\"is_selected\":false,\"renderer\":{\"__typename\":\"PrivacyOptionFullCustomOptionRenderer\",\"option\":{\"icon_image\":{\"height\":20,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yQ/r/wHEjs2U84dC.webp\",\"width\":20,\"name\":\"custom\"},\"current_tag_expansion\":\"NONE\",\"explanation\":\"Include and exclude friends and lists\",\"explanation_with_tag_expansion\":\"Include and exclude friends and lists\",\"id\":\"9254d94c57649089cb62cfcdb4e6e05f\",\"label\":\"Custom\",\"privacy_row_input\":{\"allow\":[],\"base_state\":\"SELF\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"UNSPECIFIED\"},\"post_param\":\"286958161406148\"}},\"description\":\"Only me\",\"trigger_icon_image\":{\"height\":12,\"scale\":1,\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yV/r/qg0c9U6sWEt.webp\",\"width\":12},\"icon_image\":{\"name\":\"custom\"}}],\"can_viewer_edit\":true,\"header_renderer\":{\"__typename\":\"PrivacySelectorSimpleHeaderRenderer\",\"headline\":{\"delight_ranges\":[],\"image_ranges\":[],\"inline_style_ranges\":[],\"aggregated_ranges\":[],\"ranges\":[],\"color_ranges\":[],\"text\":\"Who can see your post?\"},\"paragraphs\":[{\"delight_ranges\":[],\"image_ranges\":[],\"inline_style_ranges\":[],\"aggregated_ranges\":[],\"ranges\":[],\"color_ranges\":[],\"text\":\"Your post will appear in Feed, on your profile and in search results.\"}],\"__module_operation_CometPrivacySelectorPicker_scope\":{\"__dr\":\"CometPrivacySelectorPickerHeader_header$normalization.graphql\"},\"__module_component_CometPrivacySelectorPicker_scope\":{\"__dr\":\"CometPrivacySelectorPickerHeader.react\"}},\"privacy_write_id\":\"cHJpdmFjeV9zY29wZV9yZW5kZXJlcjp7ImlkIjo4Nzg3NjcwNzMzfQ\",\"selected_option\":{\"post_param\":\"{\\\"allow\\\":[247124075410460],\\\"settings\\\":{\\\"no_tag_expansion\\\":true}}\",\"id\":\"e91e4a0e03ed4903da0d362616548355\"},\"show_tag_expansion_options\":false,\"youth_disabled_public_education_option\":null,\"is_in_locked_profile_mode\":true,\"footer_renderer\":{\"__typename\":\"PrivacySelectorDefaultPrivacyFooterRenderer\",\"should_show_tooltip\":false,\"tooltip\":{\"delight_ranges\":[],\"image_ranges\":[],\"inline_style_ranges\":[],\"aggregated_ranges\":[],\"ranges\":[],\"color_ranges\":[],\"text\":\"To change your default audience, choose a different audience and then select this option.\"},\"label\":\"Set as default audience.\",\"__module_operation_CometPrivacySelectorPickerFooter_scope\":{\"__dr\":\"CometDefaultPrivacySelectorPickerFooter_footer$normalization.graphql\"},\"__module_component_CometPrivacySelectorPickerFooter_scope\":{\"__dr\":\"CometDefaultPrivacySelectorPickerFooter.react\"}}},\"privacy_row_input\":{\"allow\":[],\"base_state\":\"FRIENDS\",\"deny\":[],\"privacy_targeting\":null,\"tag_expansion_state\":\"TAGGEES\"},\"id\":\"cHJpdmFjeV9zY29wZV9yZW5kZXJlcjp7ImlkIjo4Nzg3NjcwNzMzfQ\"}},\"xfb_nido_extra_payload_for_privacy_write_id\":null},\"extensions\":{\"prefetch_uris_v2\":[{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yU/r/0USmaotNp0w.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yo/r/HPmY4s6hmCp.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yd/r/U40HrlTQjbC.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y_/r/k6caZdrdhMJ.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yQ/r/wHEjs2U84dC.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/y0/r/qS_ca2ZMCCb.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null},{\"uri\":\"https://static.xx.fbcdn.net/rsrc.php/yZ/r/aGTBlpX6z7L.webp\",\"label\":null,\"width\":null,\"height\":null,\"surface\":null}],\"server_metadata\":{\"request_start_time_ms\":1789730824534,\"time_at_flush_ms\":1789730824598},\"is_final\":true,\"sr_payload\":{\"ddd\":{\"hsrp\":{\"hsdp\":{\"ixData\":{\"484757\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/ys/r/99VOeN4eRaR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/ys/r/99VOeN4eRaR.webp\",\"w\":20,\"h\":20,\"p\":\"0 -317px\",\"sz\":\"auto\"},\"492790\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"w\":16,\"h\":16,\"p\":\"0 -327px\",\"sz\":\"auto\"},\"531032\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"w\":24,\"h\":24,\"p\":\"0 0\",\"sz\":\"auto\"},\"659287\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"w\":16,\"h\":16,\"p\":\"0 -344px\",\"sz\":\"auto\"},\"659288\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/ys/r/99VOeN4eRaR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/ys/r/99VOeN4eRaR.webp\",\"w\":20,\"h\":20,\"p\":\"0 -548px\",\"sz\":\"auto\"},\"659289\":{\"sprited\":2,\"spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"_spi\":\"https://static.xx.fbcdn.net/rsrc.php/y4/r/TLgQGqvo_mR.webp\",\"w\":24,\"h\":24,\"p\":\"0 -50px\",\"sz\":\"auto\"}},\"qexData\":{\"2798\":{\"r\":true,\"l\":\"J{\\\"qeid\\\":\\\"12345678901234\\\",\\\"u\\\":\\\"\\\",\\\"t\\\":\\\"fb_acting_account\\\",\\\"gks\\\":[],\\\"qe\\\":null}\"}}},\"hblp\":{\"consistency\":{\"rev\":1047871790},\"rsrcMap\":{\"csr:_12_0_If\":{\"type\":\"csr\",\"src\":\":1,11,10,13,38,9,16,5,15,7,2,22,8,6,950,20,637,141,64,27\",\"c\":1}},\"indexUpgrades\":{\"__hsdp\":\":3323,3324\"}}},\"jsmods\":{\"define\":[[\"cr:310\",[\"RunWWW\"],{\"__rc\":[\"RunWWW\",null]},-1],[\"cr:564\",[\"ClickIDDomainBlacklistSVConfigJSModuleWrapper\"],{\"__rc\":[\"ClickIDDomainBlacklistSVConfigJSModuleWrapper\",null]},-1],[\"cr:619\",[\"setTimeoutCometLoggingPriWWW\"],{\"__rc\":[\"setTimeoutCometLoggingPriWWW\",null]},-1],[\"cr:686\",[],{\"__rc\":[null,null]},-1],[\"cr:734\",[],{\"__rc\":[null,null]},-1],[\"cr:755\",[\"warningWWW\"],{\"__rc\":[\"warningWWW\",null]},-1],[\"cr:1078\",[],{\"__rc\":[null,null]},-1],[\"cr:1080\",[\"unexpectedUseInComet\"],{\"__rc\":[\"unexpectedUseInComet\",null]},-1],[\"cr:1126\",[\"TimeSliceSham\"],{\"__rc\":[\"TimeSliceSham\",null]},-1],[\"cr:1293\",[\"ReactDOM.classic\"],{\"__rc\":[\"ReactDOM.classic\",null]},-1],[\"cr:2099\",[\"DocumentTranslationStatusProvider.react\"],{\"__rc\":[\"DocumentTranslationStatusProvider.react\",null]},-1],[\"cr:2448\",[\"useHeroBootloadedComponent\"],{\"__rc\":[\"useHeroBootloadedComponent\",null]},-1],[\"cr:2866\",[],{\"__rc\":[null,null]},-1],[\"cr:3725\",[\"clearTimeoutWWWOrMobile\"],{\"__rc\":[\"clearTimeoutWWWOrMobile\",null]},-1],[\"cr:4344\",[\"setTimeoutWWWOrMobile\"],{\"__rc\":[\"setTimeoutWWWOrMobile\",null]},-1],[\"cr:4852\",[\"ClickIDURLBlocklistSVConfigJSModuleWrapper\"],{\"__rc\":[\"ClickIDURLBlocklistSVConfigJSModuleWrapper\",null]},-1],[\"cr:5128\",[],{\"__rc\":[null,null]},-1],[\"cr:6640\",[],{\"__rc\":[null,null]},-1],[\"cr:7063\",[\"CometErrorBoundary.react\"],{\"__rc\":[\"CometErrorBoundary.react\",null]},-1],[\"cr:7162\",[\"ReactDOMCompatibilityLayer\"],{\"__rc\":[\"ReactDOMCompatibilityLayer\",null]},-1],[\"cr:7383\",[\"BanzaiWWW\"],{\"__rc\":[\"BanzaiWWW\",null]},-1],[\"cr:7385\",[\"clearIntervalWWW\"],{\"__rc\":[\"clearIntervalWWW\",null]},-1],[\"cr:7388\",[\"setIntervalWWW\"],{\"__rc\":[\"setIntervalWWW\",null]},-1],[\"cr:7389\",[\"setIntervalAcrossTransitionsWWW\"],{\"__rc\":[\"setIntervalAcrossTransitionsWWW\",null]},-1],[\"cr:7391\",[\"setTimeoutAcrossTransitionsWWW\"],{\"__rc\":[\"setTimeoutAcrossTransitionsWWW\",null]},-1],[\"cr:7422\",[\"ImageDownloadTrackerWWW\"],{\"__rc\":[\"ImageDownloadTrackerWWW\",null]},-1],[\"cr:7730\",[\"getFbtResult\"],{\"__rc\":[\"getFbtResult\",null]},-1],[\"cr:8666\",[\"FDSListCellImpl_New.react\"],{\"__rc\":[\"FDSListCellImpl_New.react\",null]},-1],[\"cr:8907\",[\"HeroTracingCoreConfigWWW\"],{\"__rc\":[\"HeroTracingCoreConfigWWW\",null]},-1],[\"cr:8908\",[\"HeroTracingCoreDependenciesWWW\"],{\"__rc\":[\"HeroTracingCoreDependenciesWWW\",null]},-1],[\"cr:8958\",[\"FBJSON\"],{\"__rc\":[\"FBJSON\",null]},-1],[\"cr:8959\",[\"DTSG\"],{\"__rc\":[\"DTSG\",null]},-1],[\"cr:8960\",[\"DTSG_ASYNC\"],{\"__rc\":[\"DTSG_ASYNC\",null]},-1],[\"cr:8967\",[\"clearTimeoutComet\"],{\"__rc\":[\"clearTimeoutComet\",null]},-1],[\"cr:11054\",[],{\"__rc\":[null,null]},-1],[\"cr:12179\",[],{\"__rc\":[null,null]},-1],[\"cr:12180\",[],{\"__rc\":[null,null]},-1],[\"cr:13597\",[\"JSSelfProfilerLoomProvider\"],{\"__rc\":[\"JSSelfProfilerLoomProvider\",null]},-1],[\"cr:13699\",[\"SSRInjectedElements\"],{\"__rc\":[\"SSRInjectedElements\",null]},-1],[\"cr:15957\",[],{\"__rc\":[null,null]},-1],[\"cr:17264\",[\"RSTLogForCrash\"],{\"__rc\":[\"RSTLogForCrash\",null]},-1],[\"cr:17816\",[\"FBDomainsSVConfigJSModuleWrapper\"],{\"__rc\":[\"FBDomainsSVConfigJSModuleWrapper\",null]},-1],[\"cr:21238\",[],{\"__rc\":[null,null]},-1],[\"cr:22912\",[],{\"__rc\":[null,null]},-1],[\"cr:38536\",[\"ErrorBoundaryForLazyLoad\"],{\"__rc\":[\"ErrorBoundaryForLazyLoad\",null]},-1],[\"cr:696703\",[\"JSScheduler\"],{\"__rc\":[\"JSScheduler\",null]},-1],[\"cr:955714\",[\"JSSelfProfilerLoomProvider\"],{\"__rc\":[\"JSSelfProfilerLoomProvider\",null]},-1],[\"cr:1080422\",[],{\"__rc\":[null,null]},-1],[\"cr:1094133\",[],{\"__rc\":[null,null]},-1],[\"cr:1106516\",[],{\"__rc\":[null,null]},-1],[\"cr:1108857\",[],{\"__rc\":[null,null]},-1],[\"cr:1294158\",[\"React.classic\"],{\"__rc\":[\"React.classic\",null]},-1],[\"cr:1294159\",[\"ReactDOM.classic\"],{\"__rc\":[\"ReactDOM.classic\",null]},-1],[\"cr:1522191\",[\"CometLinkTrackingUtils.facebook\"],{\"__rc\":[\"CometLinkTrackingUtils.facebook\",null]},-1],[\"cr:1984081\",[],{\"__rc\":[null,null]},-1]],\"require\":[[\"CometPrivacySelectorPickerHeader.react\"],[\"CometDefaultPrivacySelectorPickerFooter_footer$normalization.graphql\"],[\"CometDefaultPrivacySelectorPickerFooter.react\"],[\"CometPrivacySelectorPickerHeader_header$normalization.graphql\"],[\"emptyFunction\",\"thatReturns\",[\"RequireDeferredReference\"],[[{\"__dr\":\"CometPrivacySelectorPickerHeader.react\"},{\"__dr\":\"CometDefaultPrivacySelectorPickerFooter_footer$normalization.graphql\"},{\"__dr\":\"CometDefaultPrivacySelectorPickerFooter.react\"},{\"__dr\":\"CometPrivacySelectorPickerHeader_header$normalization.graphql\"}]]],[\"FbtLogging\"],[\"ODS\"],[\"IntlQtEventFalcoEvent\"],[\"RequireDeferredReference\",\"unblock\",[],[[\"CometPrivacySelectorPickerHeader.react\",\"CometDefaultPrivacySelectorPickerFooter_footer$normalization.graphql\",\"CometDefaultPrivacySelectorPickerFooter.react\",\"CometPrivacySelectorPickerHeader_header$normalization.graphql\"],\"sd\"]],[\"RequireDeferredReference\",\"unblock\",[],[[\"FbtLogging\",\"ODS\",\"IntlQtEventFalcoEvent\"],\"sd\"]],[\"RequireDeferredReference\",\"unblock\",[],[[\"CometPrivacySelectorPickerHeader.react\",\"CometDefaultPrivacySelectorPickerFooter_footer$normalization.graphql\",\"CometDefaultPrivacySelectorPickerFooter.react\",\"CometPrivacySelectorPickerHeader_header$normalization.graphql\"],\"css\"]],[\"RequireDeferredReference\",\"unblock\",[],[[\"FbtLogging\",\"ODS\",\"IntlQtEventFalcoEvent\"],\"css\"]]],\"phd2_indexes\":\":3323,3324\"},\"allResources\":[\"csr:_12_0_If\"],\"tieredResources\":{\"r\":[\"csr:_12_0_If\"],\"rdfds\":[],\"rds\":[]}}}}}"
+ }
+}

@@ -1,0 +1,7274 @@
+{
+ "revision": "1047871790",
+ "harvested_at": "2026-09-18T17:20:02",
+ "sources": [
+  "homepage_full",
+  "surface:groups_create",
+  "surface:pages_create",
+  "surface:pages_create2",
+  "surface:settings",
+  "surface:settings_privacy",
+  "surface:settings_password",
+  "surface:feed_composer"
+ ],
+ "unique_pairs": [
+  {
+   "friendly_name": "A2UIAssetImageResolverQuery",
+   "doc_id": "27245006561791131",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "A2UIPageNameResolverQuery",
+   "doc_id": "28690137397259415",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AQUAPageVoiceFollowerInviteDialogContentFragmentQuery",
+   "doc_id": "26229726463365580",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AQUAPageVoiceFollowerInviteInvitedTabPaginationQuery",
+   "doc_id": "34578828468428440",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AQUAPageVoiceFollowerInviteNotInvitedTabPaginationQuery",
+   "doc_id": "25996987433316340",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdAccountDpaEligibleProductCatalogListStoreSourceQuery",
+   "doc_id": "27033573776301868",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdAccountReviewBaseCardQuery",
+   "doc_id": "27435010199439786",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdAccountReviewUtilsFetchMAIBAAccountReviewStatusQuery",
+   "doc_id": "27373577375583160",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdCenterRecommendationUpdatesTabBadgeQuery",
+   "doc_id": "26214302071592732",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationFormDetailsLinkWhatsappStepRendererQuery",
+   "doc_id": "26076087832013617",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationFormEditCTAButtonRendererQuery",
+   "doc_id": "37305192472457700",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationFormHealthChecklistQuery",
+   "doc_id": "32560760740235956",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationFormWhatsAppPhoneNumberInputDialogQuery",
+   "doc_id": "30508107678780637",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationMutation",
+   "doc_id": "23863457623296585",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusCreationRootQuery",
+   "doc_id": "29413001758315122",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdditionalProfilePlusEditMutation",
+   "doc_id": "27975199868811673",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AdsAccountDataDispatcherQuery",
+   "doc_id": "29511561718459046",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsAccountDataDispatcherViewerPermissionsQuery",
+   "doc_id": "24024824467114826",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsAccountStoreNewSourceServerQuery",
+   "doc_id": "29110790628522134",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsAdAccountSettingsStoreSetAPlusCFeatureStickyStatusMutation",
+   "doc_id": "28167160682886250",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "AdsAdAccountSettingsStoreSetVideoOptimizationStickyStatusMutation",
+   "doc_id": "38096061813371664",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "AdsAdAccountSettingsStoreSourceServerQuery",
+   "doc_id": "27633358993026573",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsBusinessWhatsAppBusinessAccountProviderPluginBSPQuery",
+   "doc_id": "26672012252433699",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsCampaignBizAIUtilsCTWADefaultOnLogExposureMutation",
+   "doc_id": "34726519393630206",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "AdsDaisyChainWhatsAppFromInstagramStoreSourceServerQuery",
+   "doc_id": "28213633418323547",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsFocusFrameworkStickinessDataManagerQuery",
+   "doc_id": "9593850350702942",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsInstagramAccountMediaListRIStoreSourceServerQuery",
+   "doc_id": "24351619444451158",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerDynamicCampaignGroupQueryPreloadingConfigNoSpecsServerQuery",
+   "doc_id": "39647192974879682",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerDynamicCampaignGroupQueryPreloadingConfigTier2NoSpecsServerQuery",
+   "doc_id": "26124659940543690",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerLiveDataAdgroupQueryPreloadingConfigNoSpecsQuery",
+   "doc_id": "28508074382157348",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerLiveDataAdgroupQueryPreloadingConfigTier3ServerNoSpecsQuery",
+   "doc_id": "24808282948853403",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerLiveDataCampaignGroupThrowOnFieldErrorQuery",
+   "doc_id": "29268641232727570",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerLiveDataCampaignQuery",
+   "doc_id": "27999326929677383",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsManagerLiveDataCampaignQueryPreloadingConfigNoSpecsQuery",
+   "doc_id": "37768328176144162",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtAdgroupDynamicStoreSourceFieldErrorTier1ServerQuery",
+   "doc_id": "28081936984762521",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtAdgroupDynamicStoreSourceTier1ServerQuery",
+   "doc_id": "28865908186340474",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtAdgroupDynamicStoreSourceTier2ServerQuery",
+   "doc_id": "25231803976489385",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtAdgroupDynamicStoreSourceTier3V2ServerQuery",
+   "doc_id": "25292893057043594",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtAdgroupDynamicStoreSourceTier4ServerQuery",
+   "doc_id": "26343877291867827",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignDynamicStoreSourceFieldErrorTier1ServerQuery",
+   "doc_id": "28293359323624334",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignDynamicStoreSourceTier1ServerQuery",
+   "doc_id": "28725378257067045",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignDynamicStoreSourceTier2ServerQuery",
+   "doc_id": "25126138290388004",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignDynamicStoreSourceTier3ServerQuery",
+   "doc_id": "27975732952068644",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignDynamicStoreSourceTier3ServerQuery",
+   "doc_id": "28669946582630235",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignGroupDynamicStoreSourceFieldErrorTier1V2ServerQuery",
+   "doc_id": "28299497483044455",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignGroupDynamicStoreSourceTier1V2ServerQuery",
+   "doc_id": "28297537469913638",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsMgmtCampaignGroupDynamicStoreSourceTier2ServerQuery",
+   "doc_id": "26871265885845261",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsPageInstagramAccountStoreSourceServerQuery",
+   "doc_id": "26393503750284892",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsPageStoreSourceServerQuery",
+   "doc_id": "28233345002997823",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsPromoAdsStickySettingStoreSourceServerQuery",
+   "doc_id": "27385657204452769",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsPromoAdsStickySettingStoreSource_clearDraftProductCatalogsMutation",
+   "doc_id": "27732051586389671",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "AdsPromotablePageListStoreSourceServerQuery",
+   "doc_id": "26138679029145319",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsSmartDefaultStoreSourceServerQuery",
+   "doc_id": "26788945787454366",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdsUnificationCampaignNUXEntrypointModalContainerInnerQuery",
+   "doc_id": "24174526168878459",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdvertiserProfileMessageMarketingDataStoreLoaderQuery",
+   "doc_id": "27853595397675666",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "AdvertiserVettingRendererQuery",
+   "doc_id": "25959972757000745",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AppLastUsedTimestampsFetcherQuery",
+   "doc_id": "29573807582264563",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AvatarStickerFlyoutStickerPaginatedSectionPaginationQuery",
+   "doc_id": "9774302969314347",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AvatarStickerFlyoutStickerPaginatedSectionQuery",
+   "doc_id": "24917301067858241",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "AvatarStickerFlyoutStickerPaginatedSection_StickerSubscription",
+   "doc_id": "9338828462893117",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BSPCometCMSContentRootQuery",
+   "doc_id": "10044133082299567",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BSPCometSupportDialogQuery",
+   "doc_id": "25487068087614247",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BSPCometSupportDialogSearchContentQuery",
+   "doc_id": "9315926758512520",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingAddFundsLandingScreenQuery",
+   "doc_id": "28581993568151330",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingAwareOnboardingModalitySelectLandingScreenQuery",
+   "doc_id": "26051733114508669",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingAwareOnboardingPMLandingScreenQuery",
+   "doc_id": "26351213751196527",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingContextFactoryQuery",
+   "doc_id": "27246219788412624",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingCountryCurrencyScreenQuery",
+   "doc_id": "28501825372780590",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingHubBusinessContextProviderQuery",
+   "doc_id": "28272637739093542",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingPayNowLandingScreenQuery",
+   "doc_id": "29051262547793688",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingSelectPaymentMethodPageViewManagerQuery",
+   "doc_id": "27909486968754363",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BillingWizardLandingScreenQuery",
+   "doc_id": "28644747095215598",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BizInboxUnifiedThreadsQuery",
+   "doc_id": "38968077216124147",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "BizKitBIOOrderDetailActionsQuery",
+   "doc_id": "9787800071305333",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BlockingSettingsBlockingListPaginationQuery",
+   "doc_id": "9844881652246956",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "BusinessMWAProfileDeactivateAndDeletionMutation",
+   "doc_id": "30430054776585302",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CAAConfirmationFormDesktopQuery",
+   "doc_id": "26495728670063238",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CAAFBARResetPasswordRootQuery",
+   "doc_id": "28034320076197808",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CAARegistrationConfirmationSeoLinksQuery",
+   "doc_id": "23913765558231629",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CAARegistrationFullPageErrorRootQuery",
+   "doc_id": "10069219149766730",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CDSIntlLocaleSelectorGridDialogQuery",
+   "doc_id": "24141748335409266",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CDSIntlLocaleSelectorListQuery",
+   "doc_id": "38971009742497893",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CDSSeoLinksQuery",
+   "doc_id": "28517706724532383",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSChatSupportUserDeleteMessageMutation",
+   "doc_id": "24822855870696793",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSChatSupportUserMarkThreadAsReadMutation",
+   "doc_id": "32433687116222318",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSChatSupportUserSendMessageMutation",
+   "doc_id": "25376937201891185",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSChatSupportUserThreadQuery",
+   "doc_id": "25904921172445033",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSExperienceEnterChatMutation",
+   "doc_id": "38494238310160337",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSExperienceEnterSupportMutation",
+   "doc_id": "28598587029758712",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSExperienceStateQuery",
+   "doc_id": "27212456415088294",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSLiveChatEffectivenessLoggerMutation",
+   "doc_id": "28217657381232105",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSLiveChatEffectivenessLoggerV2Mutation",
+   "doc_id": "28147417398254901",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CSStartSupportQuery",
+   "doc_id": "8883976865060262",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CodeConfirmationVerifyConfirmationCodeMutation",
+   "doc_id": "28695270880110485",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSA2UIXFACPopupContentQuery",
+   "doc_id": "28792253860367759",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSChatMessageBMJurisdictionConfirmMutation",
+   "doc_id": "28218620731103788",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSChatMessageBMJurisdictionDeclineMutation",
+   "doc_id": "39090412703891005",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSDebugModalCreateBugTaskMutation",
+   "doc_id": "27231564406509718",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSDebugModalSendDebugInfoMutation",
+   "doc_id": "25622325354109190",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIHTSMemorializationLegacyContactDataSourceQuery",
+   "doc_id": "28604047122517022",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAIProductTagSuggestionsQuery",
+   "doc_id": "35310492975262842",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometActorGatewayExperienceSubscription",
+   "doc_id": "38507506662229695",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometActorGatewayHandlerQuery",
+   "doc_id": "28643713621954542",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometAddTypeaheadRecentSearchMutation",
+   "doc_id": "9990530167705749",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAdsPaymentsTransactionInfoQuery",
+   "doc_id": "10054049641372176",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAlbumEditItemTagFriendsDialogQuery",
+   "doc_id": "28469806575948205",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAnimatedImagePickerSearchResultsRootQuery",
+   "doc_id": "23910503388569859",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAppNavigationTargetedTabBarContentInnerImplQuery",
+   "doc_id": "9993939777293664",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometAudioLanguageManagementUtils_givenAutoDubbingConsentMutation",
+   "doc_id": "25061514333444993",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAudioLanguageMenuItemsMutation",
+   "doc_id": "29971685009145446",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAudioLanguageMenuItemsMutation_doNotTranslateMutation",
+   "doc_id": "24192497507078198",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometAudioLanguageMenuItemsMutation_preferredLanguagesMutation",
+   "doc_id": "37427367220240433",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometBatchNotificationsStateChangeSubscription",
+   "doc_id": "36577026618579279",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometBookmarkListItemWrapperManusAISanctionsCheckQuery",
+   "doc_id": "25990921947200555",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometBusinessLinkingEligibilityModalQuery",
+   "doc_id": "27471442905820111",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCTWAAdSliderBoostPostUpsellDialogWrapperQuery",
+   "doc_id": "26386180224383992",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCastingMiniplayerSurfaceQuery",
+   "doc_id": "29463511856596731",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometClassicHomeLeftRailContainerQuery",
+   "doc_id": "37551561817767907",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerAffiliateLinkNudgePluginForLexicalQuery",
+   "doc_id": "27268255916182117",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerFooterAttachmentAreaBumpCounterMutation",
+   "doc_id": "9774677792610631",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerGetWhatsAppMessagesVerificationFlowQuery",
+   "doc_id": "23894078000253094",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerInterceptionPluginUtilsQuery",
+   "doc_id": "37047779501503280",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerInterceptionRequestHandlerQuery",
+   "doc_id": "24089187150678973",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerLifeEventCategoryListQuery",
+   "doc_id": "32116841221248541",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerLifeEventSubcategoryListQuery",
+   "doc_id": "29426808836963254",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerMessagingDefaultMediaAttachmentPreviewMutation",
+   "doc_id": "23970713385853903",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerSproutPromotionActionsEndPromotionMutation",
+   "doc_id": "24009732108619781",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometComposerSwatchPickerMenuUsingRelayEntrypointQuery",
+   "doc_id": "26113351444997085",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCookieCategoryControlsQuery",
+   "doc_id": "9873965672699709",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCookieConsentLanguagesMenuQuery",
+   "doc_id": "24049046234680181",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCopyrightCheckMatchDetailsDialogQuery",
+   "doc_id": "25096664739956266",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometCopyrightCheckMatchlessDetailsDialogQuery",
+   "doc_id": "26128367666770284",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometDeleteRecentSearchMutation",
+   "doc_id": "9360833174026215",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometDismissFBNuxMutation",
+   "doc_id": "9877615415639160",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometEditFeedComposerDialogQuery",
+   "doc_id": "38644593395156159",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometEditShortcutsDialogListPaginationQuery",
+   "doc_id": "24037930052458838",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometEditShortcutsDialogQuery",
+   "doc_id": "9788548141192140",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometEmojiDataSourceQuery",
+   "doc_id": "34336193256025853",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFRXProfileSelectionDataSourceQuery",
+   "doc_id": "9525958280836534",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFRXQuery",
+   "doc_id": "28729527483400113",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedFavoritesEndOfFeedMessageQuery",
+   "doc_id": "9839941666067123",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedInlineComposerQuery",
+   "doc_id": "38525622117053498",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedPreferencesControlPanelDialogQuery",
+   "doc_id": "37707745858816331",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedPreferencesDialogNoFavoriteQuery",
+   "doc_id": "27940186525616879",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryExecuteNFXActionMutation",
+   "doc_id": "28746494401615167",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryFeedbackGroupContextualProfileUFIStrategyEnvironmentSwitchQuery",
+   "doc_id": "28159373620337827",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryFeedbackUFIStrategyEnvironmentSwitchQuery",
+   "doc_id": "39201563149430869",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryMenuQuery",
+   "doc_id": "28591722730462183",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryMusicPostLevelAttributionDialogQuery",
+   "doc_id": "24324621813794076",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryNFXActionTombstoneTellUsWhySubmitMutation",
+   "doc_id": "26824274667205972",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryNFXActionTombstoneTellUsWhyUndoMutation",
+   "doc_id": "26676850311981593",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedStoryUndoNFXActionMutation",
+   "doc_id": "27602007642724569",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFeedsNotificationsUpdateSeenStateMutation",
+   "doc_id": "24075449245374733",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFriendNotificationsStateChangeSubscription",
+   "doc_id": "9754477301332178",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometFullscreenComposerDialogQuery",
+   "doc_id": "28410163655272253",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGamingBadgeCountQuery",
+   "doc_id": "27816553664643379",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometGenAITransparencyLearnMoreDialogActorQuery",
+   "doc_id": "35753933444251427",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupDiscussionRootSuccessQuery",
+   "doc_id": "28650596084564206",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupPendingPostsApproveAndPreApproveMemberTombstoneQuery",
+   "doc_id": "9716829025043058",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupPendingPostsApproveTombstonePreapproveContentQuery",
+   "doc_id": "24440029618919708",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupPendingPostsDeclineTombstoneQuery",
+   "doc_id": "28230950976541234",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupReshareComposerQuery",
+   "doc_id": "27902632866034858",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupResharesDialogPushPageContentQuery",
+   "doc_id": "29005492622386640",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupResharesDialogQuery",
+   "doc_id": "38592220443709500",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupRootQuery",
+   "doc_id": "28620996117590268",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometGroupTombstoneViewPostButtonQuery",
+   "doc_id": "10002084326502382",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContactChannelsContainerQuery",
+   "doc_id": "9934887189887478",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContactChannels_refetchable",
+   "doc_id": "9468131563309177",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContactCommunityChatsContainerQuery",
+   "doc_id": "26941462065448526",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContactGroupsContainerQuery",
+   "doc_id": "25945115421852941",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContactsContainerQuery",
+   "doc_id": "28451034771148738",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeContentQuery",
+   "doc_id": "28262615193401316",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeCreateMenuContentQuery",
+   "doc_id": "28430483319975420",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeLeftRailWithBlueRankingRefetchSectionRefetchQuery",
+   "doc_id": "27292335460387996",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeMegaMenuAllProductsQuery",
+   "doc_id": "26943575645248441",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeMegaMenuShortcutsQuery",
+   "doc_id": "26833428399625311",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeRightSideEgoMenuQuery",
+   "doc_id": "28607848745506879",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHomeRightSideEgoRefetchQuery",
+   "doc_id": "27670803322594743",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometHovercardQueryRendererQuery",
+   "doc_id": "28387710344202071",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometIGPlayerRHCCommunitySectionQuery",
+   "doc_id": "25487694800904392",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookAuthenticityWizardTriggerRootQuery",
+   "doc_id": "27550669404607096",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookBusinessVerificationAdvertiserVerificationWizardTriggerRootQuery",
+   "doc_id": "28479519031712874",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookBusinessVerificationWizardTriggerRootQuery",
+   "doc_id": "27929141413454129",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookCDSXfacUniversalTriggerRootQuery",
+   "doc_id": "28373509312306789",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookContentTriggerRootQuery",
+   "doc_id": "28138597665834350",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometIXTFacebookProactiveWarningFlowTriggerRootQuery",
+   "doc_id": "39436330925957580",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometInstantGamesPlayerRHCActionCard3DQuery",
+   "doc_id": "24744241711865992",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLinkSharingInlineDisclosureCountQuery",
+   "doc_id": "29216341604678886",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLocalFeedUnitQuery",
+   "doc_id": "28791105287160484",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLogImpressionFBNuxMutation",
+   "doc_id": "9723864714359536",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLogImpressionFBNuxMutationWithNoImpressionLimitMutation",
+   "doc_id": "29635405182772969",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLoggedInAccountSwitcherRemoveAccountMutation",
+   "doc_id": "23978409401745391",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLoggedOutQrCodeLoginComponentMutation",
+   "doc_id": "25250932174586029",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLoggedOutQrCodeLoginComponentRefreshMutation",
+   "doc_id": "25873515815592514",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometLogoutHandlerQuery",
+   "doc_id": "9812519355492122",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceConfirmMarkAsPaidDialogQuery",
+   "doc_id": "9643878485689642",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceFeedUnitVisibilityMutation",
+   "doc_id": "9777004865696819",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceHashtagFollowMutation",
+   "doc_id": "9902750349841597",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceHashtagUnfollowMutation",
+   "doc_id": "29151224124525108",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceInboxLabelChatDialogQuery",
+   "doc_id": "27670675299284504",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceJobsComposerRootQuery",
+   "doc_id": "27541829445489885",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceNUXUpdateStateMutation",
+   "doc_id": "23955024057437109",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceSellerFollowMutation",
+   "doc_id": "9634511800002095",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMarketplaceSellerUnfollowMutation",
+   "doc_id": "9713299898738818",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMediaEditorAIProductTagSuggestionTriggerQuery",
+   "doc_id": "9721737794576988",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMegaMenuListItemManusAISanctionsCheckQuery",
+   "doc_id": "34147899984855645",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMegaphoneRootQuery",
+   "doc_id": "29403652305890940",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMegaphoneWWWDeviceBasedLoginRendererStrategyTurnOnNonceMutation",
+   "doc_id": "9620593451390843",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMemoriesFeedQuery",
+   "doc_id": "29291588250431417",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMemoriesSetThrowbackSettingsMutation",
+   "doc_id": "9494473390636819",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessagingJewelCommunitiesQPBannerContainerPassthroughQuery",
+   "doc_id": "10067988289974342",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessagingJewelDropdownEBUpsellContainerQuery",
+   "doc_id": "25961980840158091",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessagingJewelDropdownEvergreenPINUpsellQuery",
+   "doc_id": "25389541777377204",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessagingJewelDropdownOnboardingUpsellQuery",
+   "doc_id": "25643296218623088",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessagingJewelDropdownRestoreUpsellQuery",
+   "doc_id": "24116924801320698",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometMessengerResharesUpdatedDialogQuery",
+   "doc_id": "25054258700862948",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometModernHomeFeedQuery",
+   "doc_id": "28024744447224397",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNewsFeedPaginationQuery",
+   "doc_id": "28431709043107123",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsBadgeCountQuery",
+   "doc_id": "9714526941947209",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsDropdownMenuContainerQuery",
+   "doc_id": "27777650025188088",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsDropdownQuery",
+   "doc_id": "28272355145709625",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsListPaginationQuery",
+   "doc_id": "28762112060039555",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsPushTurnOnMutation",
+   "doc_id": "9613971575362047",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsReceiveLiveQuery",
+   "doc_id": "28627788796829202",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsStateChangeSubscription",
+   "doc_id": "27226127677015731",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometNotificationsUpdateSeenStateMutation",
+   "doc_id": "32345368141745868",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPFTFFollowMutation",
+   "doc_id": "9573943315976338",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPFTFUnfollowMutation",
+   "doc_id": "9665997426846728",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPageAdminSettingsWhatsAppLinkNumberSectionDialogQuery",
+   "doc_id": "9795407793829475",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPageFollowCommitMutation",
+   "doc_id": "29690201327260308",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPageFollowDialogQuery",
+   "doc_id": "9988731897871900",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPageLikeCommitMutation",
+   "doc_id": "9647968328590344",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPasswordReauthenticationMutation",
+   "doc_id": "28435732132699112",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPhotoEditLocationDialogQuery",
+   "doc_id": "9878793065583703",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPhotoPermalinkRootQuery",
+   "doc_id": "28243832881894099",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPhotoRootContentQuery",
+   "doc_id": "28067965802883859",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPhotoTagLayerQuery",
+   "doc_id": "27235156412850779",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPoliticalInfosheetDialogV2Query",
+   "doc_id": "28804160695835383",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPoliticalInfosheetReshareFinServDialogQuery",
+   "doc_id": "27693745560303878",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPrivacySelectorFullCustomViewQuery",
+   "doc_id": "25228124636886048",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPrivacySelectorPickerContainerQuery",
+   "doc_id": "27798272093189008",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometPrivacySelectorSavePrivacyMutation",
+   "doc_id": "27802157519437974",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileListDialogQuery",
+   "doc_id": "27856999220667679",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfilePlusAdminSettingsWhatsAppLinkMixedPermsRootQuery",
+   "doc_id": "10071207206234210",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfilePlusCreatePreferredInteractionDialogQuery",
+   "doc_id": "28295329446801880",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfilePlusEditPreferredInteractionDialogQuery",
+   "doc_id": "28927574060173491",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileSwitchMutation",
+   "doc_id": "29569331136046912",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileSwitchWithWebStorageLogoutAllowlistMutation",
+   "doc_id": "9921807754532566",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileSwitcherDialogEntrypointWrapperQuery",
+   "doc_id": "26679186838412562",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileSwitcherListQuery",
+   "doc_id": "25679861721687752",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileTypeDialogRootQuery",
+   "doc_id": "24621516547528217",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometProfileVerificationBadgePopoverQuery",
+   "doc_id": "9684350218300346",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometQuickPromotionFeedXoutQuery",
+   "doc_id": "38218061054506491",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometQuickPromotionInterstitialQuery",
+   "doc_id": "38587177884231457",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometRecordProductUsageMutationMutation",
+   "doc_id": "9465777806862135",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometReelsLinkingUpsellDialogImpressionMutation",
+   "doc_id": "37752326447746387",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometRightSideHeaderCardsQuery",
+   "doc_id": "39667420239515326",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometRouteActorToasterQuery",
+   "doc_id": "27157151210577773",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSearchBootstrapKeywordsDataSourceQuery",
+   "doc_id": "27797631676573850",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometSearchKeywordDataSourceQuery",
+   "doc_id": "29182563967998876",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSearchRecentDataSourceQuery",
+   "doc_id": "27966460106353203",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometSetDarkModeSettingMutation",
+   "doc_id": "9681793075203502",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSetDenseModeMutation",
+   "doc_id": "9167025243398792",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsBadgeQuery",
+   "doc_id": "24509960031928090",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsDropdownHelpAndSupportPushPageQuery",
+   "doc_id": "37371489915830987",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsDropdownListPreloadedQuery",
+   "doc_id": "28303574162627175",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsDropdownListQuery",
+   "doc_id": "27898640969806421",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsDropdownTriggerQuery",
+   "doc_id": "37686613794317856",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "CometSettingsRootUSFNewCometQuery",
+   "doc_id": "27695179403496589",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSingleActionWithPasswordReauthBarrierForWorkAccountQuery",
+   "doc_id": "10071032969609993",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometSinglePostDialogContentQuery",
+   "doc_id": "28700792632890407",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerAvatarStickersContentRootQuery",
+   "doc_id": "24856687130582364",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerCardQuery",
+   "doc_id": "10095807770482952",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerCustomPackContentRootQuery",
+   "doc_id": "32191455440499730",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerFlyoutTagSelectorPaginationQuery",
+   "doc_id": "9780345542008878",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerFlyoutTagSelectorRootQuery",
+   "doc_id": "9341116515996575",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerPackContentPaginationQuery",
+   "doc_id": "32176334508681942",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerPackContentRootQuery",
+   "doc_id": "25236323532672635",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerRecentlyUsedStickersContentRootQuery",
+   "doc_id": "24043481461910203",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickerPickerSearchResultsRootQuery",
+   "doc_id": "24004987559125954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStickersStoreDialogQuery",
+   "doc_id": "29237828849196584",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStoryAggregatedCollaboratorsDialogQuery",
+   "doc_id": "27839636955736171",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometStoryAggregatedUsersTitleDialogQuery",
+   "doc_id": "38183306774648605",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometTS2BitArrayLoggerMutation",
+   "doc_id": "25967579919558378",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometTahoeRootQuery",
+   "doc_id": "28165337556466965",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFICommentMenuQuery",
+   "doc_id": "37527813610198216",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFICommentReactionIconTooltipContentQuery",
+   "doc_id": "9413041418817659",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFICommentRefetchQuery",
+   "doc_id": "29558204750449128",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIConversationGuideContainerQuery",
+   "doc_id": "25316047617978702",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIFeedbackReactMutation",
+   "doc_id": "27646120298312844",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIFeedbackReactSubscription",
+   "doc_id": "27230866653191699",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StartMutation",
+   "doc_id": "9815271091886179",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFILiveTypingBroadcastMutation_StopMutation",
+   "doc_id": "9972315006159780",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIReactionIconTooltipContentQuery",
+   "doc_id": "26417294487963485",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIReactionsDialogQuery",
+   "doc_id": "28316088138022831",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIReactionsDialogTabContentRefetchQuery",
+   "doc_id": "27920538487642598",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIReactionsDialogTabImportantContentRefetchQuery",
+   "doc_id": "28590105094009963",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIShareActionLinkMenuQuery",
+   "doc_id": "26716464711295397",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUFIStickersComposerUpgradedPreviewContentQuery",
+   "doc_id": "9832850366770548",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUSFCategoryRefetchQuery",
+   "doc_id": "37803983065852065",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUSFFDSCategoryDialogPageQuery",
+   "doc_id": "28239651959003056",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUSFFDSDialogQuery",
+   "doc_id": "28247424568188729",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUSFNidoContextualAudienceSettingChangeRequestScreenQuery",
+   "doc_id": "23902319159393094",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUnifiedShareSheetDialogQuery",
+   "doc_id": "27699349389751397",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUnifiedVideoCreationDialogQuery",
+   "doc_id": "28005166095763240",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUnifiedVideoCreationPrivacyMergeConflictingDialogQuery",
+   "doc_id": "26430218733334592",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUnifiedVideoCreationPrivacyMergeNonConflictingDialogQuery",
+   "doc_id": "9737532419700068",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometUsersEntityScopedTypeaheadDialogQuery",
+   "doc_id": "23956788397261557",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometVideoEditorCopyrightCheckDetailsLiveQueryUpdaterQuery",
+   "doc_id": "25488331727450621",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometVideoHomeVideoContextMenuContentsQuery",
+   "doc_id": "26973613905632240",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometWatchAndScrollChainingQuery",
+   "doc_id": "28164369823234560",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometWatchAndScrollVideoQuery",
+   "doc_id": "28867491862843621",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometWhatsAppVerificationFlowNumberInputDialogQuery",
+   "doc_id": "24807059535549467",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometWhatsappSMBDialogQuery",
+   "doc_id": "9713858422012676",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CometWhatsappSMBDialogV2Query",
+   "doc_id": "24606857238974941",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CommitActorSubscribeStatusSubscribeMutation",
+   "doc_id": "9594760067273294",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CommitActorSubscribeStatusUnsubscribeMutation",
+   "doc_id": "25718290144521573",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ComposerEditPushPageEditSuggestionMutation",
+   "doc_id": "9964378546948713",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ComposerEditPushPageMutation",
+   "doc_id": "24042695412047204",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ComposerImagineSidesQuery",
+   "doc_id": "24607771068880888",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ComposerStoryCreateMutation",
+   "doc_id": "28778531428503134",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ComposerStoryEditMutation",
+   "doc_id": "27456358844037239",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ConversationalSupport2FAChatExperienceQuery",
+   "doc_id": "26004414795821466",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ConversationalSupportCometAIChatExperienceCreateThreadMutation",
+   "doc_id": "34071142532499112",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ConversationalSupportCometAIChatExperienceOnChatOpenedMutation",
+   "doc_id": "26970463202639788",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ConversationalSupportCometAIChatExperienceProductQuery",
+   "doc_id": "28122915077364778",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "CreatePageAdminCompletionMeterEventMutation",
+   "doc_id": "7916831685107396",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "DynamicSettingsLandingPageLayoutQuery",
+   "doc_id": "9476931969098760",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "DynamicSettingsSearchResultsQuery",
+   "doc_id": "27099194839757845",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxAddGroupParticipantsMutation",
+   "doc_id": "25006925522305489",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxCreateGroupThreadMutation",
+   "doc_id": "26187274714208611",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxDemoteGroupParticipantsMutation",
+   "doc_id": "32270165582627052",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxLeaveGroupMutation",
+   "doc_id": "25248874731435400",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxPromoteGroupParticipantsMutation",
+   "doc_id": "25059194933691009",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxRemoveGroupParticipantsMutation",
+   "doc_id": "25043279768674646",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxSetGroupParticipantUpdateModeMutation",
+   "doc_id": "25003687469299390",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "E2EEMetadataMailboxSetGroupSubjectMutation",
+   "doc_id": "25456033884014560",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBAddDeviceGraphQLEBFetchVirtualDeviceInfoQuery",
+   "doc_id": "27078903168382564",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBAddDeviceMutation",
+   "doc_id": "26934669346130743",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBBatchRequestResignCdnUrlQuery",
+   "doc_id": "24784488421147370",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBFetchBackupIdsSharedFragmentQuery",
+   "doc_id": "25164225499885252",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBGetEBStateQuery",
+   "doc_id": "23909871918604871",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBMandrakeFetchContactMMKQuery",
+   "doc_id": "26847867414853072",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBMessageMetadataQueryQuery",
+   "doc_id": "28525853583670706",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBMessagePointQuery",
+   "doc_id": "28632118363092242",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBMessageRangeQueryForThreadsQuery",
+   "doc_id": "27443670391974737",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBRepairEpochQuery",
+   "doc_id": "25352669137720538",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBRepairMembershipHmacMutation",
+   "doc_id": "27716227094694861",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EBUploadMessagesFromWorkerMutation",
+   "doc_id": "25145199965171420",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EntPhotoCollageItemContainerQuery",
+   "doc_id": "9831027213684486",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EpsilonAppQuery",
+   "doc_id": "28682559137996573",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "EventCometComposerInterceptionPreviewDialogQuery",
+   "doc_id": "29572844349029184",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometComposerTaggingInterceptionDialogQuery",
+   "doc_id": "9601800249914613",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometGuestlistDetailsDialogQuery",
+   "doc_id": "31626048943710282",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometGuestlistDetailsRootQuery",
+   "doc_id": "9829506253770572",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometHomeRootQuery",
+   "doc_id": "38585542624394211",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometLightweightCreateMutation",
+   "doc_id": "24003471242569934",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometLightweightCreatePreviewDialogRootQuery",
+   "doc_id": "27162341776766624",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometLightweightCreateRootQuery",
+   "doc_id": "27034661236175738",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometLightweightEditRootQuery",
+   "doc_id": "27063774403282105",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometMemberPendingPostsDialogQuery",
+   "doc_id": "28505418369121571",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometMemberScheduledPostsDialogQuery",
+   "doc_id": "29344551638467573",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometMessageGuestDialogQuery",
+   "doc_id": "24947122898263298",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometModminReviewFolderDialogQuery",
+   "doc_id": "38519628760986303",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "EventCometPermalinkDiscussionFeedPaginationQuery",
+   "doc_id": "28948528681410727",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBFamilyCenterDailyLimitEnforcementMutation",
+   "doc_id": "26259594146969671",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBFamilyCenterDailyLimitEnforcementQuery",
+   "doc_id": "25980813481599428",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBFamilyCenterSleepModeEnforcementQuery",
+   "doc_id": "25562606033418113",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBPayECPDynamicConfirmationScreen_PAYGraphQLFBPayConfirmationScreenDataQuery",
+   "doc_id": "25799453386411564",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBPayHubTransactionDetailDialogQuery",
+   "doc_id": "27881625318116365",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBScreenTimeLogger_syncMutation",
+   "doc_id": "28969188822673160",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBUnifiedVideoEntityDialogImplQuery",
+   "doc_id": "28322725127393592",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBUnifiedVideoRootWithEntrypointQuery",
+   "doc_id": "38063999043248030",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FBYRPTimeLimitsEnforcementQuery",
+   "doc_id": "26231556423171691",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FRLNuxProfileSetupRootQuery",
+   "doc_id": "25048076644887188",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterAdvancedProtectionCompletionSuccessQuery",
+   "doc_id": "27842326932075048",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterIdentityUsernameEditDialogQuery",
+   "doc_id": "25588311494163197",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterPasskeyCreationUpsellContentMutation",
+   "doc_id": "24740519175604716",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterPasskeyCreationUpsellRootQuery",
+   "doc_id": "25643182182027168",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterTwoFactorConfirmCodeDialogQuery",
+   "doc_id": "26277751381877270",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterTwoFactorConfirmSMSCodeDialogQuery",
+   "doc_id": "26514924304779233",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterTwoFactorSelectMethodDialogQuery",
+   "doc_id": "27911757155160445",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterTwoFactorSelectMethodDialogV2Query",
+   "doc_id": "28176535821965552",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXAccountsCenterTwoFactorStartRootQuery",
+   "doc_id": "26335787642700620",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXFetaMigrationMomentReassuranceDialogQuery",
+   "doc_id": "26228284120106067",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXIMIdentityNameEditorAuthenticPreviewDialogQuery",
+   "doc_id": "26302360049350115",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXIMIdentityNameEditorDialogQuery",
+   "doc_id": "25587875590838912",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXIMPersonalCentralIdentitySyncBundledDialogV2Query",
+   "doc_id": "10023057041135828",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FXMetaPasswordReauthenticationMutation",
+   "doc_id": "24388548824069198",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXNativePasswordReauthDialogPageQuery",
+   "doc_id": "26527329640238450",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXNativePasswordReauthDialogQuery",
+   "doc_id": "26144241045186985",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXPasswordReauthenticationMutation",
+   "doc_id": "9884242298280664",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXPasswordlessConfirmAccountDialogPageQuery",
+   "doc_id": "30182238731375714",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXPasswordlessCreateNewPasswordDialogPageQuery",
+   "doc_id": "29525226197091144",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXPasswordlessEducationalDialogPageQuery",
+   "doc_id": "25732297349743088",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXPasswordlessEducationalDialogPageQuery",
+   "doc_id": "9071317656305115",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FXReauthDialogPageQuery",
+   "doc_id": "25927763086845048",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FXReauthDialogPageQuery",
+   "doc_id": "26466431342965052",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXReauthDialogQuery",
+   "doc_id": "25770995465856979",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FXReauthDialogQuery",
+   "doc_id": "25776141892069315",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FeedComposerCometRootQuery",
+   "doc_id": "28589289654028708",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FeedComposerSocialSentenceActivityObjectQuery",
+   "doc_id": "9573667819428829",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FeedComposerSocialSentenceTaggedUsersQuery",
+   "doc_id": "25908737472080790",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FeedComposerSocialSentenceWithActivityQuery",
+   "doc_id": "30189254584006461",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FeedComposerSocialSentenceWithTaggedSponsorQuery",
+   "doc_id": "9982249538502591",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FetchIntelligentComponentsDataRelayQuery",
+   "doc_id": "23913431554915374",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "FetchUsernameSuggestionsQuery",
+   "doc_id": "29521077704203979",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometDeactivatedUserDialogQuery",
+   "doc_id": "29502784272646169",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFeedPYMKHScrollPaginationQuery",
+   "doc_id": "23978308165110357",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestCancelMutation",
+   "doc_id": "24453541284254355",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestConfirmMutation",
+   "doc_id": "27351021931180810",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestConfirmSubscription",
+   "doc_id": "27587695757522905",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestDeleteMutation",
+   "doc_id": "27694540350183683",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestOSAMutation",
+   "doc_id": "29835111932769420",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestReceiveSubscription",
+   "doc_id": "27210319358635571",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendRequestSendMutation",
+   "doc_id": "28400389149651601",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometFriendsBadgeCountClearMutation",
+   "doc_id": "10034776853248745",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometPYMKBlacklistSuggestionMutation",
+   "doc_id": "9622351404507644",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometRecentActivityDialogQuery",
+   "doc_id": "26432341139769810",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometRootContentQuery",
+   "doc_id": "28351661531162960",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FriendingCometUnfriendMutation",
+   "doc_id": "24028849793460009",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserCreateFlowRootQuery",
+   "doc_id": "27268727379414201",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserDisclaimerQuery",
+   "doc_id": "26946239408337604",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserPageCompoundRootQuery",
+   "doc_id": "24048116834849082",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserPageContentQuery",
+   "doc_id": "38210495681932004",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserPageHeaderContainerQuery",
+   "doc_id": "28331746909848782",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraiserPageSecondaryColumnContainerQuery",
+   "doc_id": "38152043371060511",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "FundraisingDonateButtonUnifiedInterceptionDialogQuery",
+   "doc_id": "29951292657802708",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GeminiBugReportingRelatedTasksTableQuery",
+   "doc_id": "24983903414600941",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GeminiGenAIFeedbackOptionsMutation",
+   "doc_id": "29124401177208067",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GeminiGenAIFeedbackOptionsSecondPageQuery",
+   "doc_id": "30156090970656516",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GraphQLMessengerPlatformCtaPostHandlingMutation",
+   "doc_id": "27823469383932068",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupCometComposerCreateDialogQuery",
+   "doc_id": "27878311008456303",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupCometJoinForumMutation",
+   "doc_id": "28829108476693589",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometAAV5ManagePreapprovedMembersDialogQuery",
+   "doc_id": "27514826761482161",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometAdminActivityLogItemSeeDetailsDialogQuery",
+   "doc_id": "28344932965173790",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometAdmodChatsPendingPostReviewDialogQuery",
+   "doc_id": "27987229790959942",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometAdmodChatsReviewDialogQuery",
+   "doc_id": "37699297866380685",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometAutoInviteFromAPPlusQPNotifDialogQuery",
+   "doc_id": "9645793925537290",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometCMDisabledChatDialogQuery",
+   "doc_id": "9637409876354840",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometCancelForumParticipationRequestDialogQuery",
+   "doc_id": "9416501595126663",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatAcceptInviteMutation",
+   "doc_id": "27515771098108328",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatChatTemplatesDialogQuery",
+   "doc_id": "37410692628574816",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatCreateChatDialogQuery",
+   "doc_id": "27616219041414343",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatImagePersonalizationDialogQuery",
+   "doc_id": "9701829883240694",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatImagePersonalizationPageQuery",
+   "doc_id": "23932442006363659",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatImagePersonalizationTabbedDialogQuery",
+   "doc_id": "26704739479183069",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatMemberChatSuggestionDialogQuery",
+   "doc_id": "9384842821643502",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatsChannelInviteLinkQuery",
+   "doc_id": "26476128841984556",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometChatsListCellUnjoinedChatBodyLastMessageSnippetQuery",
+   "doc_id": "9523219444394247",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometComposerAddTopicQuery",
+   "doc_id": "24132642416430411",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometComposerReportTopicSelectionDialogQuery",
+   "doc_id": "24926409163666558",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometContinuousInvitesDialogQuery",
+   "doc_id": "27879663175016433",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometCreatePreviewContentQuery",
+   "doc_id": "27741323172155379",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometCreateRootQuery",
+   "doc_id": "27148550504773184",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometDiscoverContentQuery",
+   "doc_id": "28147954968140167",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometDiscussionLayoutRootQuery",
+   "doc_id": "37987594904187885",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometEditRoleDetailsNotificationDialogQuery",
+   "doc_id": "9223378544428723",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometEndOfFeedQuery",
+   "doc_id": "30222088027378461",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometEntityMenuEmbeddedRootQuery",
+   "doc_id": "28168546532729221",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometEntityMenuInSmallScreenPopoverQuery",
+   "doc_id": "27725246937109807",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometFeatureDetailViewDialogQuery",
+   "doc_id": "28294507960137281",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometForumParticipantRequestPreviewDialogQuery",
+   "doc_id": "28619724834331771",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometGlobalChatCreationDialogGroupSelectorPaginationQuery",
+   "doc_id": "9716393321813796",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometGlobalChatCreationDialogQuery",
+   "doc_id": "9578991145469240",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometGroupRuleEntityDialogQuery",
+   "doc_id": "28238252935777232",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometHeaderInviteMenuQuery",
+   "doc_id": "27924912397110211",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometHistoryDialogQuery",
+   "doc_id": "27630770049879206",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometInviteFriendsCategorizedInviteSearchQuery",
+   "doc_id": "23947758888181573",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometInviteFriendsDialogQuery",
+   "doc_id": "27844394868579385",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometInviteFriendsSearchQuery",
+   "doc_id": "24247827701489069",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometJoinChatDialogQuery",
+   "doc_id": "27540496545591880",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometLeaveForumDialogQuery",
+   "doc_id": "27149214884665470",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMemberPendingPostsDialogQuery",
+   "doc_id": "28104760622559738",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersBlockMemberDialogQuery",
+   "doc_id": "37572282275718286",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersInviteAdminDialogQuery",
+   "doc_id": "29149938351318426",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersInviteExpertDialogQuery",
+   "doc_id": "27989043327454629",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersInviteModeratorDialogQuery",
+   "doc_id": "30181323708133747",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersPreapprovePostsDialogQuery",
+   "doc_id": "9925814774147371",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersRemoveMemberDialogQuery",
+   "doc_id": "26197901763241478",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersRemovePreapprovePostsDialogQuery",
+   "doc_id": "9345138135583605",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersSetMemberContentControlDialogQuery",
+   "doc_id": "27675296038721410",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembersTurnOnPostApprovalDialogQuery",
+   "doc_id": "30241866138745954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembershipQuestionsPreloadedDialogQuery",
+   "doc_id": "28003273059323951",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMembershipQuestionsViewDialogQuery",
+   "doc_id": "27173184489012149",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMoreActionMenuQuery",
+   "doc_id": "28069915542595043",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometMuteMemberDialogQuery",
+   "doc_id": "27426526773624411",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNewMemberGreetingDialogRootQuery",
+   "doc_id": "27798466126424798",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNicknameAdminFeedInlineMessageMutation",
+   "doc_id": "24499296893083611",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNicknameDialogAnonProfileQuery",
+   "doc_id": "26260484596963194",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNicknameDialogAvatarQuery",
+   "doc_id": "34732777293035347",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNicknameDialogCooldownQuery",
+   "doc_id": "35478280738484310",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometNicknameNameInputSuggestionsQuery",
+   "doc_id": "35302381662710291",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometPendingPostFeedbackDialogQuery",
+   "doc_id": "36680931488186797",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometPendingPostLearnMoreDialogQuery",
+   "doc_id": "9617980311624255",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometPostTopicsSettingsDialogQuery",
+   "doc_id": "26886523337616509",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometRecAffordanceSectionQuery",
+   "doc_id": "27735982179353316",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometRemovePostCommentAsAdminDialogQuery",
+   "doc_id": "26978945758393580",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometRequestToParticipateMutation",
+   "doc_id": "27259944290349383",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometRequestToParticipateOnJoinDialogQuery",
+   "doc_id": "27156146040745454",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometSettingMenuQuery",
+   "doc_id": "9746765062081053",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometTabGroupMembershipListPaginationQuery",
+   "doc_id": "26414061554854036",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometTopVoiceCelebrationDialogQuery",
+   "doc_id": "28095642436755340",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometUFIAnonActorSwitcherMenuQuery",
+   "doc_id": "37171503015782571",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometUGCAttributionDialogQuery",
+   "doc_id": "27011758431859119",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsCometViewAdminDeleteContentFeedbackDialogImplQuery",
+   "doc_id": "28426719030270339",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "GroupsEntityScopedCometTypeaheadDialogQuery",
+   "doc_id": "24240167975570263",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "HandleStoryBumperExposureMutation",
+   "doc_id": "9096834660422734",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "HelpCenterLocaleTypeaheadDataSourceQuery",
+   "doc_id": "29815163098098404",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "HelpCenterMaisaFloatingChatBarQuery",
+   "doc_id": "27378019011840261",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "HelpCenterMetaAIUpsellNuxRootQuery",
+   "doc_id": "26494375363547206",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "HomeGeminiFeedPreferencesControlPanelDialogQuery",
+   "doc_id": "9560365254055269",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "IXTFacebookGeoXfacActorAppealTriggerRootQuery",
+   "doc_id": "27944521505218836",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "IXTFacebookGeoXfacBvTriggerRootQuery",
+   "doc_id": "28537669025862930",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesConnectedPlayersFetcher_Query",
+   "doc_id": "9092103787556388",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesCustomInviteGenericDialogQuery",
+   "doc_id": "27583056391332797",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesFollowPageDialogQuery",
+   "doc_id": "26177314548627432",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesGameShareDialogQuery",
+   "doc_id": "28285807674359732",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesGameSwitchDialogContainerQuery",
+   "doc_id": "9653757574749986",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesJoinGroupDialogQuery",
+   "doc_id": "25511167288556706",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesPinShortcutDialogQuery",
+   "doc_id": "29642901531959796",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesSessions_SessionCompletedMutation",
+   "doc_id": "27567842592870440",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesSessions_SessionStartedMutation",
+   "doc_id": "27655334390796188",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesSubscribeBotAsyncDialogQuery",
+   "doc_id": "29651444797779897",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesTournamentShareDialogQuery",
+   "doc_id": "34520772657536737",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InstantGamesTournamentStatusDialogQuery",
+   "doc_id": "9706760539404879",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "InterventionDialogQuery",
+   "doc_id": "26863596699989805",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "IntlLocaleSelectorTypeaheadSourceQuery",
+   "doc_id": "24145848861744138",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "L1LiveThreeTiersReverseInteropStoreSourceTier1V2ServerQuery",
+   "doc_id": "38121059730875262",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "L1LiveThreeTiersReverseInteropStoreSourceTier3ServerQuery",
+   "doc_id": "26014640568138937",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "L1LiveTrueTieredReverseInteropStoreSourceTier2ServerQuery",
+   "doc_id": "26889797440695980",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "LSPlatformGraphQLLightspeedRequestQuery",
+   "doc_id": "9697184873702141",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "LWIAdAccountFetcherQuery",
+   "doc_id": "10059370144141140",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometAdAccountSpendLimitSectionQuery",
+   "doc_id": "26713898021597701",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometAutomatedChatEditingModalContainerQuery",
+   "doc_id": "23957058690556110",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometBoostedPostRemoveTaggingsDialogMutation",
+   "doc_id": "9782775831811694",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAAddressEditorValidationQuery",
+   "doc_id": "8362325097225230",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAInstagramUsernameWrapperInstagramUsernameBuilderQuery",
+   "doc_id": "27475889725393398",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAInstagramUsernameWrapperQuery",
+   "doc_id": "24986606870998626",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAMultiStepVerificationDialogStepShowActiveCTWAdsQuery",
+   "doc_id": "25238072852442884",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAShowActiveCTWAdsDialogPaginationQuery",
+   "doc_id": "25298409873086307",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAWhatsAppNumberEditorQuery",
+   "doc_id": "25307506525557789",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAWhatsAppNumberInputEditorQuery",
+   "doc_id": "9906252799472046",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTAWhatsAppVerificationDialogQuery",
+   "doc_id": "9736911209719786",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometCTXBoostPostUpsellDialogEstimationQuery",
+   "doc_id": "26286511661034510",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometConnectWhatsAppBusinessInstallWhatsAppViewQuery",
+   "doc_id": "25246768761681870",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometLeadGenFormSubsectionQuery",
+   "doc_id": "24472284369050870",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometLeadGenSavedFormDetailsCardWrapperQuery",
+   "doc_id": "24452112767728534",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometMediaPickerDialogQuery",
+   "doc_id": "26437002719265388",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometMediaPickerRootQuery",
+   "doc_id": "34760380456940823",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometMessagingAppConnectNewNumberDialogQuery",
+   "doc_id": "9682885291767023",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometPageWhatsAppNumberStartVerifyMutation",
+   "doc_id": "24637670739260365",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometPageWhatsAppVerificationCodeVerifyMutation",
+   "doc_id": "28363790083308714",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometPhoneNumberInputQuery",
+   "doc_id": "9926696717388031",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometPhoneNumberInputWithCountryPickerQuery",
+   "doc_id": "9689481834493004",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometPlacementsRefetchQuery",
+   "doc_id": "30622731714008392",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometUploadVideoUtilsQuery",
+   "doc_id": "25991219093897368",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometUploadVideoUtilsWaitForUploadingInstagramVideoQuery",
+   "doc_id": "26340643365543960",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometWhatsAppAccountTypeUtilsQuery",
+   "doc_id": "33497911776521138",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometWhatsAppAccountUtilsSubscription",
+   "doc_id": "29287998120847120",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LWICometWhatsAppSendDownloadBusinessAppLinkMutation",
+   "doc_id": "24505371315720061",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LeadGenCometNativeFormDialogRootQuery",
+   "doc_id": "28117905124504301",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LeadGenCometNativeFormDraftSubmissionsMutation",
+   "doc_id": "9365355950242804",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LeadGenCometNativeFormReminderSubmissionsMutation",
+   "doc_id": "26552729437677243",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LeadGenCometNativeFormSubmissionsMutation",
+   "doc_id": "9771193542988261",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LiveProducerBizAIAgentInfoDialogActivateAIMutation",
+   "doc_id": "26433631396339412",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LiveProducerBizAIAgentInfoDialogMutation",
+   "doc_id": "26467550886234626",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "LiveVideoCometNuxForCVCQuery",
+   "doc_id": "9844696545637976",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectHoverCardPopover_AMDQuery",
+   "doc_id": "27102344426108597",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectHoverCardPopover_IGLWIQuery",
+   "doc_id": "27023731973925180",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectHoverCardPopover_LWIAdObjectQuery",
+   "doc_id": "26720420644317174",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectHoverCardPopover_NonAMDQuery",
+   "doc_id": "38740022442263866",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectReferenceHoverCardQuery",
+   "doc_id": "26928882686752673",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAdObjectReference_StoryMetadataQuery",
+   "doc_id": "27020177567613183",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAAssetSelectionContext_fetchAssetInDraftQuery",
+   "doc_id": "26456025194093675",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBABoostPostAdPreviewPopoverQuery",
+   "doc_id": "25592472913784924",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAChatThreadQuery",
+   "doc_id": "28908405858752311",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBACompassAdPreviewModalQuery",
+   "doc_id": "28311355278548806",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAGraphQLSendMessageV2QueryMutation",
+   "doc_id": "28153307324311738",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAGraphQLSendMessageV3QueryMutation",
+   "doc_id": "27039324015719519",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAGraphQLSendMessageV4QueryMutation",
+   "doc_id": "27546734768255097",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAInlineAssetSelectorWidgetAssetIDsQuery",
+   "doc_id": "35972847782361891",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAInlineAssetSelectorWidgetAssetsQuery",
+   "doc_id": "35544094851905356",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAL4AccountSwitcherModalLWIQuery",
+   "doc_id": "27404347865869349",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAL4AccountSwitcherModalQuery",
+   "doc_id": "26946380438345932",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBALiveBoostStatusIndicatorQuery",
+   "doc_id": "37725406853716822",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAMessageCreatorCardsRendererQuery",
+   "doc_id": "28486209884399157",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAMessageLiveBrowserRendererScreenshotQuery",
+   "doc_id": "26819206974436266",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAMessagePLEDisclaimerContentPFRQuery",
+   "doc_id": "26833985386252659",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAMessageSignalsCTARendererMutation",
+   "doc_id": "24996386686710720",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAPageReferenceQuery",
+   "doc_id": "35683211234657248",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBARecordAsyncAuthConsentMutation",
+   "doc_id": "27087116144243008",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAUgpRecommendationsGraphQLQuery",
+   "doc_id": "27866582469711416",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MAIBAUpdateAdsAIConsentMutation",
+   "doc_id": "27972782485654901",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "MAWCatQuery",
+   "doc_id": "29559957360285299",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAWChatLiveLocationDialogQuery",
+   "doc_id": "9800226046700666",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAWFetchXMAData_fetchXmaPreviewDataQuery",
+   "doc_id": "9840669832713841",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAWSecureThreadQPContainerLazyLoadedQuery",
+   "doc_id": "24029028516731081",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAWSecureThreadQPContainerQuery",
+   "doc_id": "24407836128822485",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MAWVerifyThreadCutover_ContactCapabilities2Query",
+   "doc_id": "9948369021930229",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWAPPlusCreateBroadcastChannelDialogQuery",
+   "doc_id": "26744534075242682",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWAnimatedImageControlsUtilCometSettingsQuery",
+   "doc_id": "9834610223284602",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWBuyerShippingAddressRootQuery",
+   "doc_id": "9449084048553368",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCMBlendedThreadListQuery",
+   "doc_id": "24319446437729096",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCMContentTakedownEnforcementNoticeDialogQuery",
+   "doc_id": "28517468274531869",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCMInboxLeftRailSidebarFacebookButtonQuery",
+   "doc_id": "30140931635554748",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCMInformTreatmentGenAITransparencyDialogQuery",
+   "doc_id": "30279456138320382",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCallBlockedUntilSettingMutation",
+   "doc_id": "9596248350497732",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChannelPromptContributionsDialogQuery",
+   "doc_id": "25976204712009159",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatBadgeCountQuery",
+   "doc_id": "28113210004940026",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MWChatChangeSoundsSettingMutation",
+   "doc_id": "23889570563980381",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatChangeTurnOffTabsSettingMutation",
+   "doc_id": "9579454355500402",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatCustomerFeedbackFormDataQuery",
+   "doc_id": "29201589049485762",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatCustomerFeedbackStateQuery",
+   "doc_id": "9503867116315653",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatEncryptedBackupsChatHistoryDialogQuery",
+   "doc_id": "33784189954561309",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatEncryptedBackupsForgotPINDialogQuery",
+   "doc_id": "24783313654667152",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatEncryptedBackupsSettingsDialogQuery",
+   "doc_id": "31918369997811363",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatForwardDialogQuery",
+   "doc_id": "27019305764415016",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatSettingsQuery",
+   "doc_id": "9672376216183311",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatSidebarStateSettingMutation",
+   "doc_id": "29218721377742847",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatSoundsSettingSubscription_MessengerSoundsSettingSubscription",
+   "doc_id": "9505536619501434",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatTabInThreadBannerLazyLoadedQuery",
+   "doc_id": "24547472401621056",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatTabInThreadBannerQuery",
+   "doc_id": "24686790901001702",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatTabsNotificationSubscription_MessengerChatTabsNotificationSubscription",
+   "doc_id": "23885219097739619",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatTabsSettingSubscription_MessengerChatTabsSettingSubscription",
+   "doc_id": "24013491181590061",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatUserEmailQuery",
+   "doc_id": "26051914027836709",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatUserPhoneNumberQuery",
+   "doc_id": "26498816073077531",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatUserShareDXMAResponseMutation",
+   "doc_id": "28283566374586358",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWChatViewerChatVisibilityHookQuery",
+   "doc_id": "25944645318546054",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCommunityMessagingNUXQuickPromotionQuery",
+   "doc_id": "24602245176131030",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWComposerDisclosureMSipNoticesMwbSafetyInterventionQuery",
+   "doc_id": "25242471475411097",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWCreateBroadcastChannelDialogQuery",
+   "doc_id": "26689655700715507",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWDailyGameChallengeDisableAdminMsgCtaMutation",
+   "doc_id": "27940340382331367",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWDailyGameChallengeEnableAdminMsgCtaMutation",
+   "doc_id": "28163240569993889",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWEBPinCodeRestoreDialogQuery",
+   "doc_id": "24877077111932801",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWEBRestoreDialogWrapperQuery",
+   "doc_id": "24825865927022420",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWEditChannelDialogQuery",
+   "doc_id": "9783976471666723",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWGAMEThreadTakedownDialogQuery",
+   "doc_id": "35248209204766199",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWGenAINuxInvocationDialogQuery",
+   "doc_id": "26050147481354302",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWGenAIUnifiedResponseBloksEntryPointCSATQuery",
+   "doc_id": "34282615948048845",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWInboxAccessibilitySettingsDialogQuery",
+   "doc_id": "9836562433091987",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWInboxMessageAccessControlsDialogQuery",
+   "doc_id": "27497404529946839",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWInboxSettingsPresenceMainPushPageQuery",
+   "doc_id": "26468865619408173",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWInboxTrayNoteCreationDialogQuery",
+   "doc_id": "26067429279547490",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWLSGroupMembershipDialogQuery",
+   "doc_id": "9265370860258042",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWMustacheAutoReplyToggleDialogQuery",
+   "doc_id": "26745416828397059",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWPAnimatedImageFlyoutRootGiphyProxyResultsQuery",
+   "doc_id": "25950138794669831",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWPThreadThemeProviderQuery",
+   "doc_id": "27838938182397954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWPThreadThemeQuery_AllThemesQuery",
+   "doc_id": "27551405017886475",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWQuickPromotionBroadcastChannelNUXesQuery",
+   "doc_id": "25334147329593623",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWQuickPromotionBroadcastChannelNuxQuery",
+   "doc_id": "25676555408712606",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWQuickPromotionCreateBroadcastChannelNuxQuery",
+   "doc_id": "26385933421032092",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWQuickPromotionThreadViewBannerContainerQuery",
+   "doc_id": "27883984871264291",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MWQuickPromotionThreadlistBannerQuery",
+   "doc_id": "27805253425807021",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWRecurringNotificationsOptinDialogQuery",
+   "doc_id": "23962325466719284",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWRecurringNotificationsOptinDialogTopicRegisteredQuery",
+   "doc_id": "29265486336433064",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWSupportInboxDialogQuery",
+   "doc_id": "36190932053885038",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWV2ComposerEmojiPickerWithRecentlyUsedUpdateUsageMutation",
+   "doc_id": "27501695526127325",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWV2ComposerPromptButtonQuery",
+   "doc_id": "24223493300634699",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWV2HeaderGroupSettingsSectionQuery",
+   "doc_id": "29477693758510886",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWV2MessageProfilePhotoMenuQuery",
+   "doc_id": "9370810589694752",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MWXComposerPromptButtonQuery",
+   "doc_id": "24235005759488308",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketingMessagesHighTrustDataStoreLoaderQuery",
+   "doc_id": "27569388486080053",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceBuyLocationDialogQuery",
+   "doc_id": "27586196974346486",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceCategoryPickerDialogQuery",
+   "doc_id": "26237150319311460",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceCometBrowseFeedLightPaginationQuery",
+   "doc_id": "28036163469355579",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceCometReviewOffersDialogQuery",
+   "doc_id": "28376190682000971",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceCometShippingOnboardingDialogContainerQuery",
+   "doc_id": "27390982357177001",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceCometShippingOnboardingMorDialogContainerQuery",
+   "doc_id": "26682800328076155",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceComposerAIPricingDialogImplSimilarListingsQuery",
+   "doc_id": "27805536755752423",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceMessageSellerDialogQuery",
+   "doc_id": "27241698915422485",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplacePDPC2CMediaViewerWithImagesQuery",
+   "doc_id": "10059604367394414",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplacePDPRightColumnAdsQuery",
+   "doc_id": "27876163185349836",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceSearchAddressDataSourceQuery",
+   "doc_id": "9660140454040174",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceSellerAppUpsellDialogQuery",
+   "doc_id": "27412521681742615",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceSellerProfileBadgesPageQuery",
+   "doc_id": "29208131778833972",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceSellerProfileReviewCardMenuQuery",
+   "doc_id": "9562998060448780",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MarketplaceYourListingDialogQuery",
+   "doc_id": "27832601083046297",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MediaUploadFBDefaultServerConfigurationRetrieverQuery",
+   "doc_id": "26396735533340887",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MessagingWebACSGraphQLServerProviderConfigQuery",
+   "doc_id": "34400859499527881",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MessagingWebACSGraphQLServerProviderTokenIssuanceQuery",
+   "doc_id": "26193605830337898",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MessengerCreateVideoMeetupLinkMutation",
+   "doc_id": "37032148406429485",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MessengerParticipantsQuery",
+   "doc_id": "26454940700843258",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MetaCreditFundingRootQuery",
+   "doc_id": "33133458916302571",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "MetaSupportAssistantHCQuestionSuggestionContainerQuery",
+   "doc_id": "27142670545326454",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MetaSupportAssistantLauncherNullStateQuery",
+   "doc_id": "34596974069900886",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "MetaSupportAssistantRootQuery",
+   "doc_id": "28492496213723118",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ModerationAssistOnboardingOptInDialogQuery",
+   "doc_id": "25358971723696976",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "NonprofitHomeLeftRailNavQuery",
+   "doc_id": "25368430292785786",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "OhaiWebPublicKeyConfigQuery",
+   "doc_id": "26996952523264441",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "P2MAttachBankSlipDialogQuery",
+   "doc_id": "9534661689958012",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "P2MInvoicerAndConsumerSwitcherQuery",
+   "doc_id": "9813648665385219",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "P2MOrderDetailDialogQuery",
+   "doc_id": "26722270370733980",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PMVCometInterruptionsCounterResetMutation",
+   "doc_id": "29218678391114089",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageAdminSettingsWhatsAppLinkAccountMutation",
+   "doc_id": "26745161338515503",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageCometWebToWhatsAppMutationSetNewPrimaryNumberForPageMutation",
+   "doc_id": "28312499171734775",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageInstagramPresmaCometRootContainerRefetchQuery",
+   "doc_id": "27566172096341582",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageWhatsAppLinkingLinkAccountMutation",
+   "doc_id": "24403933265952034",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageWhatsAppLinkingOverrideFlowDialogQuery",
+   "doc_id": "9777719675616541",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PageWhatsAppLinkingStartVerifyMutation",
+   "doc_id": "24822585617372242",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PagesCometAdminEditingInlineFieldQuery",
+   "doc_id": "27019054584368121",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PagesCometComposerDialogQuery",
+   "doc_id": "27818056504502564",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PagesCometInviteFriendsGroupSelectorMenuQuery",
+   "doc_id": "9289706807800122",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PartnershipAdsHubContentPageDetailModalQuery",
+   "doc_id": "28149171241360005",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PartnershipAdsHubContentPageDetailViewProfilesRowQuery",
+   "doc_id": "27684127177891095",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PartnershipAdsHubContentPageDetailViewTaggedAccountsQuery",
+   "doc_id": "26193431117009757",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PaymentsCometMessengerSlipDetailsDialogQuery",
+   "doc_id": "35625470223732939",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PostDUReviewModalQuery",
+   "doc_id": "25560379030230790",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "PreDUAddModalQuery",
+   "doc_id": "24695742700060360",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProdashMBSEntrypointUpsellDialogImpressionMutation",
+   "doc_id": "37837287899248827",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProdashMBSEntrypointUpsellDialogQuery",
+   "doc_id": "26288701710821273",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometActiveFriendMenuActionQuery",
+   "doc_id": "27956809367272003",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometAvatarCoverPhotoTakeoverDismissMutation",
+   "doc_id": "9578345382249418",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometAvatarCoverPhotoTakeoverImpressionMutation",
+   "doc_id": "9998530810205441",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometBlockProfileSOAPInformationDialogQuery",
+   "doc_id": "9409261269196098",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometComposerRootQuery",
+   "doc_id": "28839924335612927",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometContextualProfileGroupPostsFeedPaginationQuery",
+   "doc_id": "29479510698315781",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometContextualProfileTilesSectionRefetchQuery",
+   "doc_id": "27467278689637884",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometCoverPhotoMediaPickerDialogQuery",
+   "doc_id": "26111560378482965",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometCoverPhotoUpdateMutation",
+   "doc_id": "26648951184714383",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometDirectoryAuthenticityModalQuery",
+   "doc_id": "28230580256600354",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometDirectoryPostClickDialogQuery",
+   "doc_id": "27621668890833956",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometFeaturedHighlightsEditCollectionDialogQuery",
+   "doc_id": "26761520723434531",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometHeaderQuery",
+   "doc_id": "28575618488710252",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometLockedProfileHomeDialogQuery",
+   "doc_id": "26341112238908377",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometManageSectionsDialogQuery",
+   "doc_id": "9353838248046898",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometProfilePictureEditDialogQuery",
+   "doc_id": "27308360595486690",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometProfilePictureEditPreviewDialogQuery",
+   "doc_id": "27266237539709090",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometProfilePlusFollowChainingContainerQuery",
+   "doc_id": "27790914500602303",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometRootLeftNavMenuQuery",
+   "doc_id": "27842918222076602",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometSOAPOnboardingDialogFriendSuggestionsStepPaginationQuery",
+   "doc_id": "26911968385142877",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometSOAPOnboardingDialogQuery",
+   "doc_id": "27616796941345924",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometSOAPSetSeenPostCreationMutation",
+   "doc_id": "9682683971848943",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometTimelineFeedQuery",
+   "doc_id": "28236193016022113",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometTimelineListViewRootQuery",
+   "doc_id": "28117370721250101",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfileCometWorkProfileFieldEditFormQuery",
+   "doc_id": "9703331056446714",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusCometActionFollowingDialogQuery",
+   "doc_id": "29260992456879925",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusCometAdminWhatsappAfterPartyDialogQuery",
+   "doc_id": "38717069201225065",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusFollowerInviteActorSelectorStepFragmentQuery",
+   "doc_id": "24439755018947540",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusFollowerInviteDialogContentFragmentQuery",
+   "doc_id": "26334370676253580",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusFollowerInviteDialogQuery",
+   "doc_id": "28795275773405713",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusFollowerInviteInvitedTabPaginationQuery",
+   "doc_id": "9710396925723479",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusFollowerInviteNotInvitedTabPaginationQuery",
+   "doc_id": "24043175455280514",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusIntentBasedSwitchingDialogQuery",
+   "doc_id": "27050123717934044",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ProfilePlusUnlinkInstagramMutation",
+   "doc_id": "10050947461652425",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RODemotionNotificationDetailScreenQuery",
+   "doc_id": "36289322297378779",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RTWebCallBlockSettingHooksQuery",
+   "doc_id": "9989124061109700",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RTWebCallBlockedSettingSubscription_CallBlockSettingSubscription",
+   "doc_id": "24429620016626810",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RTWebCometRoomIncomingCallDialog_DisclaimerQuery",
+   "doc_id": "10046592332074859",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RTWebIncomingUnsupportedE2EEDialogNameQuery",
+   "doc_id": "9971941799537105",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "RecommendationsUnitContainerQuery",
+   "doc_id": "26882023994831388",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ReelComposerReelPublishMutation",
+   "doc_id": "27793168930376367",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ReelsCreationCometDialogQuery",
+   "doc_id": "37645516881758232",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ReshareWarningCometDialogQuery",
+   "doc_id": "26645794558427506",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SPFCometConnectionsDialogQuery",
+   "doc_id": "10070657089665464",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SPFCometFollowMutation",
+   "doc_id": "8824576990978287",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SPFCometUnfollowMutation",
+   "doc_id": "24027009033571971",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SPFSuggestionsDialogPaginationQuery",
+   "doc_id": "9272290652876398",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SaveResponseTonePreferenceMutation",
+   "doc_id": "26990211817311085",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "ScaledChatOptOutAndEndChatMutation",
+   "doc_id": "29746995494916388",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ScreenTimeInit_AggregatedScreenTimeQuery",
+   "doc_id": "28231098086551147",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionBlockDialogMetaQuery",
+   "doc_id": "27303668755972112",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionBlockDialogQuery",
+   "doc_id": "26196430573391600",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionChallengeCDSMetaPasswordDialogQuery",
+   "doc_id": "27522760740721764",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionChallengeCDSPasswordDialogQuery",
+   "doc_id": "36406817268966399",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionChallengePasswordDialogQuery",
+   "doc_id": "30270506365866982",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionLoadAndMaybeChallengeMutation",
+   "doc_id": "28194500470179954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SecuredActionNoChallengeAvailableCDSDialogQuery",
+   "doc_id": "26635448856082279",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ServicesApproveAppointmentMutation",
+   "doc_id": "27538283415821015",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ServicesCometLeadFormDialogRootQuery",
+   "doc_id": "9357715610995402",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SetAreSingleKeysDisabledSettingCometCometCustomKeyCommandsMutation",
+   "doc_id": "9933095580061499",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SetModifiedKeyboardShortcutsPreferenceCometCometCustomKeyCommandsMutation",
+   "doc_id": "24206865635580954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SettingsCategoryLayoutUSFNewCometQuery",
+   "doc_id": "27598638776468742",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ShareToFeedComposerCometDialogQuery",
+   "doc_id": "9862910007095900",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SkipStoppedMessagesMutation",
+   "doc_id": "28025517103757439",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesCardHeaderMusicAttributionDialogQuery",
+   "doc_id": "25688610190794706",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesCometPrivacySelectorDialogQuery",
+   "doc_id": "23931148206490572",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesSuspenseCardOptionMenuExperimentalWithEntryPointQuery",
+   "doc_id": "38364108549904404",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesSuspenseContentPaneRootWithEntryPointQuery",
+   "doc_id": "27797324163280366",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesSuspenseNavigationPaneRootWithEntryPointQuery",
+   "doc_id": "35427622226884977",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesTrayRectangularQuery",
+   "doc_id": "28261665493524355",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoriesTrayRectangularRootQuery",
+   "doc_id": "27831542276468324",
+   "sources": [
+    "preload",
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "StoryLocationTransparencyDialogQuery",
+   "doc_id": "24031059579918579",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "SupportInboxMainContainerQuery",
+   "doc_id": "38451298247819031",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoFactorLoginMethodPasskeyFooterAssertionMutation",
+   "doc_id": "28226787083618274",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoFactorLoginMethodPasskeyFooterMarkFortificationSeenMutation",
+   "doc_id": "38288576514090848",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoFactorLoginMethodSecurityKeyAuthMutation",
+   "doc_id": "30647282758204044",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoFactorLoginMethodSecurityKeyMutation",
+   "doc_id": "24056635887303754",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoStepVerificationChallengePickerDialogQuery",
+   "doc_id": "26515739554748267",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoStepVerificationRootQuery",
+   "doc_id": "26677319665197312",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "TwoStepVerificationSelfieBasePageQuery",
+   "doc_id": "9651461144903775",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "TwoStepVerificationUpdateLoginMutation",
+   "doc_id": "25878197025142178",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "UFACAISupportChatExperienceQuery",
+   "doc_id": "26465902889674584",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "UFACAppQuery",
+   "doc_id": "28236743642611460",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "UFACCometAppQuery",
+   "doc_id": "27085768097771366",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "UnifiedShareSheetMessengerMultiSelectionDialogQuery",
+   "doc_id": "9850149175076009",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "UnifiedShareSheetMessengerSectionQuery",
+   "doc_id": "23993111606963614",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "UpdateUserLastActiveMutation",
+   "doc_id": "29366862719625520",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "UserActivitySubscription",
+   "doc_id": "9525970914181809",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VerificationChallengesA2UIQRWidgetQuery",
+   "doc_id": "28542476312021727",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VerifyPageWhatsAppAccountForDisclosuresMutation",
+   "doc_id": "9705996306161471",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaDeleteAccountMutation",
+   "doc_id": "24472846029024529",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLLoginProviderBeginLoginMutation",
+   "doc_id": "25610069588694744",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLLoginProviderFinishLoginMutation",
+   "doc_id": "27483956954538864",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLLoginProviderInitQuery",
+   "doc_id": "26588360384102998",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLRegisterProviderBeginRegisterMutation",
+   "doc_id": "9596958053703216",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLRegisterProviderFinishRegisterMutation",
+   "doc_id": "24657038213948849",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VestaServerGraphQLRegisterProviderInitQuery",
+   "doc_id": "10088892487810238",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VideoComposerVideoPublishingMutation",
+   "doc_id": "28122626904057092",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VideoPlayerCaptionsSettingMutation",
+   "doc_id": "8917695971664599",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VideoPlayerIMFStickersOverlayRelayQuery",
+   "doc_id": "26682573064700209",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "VideoPlayerRelayFragmentRefetchQuery",
+   "doc_id": "26766329579710968",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ViewFormRequestEditableDialogRootQuery",
+   "doc_id": "27643012192007552",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "WebBloksPeoplePickerLoaderQuery",
+   "doc_id": "25868642679480472",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "WhatsAppCometPagesComposerInterceptionDialogQuery",
+   "doc_id": "9565389540250675",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "WorkNotificationsSubscription",
+   "doc_id": "36556962867284033",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "ZenonMWThriftSendMessageMutation",
+   "doc_id": "27536975932628400",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "adsDuplicationMaybeDispatchPromoAdsAlwaysOnToastQuery",
+   "doc_id": "27645472368449352",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "adsInformedCampaignCreationFetchPublishedPredictionsQuery",
+   "doc_id": "28045931305040258",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "cometMisinformationLinkDetectorPluginInternalStateReducerQuery",
+   "doc_id": "26088132007537204",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "commitWorkplaceChatBotSubmitFeedbackMutation",
+   "doc_id": "9917349461720552",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "createAndUsePBTAMutation",
+   "doc_id": "26055710087356540",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "fetchComposerPostCreationStatusQuery",
+   "doc_id": "39553015944297882",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "fetchCtvCastPayloadQuery",
+   "doc_id": "29808457688745543",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "fetchMWChatVideoAutoplaySettingQuery",
+   "doc_id": "9713919638685405",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "fetchVideoCastPayloadQuery",
+   "doc_id": "9544699068932467",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "groupsCometFetchStoryQuery",
+   "doc_id": "29054249517491829",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "makeIgUsernameValidatorQuery",
+   "doc_id": "27670883629240333",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "navigateToProductInsightsWithDefaultTabQuery",
+   "doc_id": "34304901339157810",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "pushReturnToFeedRestorationToastGroupQuery",
+   "doc_id": "9629747497106613",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "pushReturnToFeedRestorationToastProfileQuery",
+   "doc_id": "30396567453267408",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "triggerGroupsCometHeaderInviteWithEmailExposureQuery",
+   "doc_id": "29605900845690284",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useAdIntegrityCertifyMutation",
+   "doc_id": "9467378893391366",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBMSupportChatEscalatedToAgentQuery",
+   "doc_id": "35872559915691779",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBillingShowWizardQuery",
+   "doc_id": "25010320048658317",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBizAIToggleAIMutation",
+   "doc_id": "27743531981916357",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBizAIUpdateAppointmentStatusCardMutation",
+   "doc_id": "38422451310703927",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBizInboxCommerceInvoiceDataQuery",
+   "doc_id": "29668803739402261",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useBizInboxWECSendRichMessageMutation",
+   "doc_id": "9918575478255598",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSAsyncResponseLiveQueryPollQuery",
+   "doc_id": "27595128063515486",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSAsyncResponseLiveQueryTokenPollQuery",
+   "doc_id": "27969221289379200",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSAsyncResponseSubscription",
+   "doc_id": "27591659517192063",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSSendMessageMultiverseMutation",
+   "doc_id": "37278846858429649",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSSendMessageMutation",
+   "doc_id": "28137996599166900",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAIHTSSendMessageV2Mutation",
+   "doc_id": "38081592568123136",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAISupportConversationLoggerMutation",
+   "doc_id": "26372148759079397",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAdsBugReportingMutation",
+   "doc_id": "9740697046043807",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometAppNavigationProfilePictureUrlQuery",
+   "doc_id": "30358364197084236",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useCometBlockedNicknameTypeaheadDataSourceQuery",
+   "doc_id": "25534333602898414",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometBlockeeTypeaheadDataSourceQuery",
+   "doc_id": "9508788085855523",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometBlockingTypeaheadDataSourceQuery",
+   "doc_id": "9841869739201883",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometBugReportAttachmentMutation",
+   "doc_id": "26402639746008408",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometBugReportingMutation",
+   "doc_id": "9606419949455880",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometCategoriesLocalizedNameQuery",
+   "doc_id": "9689708594440094",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometComposerImagineMutation",
+   "doc_id": "31268047996127235",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometComposerWithTagFriendsDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "9858300270964795",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometComposerWithTagSuggestionsDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "31239842255661608",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometEmojiPickerSearchResultsQuery",
+   "doc_id": "26293392843630975",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometHomeChatSettingsQuery",
+   "doc_id": "26573484329006207",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometImagineLandingPageMutation",
+   "doc_id": "23982995928054760",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometLocaleSelectorLanguageChangeMutation",
+   "doc_id": "29960775910235124",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometLogInFormQuery",
+   "doc_id": "9703687583048540",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useCometMarketplaceBadgeCountQuery",
+   "doc_id": "27670552172600743",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useCometMemoriesBlocklistedUsersTypeaheadDataSourceQuery",
+   "doc_id": "29236320609344835",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometMetaManagerBadgeCountQuery",
+   "doc_id": "25856383983945640",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometPageInviteFromAdminsMutation",
+   "doc_id": "9783570161730336",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometProfilePlusSendFriendFollowerInviteMutation",
+   "doc_id": "28378299345096908",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometProfilePlusSendPostLikerFollowerInviteMutation",
+   "doc_id": "30622634674002721",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometRelayExpiredVideoUrlRefreshHandlerQuery",
+   "doc_id": "29657303523885443",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometSendFriendFollowerInviteFromPageVoiceMutation",
+   "doc_id": "27835942702736294",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometStickerPickerTrayPacksPaginationQuery",
+   "doc_id": "9672953459457428",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUFICommentUnvoteMutation",
+   "doc_id": "25722792667420652",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUFICommentVoteMutation",
+   "doc_id": "33995920373387348",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUFICreateCommentMutation",
+   "doc_id": "28882491998025365",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUFIDeleteCommentMutation",
+   "doc_id": "27386493047638332",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUFIEditCommentMutation",
+   "doc_id": "28765227863112159",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUSFSearchTypeaheadDataSourceQuery",
+   "doc_id": "9639457726144352",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometUndoFBSupervisionParentSettingControlsMutation",
+   "doc_id": "27137178235962515",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometVideoEditorCopyrightCheckMutation",
+   "doc_id": "25171698979168867",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCometWatchBadgeCountQuery",
+   "doc_id": "23979318198368825",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useComposerCreatePostSubscription",
+   "doc_id": "28171822632481572",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useComposerLinksInPostQuotaStateLinksInPostRefetchQuery",
+   "doc_id": "27553315547652145",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useComposerVideoUploaderConfigQuery",
+   "doc_id": "9734072893355148",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useConversationalSupportActivityTrackerMutation",
+   "doc_id": "27501281449461572",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useConversationalSupportAsyncResponseSubscription",
+   "doc_id": "27833698472953625",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useConversationalSupportCometAIFileUploadMutation",
+   "doc_id": "34555970700714793",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useConversationalSupportPingMutation",
+   "doc_id": "26960647576878710",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useCreatePasskeyMutation",
+   "doc_id": "27966248733060308",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useDisableComposerBeforeSupportAIRespondsQuery",
+   "doc_id": "30720206647625271",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useECPCreateOCPINMutation",
+   "doc_id": "33252570957689937",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useEpsilonClearanceLinkNonceVerificationMutation",
+   "doc_id": "27870967485929792",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useEpsilonNavigateMutation",
+   "doc_id": "28030970226587264",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useEpsilonResendClearanceLinkMutation",
+   "doc_id": "24744575665173996",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useEventCometDeleteMutation",
+   "doc_id": "28037817465841827",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useExecuteNFXActionMutation",
+   "doc_id": "29578446745088711",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFBChatVisibility_PresenceStatusChatVisibilityQuery",
+   "doc_id": "9899572666749146",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMNameValidatorQuery",
+   "doc_id": "26692801570319630",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMSyncResourcesV2Mutation",
+   "doc_id": "25508062142200922",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMSyncResourcesV2Mutation",
+   "doc_id": "26268926012794902",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMUpdateNameMutation",
+   "doc_id": "9538143859625836",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMUpdateUsernameMutation",
+   "doc_id": "9607280826036227",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMUsernameValidatorBaseQuery",
+   "doc_id": "10046032145478358",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXIMUsernameValidatorBaseQuery",
+   "doc_id": "9751320178292067",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useFXPasskeyCreateReauthQuery",
+   "doc_id": "24374804355483430",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXReauthDialogContentQuery",
+   "doc_id": "9838788336159707",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXSettingsAutoPostingChangeMutation",
+   "doc_id": "8955181881248008",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXSettingsSendPasswordResetLinkForViewerMutation",
+   "doc_id": "23901062569500160",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXSettingsSendPasswordResetLinkMutation",
+   "doc_id": "9818182581575430",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFXVerifyReauthQuery",
+   "doc_id": "9513815222033111",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFeedComposerCometHashtagTypeaheadDataSourceQuery",
+   "doc_id": "34754204624177954",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsBootloadDataSourceQuery",
+   "doc_id": "24037885915835927",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsBootloadDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "25872647982320641",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsNetworkDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "26204055029194211",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFeedComposerCometMentionsNullstateDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "25151629731161691",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useFetchAdAccountsForL4ContextQuery",
+   "doc_id": "27589643617296549",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useFetchAdAccountsNameByIdQuery",
+   "doc_id": "27797550453214383",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useFriendingCometFriendRequestBadgeCountQuery",
+   "doc_id": "9598595396903163",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useFundraiserViewerActorsQuery",
+   "doc_id": "23938805832391894",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGameUserHasSeenIARCRating_IarcRatingViewedStatusMutation",
+   "doc_id": "9367595526683164",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupAddMembersMutation",
+   "doc_id": "26949495548074408",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupCommunityParticipationRequestSubscription",
+   "doc_id": "38178454485078587",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupCoverPhotoIllustrationUpdateMutation",
+   "doc_id": "27575933865341432",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupCoverPhotoUpdateMutation",
+   "doc_id": "28729017343451714",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupHideSuggestionMutation",
+   "doc_id": "9454440231347992",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupMemberJoinSubscription",
+   "doc_id": "27138392392490497",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupMembershipAnswersSaveMutation",
+   "doc_id": "27638969932420978",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometAgingBannerDismissMutation",
+   "doc_id": "26441247745516710",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometAnonymousActorSwitcherSetActorMutation",
+   "doc_id": "26767993586193706",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatCreateSubscription",
+   "doc_id": "26899448136305605",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatDeleteSubscription",
+   "doc_id": "9032039933563345",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatDirectInviteSubscription",
+   "doc_id": "27485859394432409",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatEditSubscription",
+   "doc_id": "27337368989223636",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatJoinMutation",
+   "doc_id": "27987548854274536",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatJoinSubscription",
+   "doc_id": "28026347253639095",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatLastMessageSnippetSubscription",
+   "doc_id": "27852090807755670",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometChatLeaveSubscription",
+   "doc_id": "27644489615234664",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometContextualSuggestionsToastQuery",
+   "doc_id": "27293837493542625",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometCreateMutation",
+   "doc_id": "37309644325300927",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometHeaderControlsQuery",
+   "doc_id": "9729658597069783",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometLookingForPlayersGamePickerDataSourceQuery",
+   "doc_id": "30264900003109004",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometMemberInviteForCreateSearchDataSourceQuery",
+   "doc_id": "23992564013689188",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometMentionsBootloadDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "32718853531093343",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometMentionsNetworkDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "25198805229746691",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometMentionsNullstateDataSourceWithTaggingTransparencyQuery",
+   "doc_id": "32525175867125771",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometParticipationAnswersSaveMutation",
+   "doc_id": "28164904293093993",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometScheduleGroupCreationAbandonmentNudgeMutation",
+   "doc_id": "9779850142077548",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometTabBadgeCountQuery",
+   "doc_id": "27863466820006364",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometTypeaheadBootloadDataSourceQuery",
+   "doc_id": "9778341108915180",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometUnhideStoryFromFeedMutation",
+   "doc_id": "9645657635551380",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometUpdateGroupContinuousInviteMutation",
+   "doc_id": "9569231176518182",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useGroupsCometVerifyEmailCodeMutation",
+   "doc_id": "24040741705602460",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useHasResolvedConflictingPrivacySettingsMutation",
+   "doc_id": "9673171502751137",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useHasSeenUnifiedVideoCreationPrivacyDisclaimerMutation",
+   "doc_id": "9661653313929909",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useIncrementLinkSharingDisclosureImpressionCountMutation",
+   "doc_id": "9370415306417248",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useInstreamAdsFetcherQuery",
+   "doc_id": "37444832728463971",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useInstreamAdsHaloFetcherQuery",
+   "doc_id": "27513705568291109",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useIntegratedOnboardingEligibilityMutation",
+   "doc_id": "9926214160816587",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useIsCreativeTestingCampaignGroupSelectionQuery",
+   "doc_id": "29120865117516932",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useLWIPlacementsQuery",
+   "doc_id": "24124857367200108",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLWITextGenVariationsHookQuery",
+   "doc_id": "27593729113584045",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLeadGenCometNativeFormConditionalQuestionsMutation",
+   "doc_id": "25961077263512531",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLeadGenCometSendOTPMutation",
+   "doc_id": "26292157877111611",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLeadGenCometVerifyOTPMutation",
+   "doc_id": "26576651738620983",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLinkSharingCreateWrappedUrlMutation",
+   "doc_id": "30568280579452205",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLinksInPostPaygatingQuery",
+   "doc_id": "27992044083782010",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useListingShippableEligibilityCheckQuery",
+   "doc_id": "9589653544404234",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLiveCostreamerTagSubscription",
+   "doc_id": "27160684710259757",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useLogEventForSecurityCommunicationFrameworkMutation",
+   "doc_id": "31243385155308312",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBAAsyncNotificationMutation",
+   "doc_id": "27858428363744976",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBABoostPostPublishAsyncMutation",
+   "doc_id": "26107179822238555",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBABoostPostPublishMutation",
+   "doc_id": "26579686321636368",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBAChatWithConsentQuery",
+   "doc_id": "35815463974734858",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBADraftStatusQuery",
+   "doc_id": "26506130052414973",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBAGenerateAdImageRegenMutation",
+   "doc_id": "27047349821602377",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBAMediaQuery",
+   "doc_id": "36788578160740597",
+   "sources": [
+    "params:query"
+   ]
+  },
+  {
+   "friendly_name": "useMAIBAWidgetStateMutation",
+   "doc_id": "38439202149027818",
+   "sources": [
+    "params:mutation"
+   ]
+  },
+  {
+   "friendly_name": "useMBSBookmarkInterceptGatingQuery",
+   "doc_id": "26301729906142733",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWChatEncryptedBackupsVestaUserInfoRefetchQuery",
+   "doc_id": "23870520485955982",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEBAutoEBHighFrictionHardblockReleaseIfEligibleMutation",
+   "doc_id": "25386252270978118",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEBAutoEBLogHighFrictionUpsellOnVisibleMutation",
+   "doc_id": "25406806015621469",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEBLogAutoEBNoticeImpressionMutation",
+   "doc_id": "26218334244444939",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEBSendMobileResetNotificationMutation",
+   "doc_id": "24435129696180525",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEBSetHasSeenNoticeMutation",
+   "doc_id": "9618790408209960",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWEncryptedBackupsFetchBackupIdsV2Query",
+   "doc_id": "25220416984279164",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWGenAIWriteConsentMutation",
+   "doc_id": "35082077578046072",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWGetFetchUserThreadNavigationDataQuery",
+   "doc_id": "9957332370986966",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWHatchSubmitApprovalDecisionsMutation",
+   "doc_id": "26653487230991912",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWLSGroupMembershipMenuQuery",
+   "doc_id": "10069255396431304",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWPHatchApprovalComposerConfigurationMutation",
+   "doc_id": "28355509467435262",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWV2ComposerEmojiPickerSearchResultsQuery",
+   "doc_id": "9753068468139497",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMWXComposerMaybeShowHDMediaNuxQuery",
+   "doc_id": "9580085508750272",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMaisaUnreadStatusQuery",
+   "doc_id": "26526034120423854",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMarketplaceJobEligibleLocationValidationQuery",
+   "doc_id": "24052775987652783",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMessengerUnsendNUXQuery",
+   "doc_id": "9581169425252316",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMetaSupportAssistantVoiceOnboardingNuxMarkSeenMutation",
+   "doc_id": "28780836298185026",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useMetaSupportAssistantVoiceOnboardingNuxQuery",
+   "doc_id": "27116697791312599",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePagesCometAdminEditingCategoryDataSourceQuery",
+   "doc_id": "9868446276528106",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePasskeyAuthOptionsQuery",
+   "doc_id": "25998953636443168",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePasskeyHandleWebAuthNResponseMutation",
+   "doc_id": "33947798441531347",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePasskeyRegistrationWebAuthNOptionsMutation",
+   "doc_id": "24229281446745458",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePasskeyUpsellEligibilityCheckMutation",
+   "doc_id": "24998666569801021",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useProfileCometLocationTypeaheadDataSourceQuery",
+   "doc_id": "9786042511478330",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useProfileCometSOAPOnboardingDialogGroupsDataSourceQuery",
+   "doc_id": "35050470544568513",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useProfileCometSOAPOnboardingDialogPageDataSourceQuery",
+   "doc_id": "23998659723074009",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useProfileCometSOAPOnboardingFriendsDataSourceQuery",
+   "doc_id": "27592648873739827",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "usePseudoBlockedUserInterstitialF3Query",
+   "doc_id": "27255340990751033",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useRainbowNativeSurveyDialogPlatformIntegrationPointQuery",
+   "doc_id": "28249154258038766",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useRollcallContributionsXMAActionHandlerQuery",
+   "doc_id": "24366328376336078",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useScheduleVoiceCallMutation",
+   "doc_id": "28175024145494489",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useSearchCometTypeaheadBootstrapValidationQuery",
+   "doc_id": "9365993650171871",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useSendConfirmationCodeMutation",
+   "doc_id": "37987747634173455",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useStoriesIsUploadingQuery",
+   "doc_id": "27266376239618733",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useStoriesTrayTilePrefetchImageURIInteractionQuery",
+   "doc_id": "26518490991093751",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useSubmitSurveyEventMutation",
+   "doc_id": "24062338963372703",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useSubmitSurveyResponseRegisterAnswerMutation",
+   "doc_id": "28451629684526730",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoFactorLoginRememberBrowserMutation",
+   "doc_id": "26067151526298578",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoFactorLoginValidateCodeMutation",
+   "doc_id": "26264014419868193",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationArkoseCaptchaValidateGraderMutation",
+   "doc_id": "10093351384097552",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationGoogleReCaptchaValidateGraderMutation",
+   "doc_id": "25005544599053526",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationNoOpCaptchaValidateGraderMutation",
+   "doc_id": "25115729081358203",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationRobocallMutation",
+   "doc_id": "10027570067338657",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationSendCodeMutation",
+   "doc_id": "27297512486584094",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationTextCaptchaNewCodeMutation",
+   "doc_id": "9320493314721099",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useTwoStepVerificationTextCaptchaValidateCodeMutation",
+   "doc_id": "32120675114186247",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUFACAwaitingReviewUIStatePollingQuery",
+   "doc_id": "33993722390241542",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUGCAgentsSubmitFeedbackMutation",
+   "doc_id": "9600826256672927",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUndoNFXActionMutation",
+   "doc_id": "27304817629204161",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUpdateBookmarkBatchMutation",
+   "doc_id": "27293619020331978",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUpdateLinkSharingUrlMetadataMutation",
+   "doc_id": "9640324582727287",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUserFollowMutation",
+   "doc_id": "9671857836183157",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUserUnfollowMutation",
+   "doc_id": "24020650757539180",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useUserUpdateFollowTypeMutation",
+   "doc_id": "29517469764533805",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "useVideoPlayerWatchAndScrollControlNUXQuery",
+   "doc_id": "29450006731309811",
+   "sources": [
+    "relayOperation"
+   ]
+  },
+  {
+   "friendly_name": "withSearchCometTypeaheadSERPWarmCallDecoratorQuery",
+   "doc_id": "24307341962185897",
+   "sources": [
+    "relayOperation"
+   ]
+  }
+ ],
+ "stats": {
+  "unique_pairs": 1034
+ }
+}

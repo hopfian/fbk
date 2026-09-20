@@ -1,0 +1,83 @@
+{
+ "captured_total": 18,
+ "mutations": [
+  {
+   "event": "graphql_request",
+   "friendly_name": "CometUFIFeedbackReactMutation",
+   "doc_id": "27646120298312844",
+   "variables": {
+    "input": {
+     "attribution_id_v2": "CometHomeRoot.react,comet.home,via_cold_start,1789727958490,883891,4748854339,,",
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzAyNDMyOTc3NDAzNg==",
+     "feedback_reaction_id": "1635855486666999",
+     "feedback_source": "NEWS_FEED",
+     "feedback_referrer": "/sample.page/posts/pfbid02SampleSyntheticPostToken0123456789abcdef",
+     "is_tracking_encrypted": true,
+     "tracking": [
+      "AZjPesN-3P2qFQoHJMGUvK15nyiBBIYrAfXyJ_gcbl9PxmAE7oYo86RROlaavrkZOlJ5OlR1fSGMdhJ-NC-qGzgcz86Ddj1Bf8FbxZE0FlSqSo4zGY7JOWxKkoyhSQiM73I8Z6JohKBOzmVwE-b_uPT8JH0G8_LZra1iOamiwFq-p0-v2QhMapWAg1jJwxJzQpleTU_Eomt2y2gUU7GwV_x2M_aH8pqoS4-3wUb0uZ6PC2xduzLcCTcH7F00zoZPWfQ_KkkBdbukGLrX5JPTncPsj8RUp1YzRgoz_KUJ0fHg5qMx941FDCgVvd1yCsH01X18XFzuYqqO05EYDIW-3I4W4aapcarKrQjperLWCB3GHuhHx1J_ZyvPaGI0R1ypVTqPMXhoVVkgnZ1TECu2k0GQSPL044Rx0C2ZLbdhovF_3djx-RXWeW2gEOYQawhpTbDmcdpEIU4EYpnje512SX-j__nCQFD3Y5py5MmwbN6K-QUkDK97k3sqjOGizCiI0-OTthYT9gHufbNrzLnWR0jkaol0vnK4Q6SSWCmVLhGJFknViy_11AxQySAokDjdDvwVLFylEFarX9BfPzwsK-VgD6PkBIj0X4HoGoZ9iOfklsQ1wSMVWyyNuUc1IvVIB5i4B7N4C1EPkTOkFxm3OmZpmtdBZODoM8qWfuthxHAKd-4JuLX4dYbKAyfceoypK5QHDfyT_yhoUPuTmZ_4TYu8slspUhISL8-qwe8pyjhpLCeNjBfBIN-zpvlmMsR7szol0T8e2bmfEmq2o15lT435pXMHZGotPL7ZJ30dCU8I-9dsqQZDDfI_WyrasE6LBU7ifu8hbm4vkPslzsF7ibYlqse6l0eSpiMZ7-n0f0ij5z1ks0hCy6CwWgFPnx9l-cZfaFaDKNlC_FmhuOJOaHz_U8l20KjYj7VDCHlSCD30OUxxWUxZP5-NDZ0D9j5_JYzsa85PPBwjINlcL9HnCgTDy55btFPNeOBIzw4iGZly5XxI5Zz31G-aDRLSv4Gr_h7m8UjthOVBDzFmivK-TqKKrKVByTaqSdTpokldp-eb2W5xyZ__jDd4XgcI6vh85K7f7OcIM4BqfDrAI7-3UMQ9hX8jHb3OePjvCTn8A75wn9gt5Rla3VAQ-ros8yZeK1dPsrohm4EOuLY9uo5d5hYr2VbjZ0cr25azrQDRSqoFY-xNT3HoYOMdjAkADnvRURztG8ksvzbZ4w8TASswXbqwrqV-yD6nKkujDXWwq1-J-wqwwjEyuze7IJ9eUHk2OTycYi1aRL4iu5n0IAEqH4u-Mgrr-zxzNGH79IwW5jSTSl-lVba0sksoMHil6kzpBTEflnK2vwdVYTJVHq1LrCvkJzAQ4Qz96NlAb0g7K7v_sqI"
+     ],
+     "session_id": "fd0d4d15-2063-4af1-9a4c-cfbbd9f2014f",
+     "downstream_share_session_id": "d90ac567-aeaf-49df-ba06-ef372e6aff59",
+     "downstream_share_session_origin_uri": "https://www.facebook.com/sample.page/posts/pfbid02SampleSyntheticPostToken0123456789abcdef",
+     "downstream_share_session_start_time": "1789727933949",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "1"
+    },
+    "scale": 1,
+    "canUseNicknameOnComet": false,
+    "useDefaultActor": false,
+    "__relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider": false
+   },
+   "q": null
+  },
+  {
+   "event": "graphql_request",
+   "friendly_name": "CometUFIFeedbackReactMutation",
+   "doc_id": "27646120298312844",
+   "variables": {
+    "input": {
+     "attribution_id_v2": "CometHomeRoot.react,comet.home,via_cold_start,1789727958490,883891,4748854339,,",
+     "feedback_id": "ZmVlZGJhY2s6MzkzNzAyNDMyOTc3NDAzNg==",
+     "feedback_reaction_id": "0",
+     "feedback_source": "NEWS_FEED",
+     "feedback_referrer": "/sample.page/posts/pfbid02SampleSyntheticPostToken0123456789abcdef",
+     "is_tracking_encrypted": true,
+     "tracking": [
+      "AZjPesN-3P2qFQoHJMGUvK15nyiBBIYrAfXyJ_gcbl9PxmAE7oYo86RROlaavrkZOlJ5OlR1fSGMdhJ-NC-qGzgcz86Ddj1Bf8FbxZE0FlSqSo4zGY7JOWxKkoyhSQiM73I8Z6JohKBOzmVwE-b_uPT8JH0G8_LZra1iOamiwFq-p0-v2QhMapWAg1jJwxJzQpleTU_Eomt2y2gUU7GwV_x2M_aH8pqoS4-3wUb0uZ6PC2xduzLcCTcH7F00zoZPWfQ_KkkBdbukGLrX5JPTncPsj8RUp1YzRgoz_KUJ0fHg5qMx941FDCgVvd1yCsH01X18XFzuYqqO05EYDIW-3I4W4aapcarKrQjperLWCB3GHuhHx1J_ZyvPaGI0R1ypVTqPMXhoVVkgnZ1TECu2k0GQSPL044Rx0C2ZLbdhovF_3djx-RXWeW2gEOYQawhpTbDmcdpEIU4EYpnje512SX-j__nCQFD3Y5py5MmwbN6K-QUkDK97k3sqjOGizCiI0-OTthYT9gHufbNrzLnWR0jkaol0vnK4Q6SSWCmVLhGJFknViy_11AxQySAokDjdDvwVLFylEFarX9BfPzwsK-VgD6PkBIj0X4HoGoZ9iOfklsQ1wSMVWyyNuUc1IvVIB5i4B7N4C1EPkTOkFxm3OmZpmtdBZODoM8qWfuthxHAKd-4JuLX4dYbKAyfceoypK5QHDfyT_yhoUPuTmZ_4TYu8slspUhISL8-qwe8pyjhpLCeNjBfBIN-zpvlmMsR7szol0T8e2bmfEmq2o15lT435pXMHZGotPL7ZJ30dCU8I-9dsqQZDDfI_WyrasE6LBU7ifu8hbm4vkPslzsF7ibYlqse6l0eSpiMZ7-n0f0ij5z1ks0hCy6CwWgFPnx9l-cZfaFaDKNlC_FmhuOJOaHz_U8l20KjYj7VDCHlSCD30OUxxWUxZP5-NDZ0D9j5_JYzsa85PPBwjINlcL9HnCgTDy55btFPNeOBIzw4iGZly5XxI5Zz31G-aDRLSv4Gr_h7m8UjthOVBDzFmivK-TqKKrKVByTaqSdTpokldp-eb2W5xyZ__jDd4XgcI6vh85K7f7OcIM4BqfDrAI7-3UMQ9hX8jHb3OePjvCTn8A75wn9gt5Rla3VAQ-ros8yZeK1dPsrohm4EOuLY9uo5d5hYr2VbjZ0cr25azrQDRSqoFY-xNT3HoYOMdjAkADnvRURztG8ksvzbZ4w8TASswXbqwrqV-yD6nKkujDXWwq1-J-wqwwjEyuze7IJ9eUHk2OTycYi1aRL4iu5n0IAEqH4u-Mgrr-zxzNGH79IwW5jSTSl-lVba0sksoMHil6kzpBTEflnK2vwdVYTJVHq1LrCvkJzAQ4Qz96NlAb0g7K7v_sqI"
+     ],
+     "session_id": "fd0d4d15-2063-4af1-9a4c-cfbbd9f2014f",
+     "downstream_share_session_id": "d90ac567-aeaf-49df-ba06-ef372e6aff59",
+     "downstream_share_session_origin_uri": "https://www.facebook.com/sample.page/posts/pfbid02SampleSyntheticPostToken0123456789abcdef",
+     "downstream_share_session_start_time": "1789727933949",
+     "actor_id": "12345678901234",
+     "client_mutation_id": "2"
+    },
+    "scale": 1,
+    "canUseNicknameOnComet": false,
+    "useDefaultActor": false,
+    "__relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider": false
+   },
+   "q": null
+  }
+ ],
+ "all_friendly_names": [
+  "FBYRPTimeLimitsEnforcementQuery",
+  "fetchMWChatVideoAutoplaySettingQuery",
+  "OhaiWebPublicKeyConfigQuery",
+  "CometSearchBootstrapKeywordsDataSourceQuery",
+  "useMWEncryptedBackupsFetchBackupIdsV2Query",
+  "usePseudoBlockedUserInterstitialF3Query",
+  "RTWebCallBlockSettingHooksQuery",
+  "MAWVerifyThreadCutover_ContactCapabilities2Query",
+  "FBYRPTimeLimitsEnforcementQuery",
+  "fetchMWChatVideoAutoplaySettingQuery",
+  "OhaiWebPublicKeyConfigQuery",
+  "CometSearchBootstrapKeywordsDataSourceQuery",
+  "CometUFIFeedbackReactMutation",
+  "useMWEncryptedBackupsFetchBackupIdsV2Query",
+  "usePseudoBlockedUserInterstitialF3Query",
+  "RTWebCallBlockSettingHooksQuery",
+  "MAWVerifyThreadCutover_ContactCapabilities2Query",
+  "CometUFIFeedbackReactMutation"
+ ]
+}

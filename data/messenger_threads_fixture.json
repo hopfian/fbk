@@ -1,0 +1,160 @@
+{
+ "data": {
+  "viewer": {
+   "lightspeed_web_request": {
+    "payload": "{\"name\":null,\"step\":[1,[1,[4,0,1,[5,\"executeFirstBlockForSyncTransactionV4\",[19,\"95\"],[19,\"0\"],[9],\"HCwRVrzE98eWaAAAFnwW0LfSoA4TBBbAnIeTnYEcAA\",[19,\"62\"],[19,\"2\"],false,[19,\"0\"],false,[19,\"1\"],[9]]],[23,[2,0],[1,[1,[5,\"truncateMiActMappingTableForSyncGroup\",[19,\"95\"]]],[1,[5,\"truncateTablesForSyncGroup\",[19,\"95\"]]],[1,[5,\"truncateThreadRangeTablesForSyncGroup\",[19,\"95\"]]],[1,[5,\"updateThreadAuthorityAndMappingWithOTIDFromJID\",[19,\"12345678901234561\"],[19,\"12345678901234560\"]]],[1,[5,\"hybridThreadDelete\",[19,\"12345678901234560\"]]],[1,[5,\"updateOrInsertThread\",[19,\"1788113248487\"],[19,\"1788113248487\"],[9],[9],[9],false,[19,\"80\"],[19,\"12345678901234560\"],[19,\"4096\"],[19,\"15\"],\"inbox\",\"\\/messaging\\/lightspeed\\/media_fallback\\/?entity_id=12345678901234560&entity_type=10&width=200&height=200&efg=eyJkdHciOiIifQ\\u00253D\\u00253D\",[9],[19,\"0\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],false,[19,\"12345678901234\"],[9],[9],[9],[9],[9],[9],[9],[9],[9],[19,\"0\"],[19,\"0\"],[9],[9],[9],[9],[9],[19,\"0\"],\"fixture\",[19,\"1\"],[9],[9],[9],[9],false,false,false,[19,\"0\"],[9],[9],[9],[19,\"0\"],[9],[19,\"0\"],false,[9],[9],[9],[9],false,[9],[19,\"0\"],[9],[19,\"0\"],[9],[9],[19,\"12345678901234560\"],[9],[9],[19,\"-1\"],[9],[9],[9],[9],[9],[9],[9],[19,\"0\"],[19,\"0\"],[9],[9],[19,\"95\"],[19,\"0\"],\"\",false,[19,\"0\"],[9],[9],true,[19,\"0\"],[9],[9],[9],[9],[9],[9],[9],[9],[9],[19,\"12345678901234561\"],[19,\"0\"],false,[19,\"0\"],[9],[19,\"26\"],[9],\"{\\\"is_limit_sharing_enabled\\\":false,\\\"should_see_acknowledge_marketing_message_banner\\\":false,\\\"hide_aggregate_unread_snippet_message_count\\\":false,\\\"is_typing_indicator_disabled\\\":0,\\\"all_locales_match\\\":false,\\\"eb_message_timestamp_type\\\":[{\\\"first_eb_message_timestamp_ms_long\\\":\\\"1788113240411\\\",\\\"timestamp_status\\\":1}]}\",[19,\"0\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],[9]]],[1,[3,1,[50]],[1,[3,3,[51,[2,1],[19,\"12345678901234561\"]]]],[1,[3,3,[51,[2,1],[19,\"12345678901234\"]]]],[4,2,1,[5,\"verifyHybridThreadExists\",[19,\"12345678901234560\"],[19,\"12345678901234561\"],[19,\"15\"],[2,1],[9],false,[19,\"1788113248487\"],[19,\"1788113248487\"],true,[19,\"0\"],false,[9],[19,\"2\"]]]],[1,[5,\"addParticipantIdToGroupThread\",[19,\"12345678901234560\"],[19,\"12345678901234561\"],[19,\"1788113240411\"],[19,\"1788113241577\"],[19,\"0\"],[9],false,\"fixture\",[19,\"0\"],[19,\"80\"],[9],[19,\"0\"],false,true,[19,\"0\"]]],[1,[5,\"addParticipantIdToGroupThread\",[19,\"12345678901234560\"],[19,\"12345678901234\"],[19,\"0\"],[19,\"0\"],[19,\"0\"],[9],false,\"fixture\",[19,\"0\"],[19,\"80\"],[9],[19,\"0\"],false,false,[19,\"0\"]]],[1,[3,1,[50]],[1,[3,2,[51,[2,1],[19,\"12345678901234561\"]]]],[1,[3,2,[51,[2,1],[19,\"12345678901234\"]]]],[5,\"transportHybridParticipantUpdateReceipts\",[19,\"12345678901234560\"],[2,1]]],[1,[5,\"shimCopyAllParticipantNicknamesForThread\",[19,\"12345678901234560\"]]],[1,[5,\"clearPinnedMessages\",[19,\"12345678901234560\"]]],[1,[3,1,[19,\"72062009325044766\"]],[3,2,[19,\"36011186873345\"]],[3,3,[19,\"72057628531884032\"]],[3,4,[19,\"4303355908\"]],[3,5,[19,\"585618319558576128\"]],[3,6,[19,\"16384\"]],[5,\"writeThreadCapabilities\",[19,\"12345678901234560\"],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6]]],[1,[5,\"deleteMessageRequest\",[19,\"12345678901234560\"]]],[1,[5,\"upsertSyncGroupThreadsRange\",[19,\"95\"],[19,\"0\"],[19,\"1\"],false,false,[19,\"-9223372036854775808\"]]],[1,[5,\"upsertInboxThreadsRange\",[19,\"95\"],[19,\"1\"],false,false,[19,\"-9223372036854775808\"]]],[1,[5,\"updateThreadsRangesV2\",\"inbox\",[19,\"0\"],[19,\"1\"],[19,\"-9223372036854775808\"],[19,\"1\"]]],[1,[3,1,[50]],[3,2,[53]],[3,3,[53]],[1,[55,[2,3],\"sk_ciphertext\",\"Ae98sv3D1KsypUZ8b+DL4ZBHXyRMEDfSCERO15sEbmptejJyNayEBye+jl6l9n1YmXSfDKBTJFuFcOU6lyZ+uqFLPsxS1+6P\"],[55,[2,3],\"encrypted_protobuf\",\"vsDVq60GTtQ9XinlDK99NbKWlkbmcX+rCDOM5yqeVhEzYMQ0I5GMUHj68fulXEt1DZm6RnORKiGeXCQUa1fBCqONuOYdD1Y3F4ahbSvHerk47fibEoTxeZWc1dweXceLNVUWmrkakYkQhsD5PMJuS3eKoTTS0vurOjR34qAXfsjb01knFdShCvWVKJKTgQqWi+40ODaGl4PbJf\\/++zq84dxjgyvTSu4dznwAEUY3Fy1nj97HoG6+uYL4Md2sndKgfm9x1Jk9fPRKf9bxkcNpqwI5DIR+QyXmiOAu4kSNhDZ9sPMWNtHATZCOOIKcFKnD\"],[55,[2,3],\"epoch_anon_id\",[16,\"MA==\"]],[55,[2,3],\"encryption_version\",[19,\"3\"]],[55,[2,3],\"protobuf_timestamp_ms\",[19,\"1788113248487\"]],[55,[2,3],\"epoch_id\",[19,\"1570327651557562\"]],[55,[2,3],\"actor_token\",[9]],[55,[2,3],\"supplemental_otid\",\"7499890551744038973\"]],[55,[2,2],\"\\/GI9Q+YkQBMmoM6Ng4iBmzU9KnFTr5Tn0LBPF9hf3xk=\",[2,3]],[3,4,[53]],[3,5,[53]],[1,[55,[2,5],\"value\",\"\"],[55,[2,5],\"epoch_anon_id\",[16,\"\"]],[55,[2,5],\"encryption_version\",[19,\"0\"]]],[3,6,[53]],[1,[55,[2,6],\"encrypted_protobuf\",\"Sx1cJaWS3bg0m90dCM\\/WQezGbyrmwCyX6xyzxj0gjnRX19uGa9fIC9FUg25PErVw3xNP6+KdIDhBE9Rucj1XavJJBhe3ime\\/YxdezLc3L4lxxM6qFux8OINUDxpl62sxFW3vxNRYq1iokfpotS1k0rMLWoh+bc6X6V5vFniMsZ12iJyoScMVDF1HbK3qrvPBHkufkC9gKVzFckOTdTvlm7RnA87oS8tv+lpKKBa+XYR955ab\\/cTlz8zKBzpvJm1PTnNkEEB8MfMJIHsu28k5VMX29yHyYyRMbZXXYXCh\\/4I=\"],[55,[2,6],\"epoch_anon_id\",[16,\"MA==\"]],[55,[2,6],\"encryption_version\",[19,\"3\"]],[55,[2,6],\"protobuf_timestamp_ms\",[19,\"1788113240411\"]],[55,[2,6],\"epoch_id\",[19,\"1570327651557562\"]],[55,[2,6],\"actor_token\",\"12345678901234\"]],[3,7,[53]],[1,[55,[2,7],\"toplevel_protobuf\",[2,6]],[55,[2,7],\"supplemental_protobufs\",[2,2]],[55,[2,7],\"toplevel_protobuf_v2\",[9]],[55,[2,7],\"supplemental_protobufs_v2\",[2,4]],[55,[2,7],\"toplevel_protobuf_unencrypted\",[9]]],[3,8,[53]],[1,[55,[2,8],\"encrypted_echo_message\",[2,5]],[55,[2,8],\"otid\",\"7499890519997198926\"],[55,[2,8],\"encrypted_protobufs_v2\",[2,7]],[55,[2,8],\"message_tags\",[9]],[55,[2,8],\"attachment_data\",[9]]],[1,[3,12,[51,[2,1],[2,8]]]],[3,9,[53]],[1,[55,[2,9],\"has_more_before\",false],[55,[2,9],\"has_more_after\",false],[55,[2,9],\"next_message_timestamp_ms_before\",[19,\"0\"]],[55,[2,9],\"next_message_timestamp_ms_after\",[19,\"0\"]]],[55,[2,9],\"max_content_timestamp_ms\",[19,\"1788113248487\"]],[3,10,[53]],[1,[55,[2,10],\"request_id\",[9]],[55,[2,10],\"reference_timestamp\",[9]],[55,[2,10],\"restore_task_source\",[19,\"34\"]],[55,[2,10],\"restore_operation_type\",[19,\"4\"]]],[3,11,[53]],[5,\"handleMessageWithProtobufsRestoreV2\",[2,1],[2,9],[20,[19,\"12345678901234561\"]],true,false,[2,10],\"{\\\"ctx\\\":{\\\"caller\\\":\\\"HISTORY_RESTORE\\\"},\\\"query\\\":{\\\"thread_id\\\":\\\"12345678901234561\\\",\\\"direction\\\":\\\"BEFORE\\\",\\\"num_messages\\\":20,\\\"__typename\\\":\\\"MPSMessageRangeQuery\\\"}}\",[9],[9],[9],[2,11]]],[1,[3,1,[53]],[1,[55,[2,1],\"offline_threading_id\",\"7499890519997198926\"],[55,[2,1],\"sort_order_ms\",[19,\"1788113240411\"]]],[3,2,[50]],[1,[3,3,[51,[2,2],[2,1]]]],[5,\"fillDeanonCacheForE2EEThread\",[19,\"12345678901234560\"],[2,2]]],[1,[5,\"upsertFolderSeenTimestamp\",[19,\"0\"],[19,\"0\"]]],[1,[5,\"setHMPSStatus\",[19,\"12345678901234\"],[19,\"0\"],[19,\"1789734613279\"]]],[1,[5,\"verifyContactRowExists\",[19,\"12345678901234561\"],[19,\"1\"],\"https://example.com/media/photo-1.jpg\",\"fixture\",[19,\"1\"],\"\\/messaging\\/lightspeed\\/media_fallback\\/?entity_id=12345678901234561&entity_type=1&width=100&height=100&efg=eyJkdHciOiIifQ\\u00253D\\u00253D\",[19,\"1790122357\"],[19,\"1790122357\"],\"fixture\",false,false,[19,\"0\"],true,false,[19,\"60\"],[19,\"41418751\"],[19,\"252061941156614400\"],[19,\"0\"],[19,\"2\"],[19,\"2\"],[9],[9],[9]]],[1,[5,\"verifyContactRowExists\",[19,\"12345678901234\"],[19,\"1\"],\"https://example.com/media/photo-2.jpg\",\"fixture\",[19,\"1\"],\"\\/messaging\\/lightspeed\\/media_fallback\\/?entity_id=12345678901234&entity_type=1&width=100&height=100&efg=eyJkdHciOiIifQ\\u00253D\\u00253D\",[19,\"1792313658\"],[19,\"1792313658\"],\"fixture\",false,false,[19,\"0\"],true,true,[19,\"60\"],[19,\"41418751\"],[19,\"252060841644984576\"],[19,\"0\"],[19,\"2\"],[19,\"2\"],[9],[9],[9]]],[1,[5,\"issueCheckBackupStateOnInitSyncTask\"]]]]],[1,[5,\"executeFinallyBlockForSyncTransaction\",true,[19,\"95\"],[19,\"0\"]]]]}",
+    "dependencies": [
+     {
+      "name": "executeFirstBlockForSyncTransactionV4",
+      "value": {
+       "__dr": "LSExecuteFirstBlockForSyncTransactionV4"
+      }
+     },
+     {
+      "name": "truncateMiActMappingTableForSyncGroup",
+      "value": {
+       "__dr": "LSTruncateMiActMappingTableForSyncGroup"
+      }
+     },
+     {
+      "name": "truncateTablesForSyncGroup",
+      "value": {
+       "__dr": "LSTruncateTablesForSyncGroup"
+      }
+     },
+     {
+      "name": "truncateThreadRangeTablesForSyncGroup",
+      "value": {
+       "__dr": "LSTruncateThreadRangeTablesForSyncGroup"
+      }
+     },
+     {
+      "name": "updateThreadAuthorityAndMappingWithOTIDFromJID",
+      "value": {
+       "__dr": "LSUpdateThreadAuthorityAndMappingWithOTIDFromJID"
+      }
+     },
+     {
+      "name": "hybridThreadDelete",
+      "value": {
+       "__dr": "LSHybridThreadDelete"
+      }
+     },
+     {
+      "name": "updateOrInsertThread",
+      "value": {
+       "__dr": "LSUpdateOrInsertThread"
+      }
+     },
+     {
+      "name": "verifyHybridThreadExists",
+      "value": {
+       "__dr": "LSVerifyHybridThreadExists"
+      }
+     },
+     {
+      "name": "addParticipantIdToGroupThread",
+      "value": {
+       "__dr": "LSAddParticipantIdToGroupThread"
+      }
+     },
+     {
+      "name": "transportHybridParticipantUpdateReceipts",
+      "value": {
+       "__dr": "LSTransportHybridParticipantUpdateReceipts"
+      }
+     },
+     {
+      "name": "shimCopyAllParticipantNicknamesForThread",
+      "value": {
+       "__dr": "LSShimCopyAllParticipantNicknamesForThread"
+      }
+     },
+     {
+      "name": "clearPinnedMessages",
+      "value": {
+       "__dr": "LSClearPinnedMessages"
+      }
+     },
+     {
+      "name": "writeThreadCapabilities",
+      "value": {
+       "__dr": "LSWriteThreadCapabilities"
+      }
+     },
+     {
+      "name": "deleteMessageRequest",
+      "value": {
+       "__dr": "LSDeleteMessageRequest"
+      }
+     },
+     {
+      "name": "upsertSyncGroupThreadsRange",
+      "value": {
+       "__dr": "LSUpsertSyncGroupThreadsRange"
+      }
+     },
+     {
+      "name": "upsertInboxThreadsRange",
+      "value": {
+       "__dr": "LSUpsertInboxThreadsRange"
+      }
+     },
+     {
+      "name": "updateThreadsRangesV2",
+      "value": {
+       "__dr": "LSUpdateThreadsRangesV2"
+      }
+     },
+     {
+      "name": "handleMessageWithProtobufsRestoreV2",
+      "value": {
+       "__dr": "LSHandleMessageWithProtobufsRestoreV2"
+      }
+     },
+     {
+      "name": "fillDeanonCacheForE2EEThread",
+      "value": {
+       "__dr": "LSFillDeanonCacheForE2EEThread"
+      }
+     },
+     {
+      "name": "upsertFolderSeenTimestamp",
+      "value": {
+       "__dr": "LSUpsertFolderSeenTimestamp"
+      }
+     },
+     {
+      "name": "setHMPSStatus",
+      "value": {
+       "__dr": "LSSetHMPSStatus"
+      }
+     },
+     {
+      "name": "verifyContactRowExists",
+      "value": {
+       "__dr": "LSVerifyContactRowExists"
+      }
+     },
+     {
+      "name": "issueCheckBackupStateOnInitSyncTask",
+      "value": {
+       "__dr": "LSIssueCheckBackupStateOnInitSyncTask"
+      }
+     },
+     {
+      "name": "executeFinallyBlockForSyncTransaction",
+      "value": {
+       "__dr": "LSExecuteFinallyBlockForSyncTransaction"
+      }
+     }
+    ],
+    "experiments": null,
+    "target": "JSON"
+   }
+  }
+ },
+ "extensions": {
+  "is_final": true
+ }
+}

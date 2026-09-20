@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fbk"
+version = "2.2.0"
+description = "Facebook web-surface client: authenticated GraphQL, MQTT realtime, DGW transport — grounded in the docs/ research suite."
+readme = "README.md"
+license = {text = "AGPL-3.0-or-later"}
+requires-python = ">=3.11"
+keywords = ["facebook", "research", "graphql", "mqtt", "dgw", "client"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications",
+]
+dependencies = [
+    "curl_cffi>=0.15",
+    "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "websockets>=13", "ruff", "mypy"]
+realtime = ["websockets>=13"]
+
+[project.scripts]
+fbk = "app:main"
+
+[tool.hatch.build.targets.wheel]
+# src/ installs flat (sources map: src/* -> site-packages/*), so data/ rides
+# alongside the installed modules (site-packages/data/*) — the flat-layout
+# twin of cli/data. NOTE: Config.discover() must root at its own module
+# directory for an installed copy to find this data/ (see src/config.py);
+# with the current pyproject-parent root derivation, non-editable installs
+# still need FBK_ROOT set — tracked as the packaging follow-up.
+include = ["src/**/*.py", "data/**"]
+sources = {"src" = ""}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: requires cookies.txt + network; enabled via FBK_LIVE=1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.ruff.lint.pep8-naming]
+# `import constants as C` is a deliberate repo-wide convention
+ignore-names = ["C"]
+
+[tool.mypy]
+python_version = "3.11"
+
+[[tool.mypy.overrides]]
+module = ["curl_cffi.*", "websockets.*"]
+ignore_missing_imports = true

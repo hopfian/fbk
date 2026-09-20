@@ -1,0 +1,19 @@
+# Secrets & runtime state — NEVER commit
+cookies.txt
+state/
+*.jsonl
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+data/profile.json
+.env
+*.egg-info/
+.coverage
+htmlcov/
+.claude/
+.opencode/
