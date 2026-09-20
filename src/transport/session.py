@@ -35,6 +35,19 @@ ARCHITECTURE:
     — enforcement is answered with disengagement, not escalating retries
     (docs/11 §5 containment principle, docs/15 §P8-1 lesson).
 
+  Self-Healing Transport Retries (src/healing.py, docs/11 §5):
+    Governed reads — ``get()`` and ``post_graphql()`` with
+    ``is_mutation=False`` — retry connection-phase failures
+    (curl_cffi ``Timeout``/``ConnectionError``) up to
+    ``FBK_HEAL_TRANSPORT_RETRIES`` times per call (default 1, ceiling
+    3; ``FBK_HEAL=off`` disables). The governor gate runs once per
+    logical call, so a retry never re-debits a budget or re-sleeps the
+    inter-arrival gap. Mutations and form POSTs are never retried at
+    the transport layer: a timeout after send cannot distinguish
+    "request lost" from "response lost", and the double-post hazard
+    outweighs the recovery (docs/11 §5). Each retry is recorded as a
+    ``transport-retry`` row in the healing log when one is attached.
+
   Rupload Seam (docs/15 §P6-1):
     ``raw_post()``/``raw_get()`` are the deliberate ungoverned seam for
     rupload media transfers, whose hand-built multipart bodies and custom
@@ -59,10 +72,11 @@ from __future__ import annotations
 
 import contextlib
 import time
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from typing import TYPE_CHECKING, Any, Protocol, cast
 
 import constants as C
+from healing import KIND_TRANSPORT_RETRY, HealingLog, transport_retry_limit
 
 from .cookies import CookieLoadError  # noqa: F401 (re-export for compat)
 from .headers import graphql_headers, page_headers
@@ -152,6 +166,12 @@ class FBTransport:
     around, and the ungoverned rupload seam (``raw_post``/``raw_get``)
     remains soft-block-observed and journaled.
     """
+
+    # Optional healing-log handle (src/healing.py). Session.__init__ wires
+    # ``healer.log`` here: when attached, every read-only connection-phase
+    # retry is recorded as a ``transport-retry`` row. Retries still proceed
+    # when the handle is absent (stderr visibility is HealingLog's job).
+    healing_log: HealingLog | None = None
 
     def __init__(
         self,
@@ -258,6 +278,64 @@ class FBTransport:
         if empty_200 or status in (403, 429):
             self.governor.observe_soft_block()
 
+    def _send_with_retry(self, send: Callable[[], Any], *, retryable: bool,
+                         describe: str) -> Any:
+        """Run one HTTP send, retrying connection-phase failures on reads.
+
+        Wraps (never rewrites) an existing single-send call site: on
+        success the response is returned untouched, so journaling and
+        governor observation stay exactly where the caller left them.
+        Only the connection phase is healable — ``Timeout`` and
+        ``ConnectionError`` from curl_cffi's requests-compatible
+        exception set; every other ``RequestException`` propagates
+        uncaught. The governor gate is deliberately NOT part of this
+        helper: callers gate once per logical call, so a retry never
+        re-debits a budget or re-sleeps the lognormal inter-arrival
+        gap (a connection failure is instantaneous, not behavioural).
+
+        Args:
+            send: Zero-arg callable performing exactly one HTTP attempt
+                through the curl session.
+            retryable: True only for idempotent reads (GETs, and GraphQL
+                POSTs with ``is_mutation=False``). Mutations pass False
+                and are never retried: a timeout after send cannot
+                distinguish "request lost" from "response lost", and the
+                double-post hazard outweighs the recovery (docs/11 §5).
+            describe: Redacted call label for the healing-log trigger —
+                verb and operation name only, never token-bearing
+                values (docs/12 §4 secret hygiene).
+
+        Returns:
+            The response of the attempt that succeeded, exactly as
+            ``send()`` returned it.
+
+        Raises:
+            curl_cffi.exceptions.Timeout: The most recent connection-
+                phase failure, when no retry budget remains (mutation,
+                ``FBK_HEAL=off``, limit 0, or retries exhausted) —
+                re-raised untouched, never wrapped.
+            curl_cffi.exceptions.ConnectionError: Same, for connect-
+                phase refusals.
+            curl_cffi.exceptions.RequestException: Any non-connection-
+                phase transport error propagates immediately.
+        """
+        from curl_cffi import requests as creq  # lazy: paid at construction
+        conn_phase = (creq.exceptions.Timeout, creq.exceptions.ConnectionError)
+        limit = transport_retry_limit() if retryable else 0
+        attempts = 0
+        while True:
+            try:
+                return send()
+            except conn_phase as exc:
+                attempts += 1
+                if attempts > limit:
+                    raise
+                if self.healing_log is not None:
+                    self.healing_log.append(
+                        KIND_TRANSPORT_RETRY,
+                        f"connection-phase failure on {describe}",
+                        f"{type(exc).__name__}; read-only retry")
+
     def get(self, url: str, *, headers: Mapping[str, str] | None = None,
             **kw: Any) -> creq.Response:
         """Governed, impersonated GET; returns the curl_cffi response.
@@ -277,16 +355,23 @@ class FBTransport:
         Note:
             Governor-gated (``_govern()`` runs before I/O) and
             soft-block-observed; journal entry recorded when a journal
-            is attached.
+            is attached. GETs are idempotent reads, so a connection-
+            phase failure is retried per the healing policy
+            (src/healing.py); each retry is recorded in the healing log
+            when one is attached.
         """
         # governor gate BEFORE I/O: a blocked call must never open a socket
         self._govern()
-        resp = self._session.get(
-            url,
-            headers=headers or page_headers(self.profile),
-            impersonate=cast("BrowserTypeLiteral", self.impersonate),
-            timeout=self.timeout,
-            **kw,
+        resp: creq.Response = self._send_with_retry(
+            lambda: self._session.get(
+                url,
+                headers=headers or page_headers(self.profile),
+                impersonate=cast("BrowserTypeLiteral", self.impersonate),
+                timeout=self.timeout,
+                **kw,
+            ),
+            retryable=True,
+            describe="GET",
         )
         self._note("GET", resp, kw)
         self._observe_governor_response(resp)
@@ -354,13 +439,26 @@ class FBTransport:
 
         Returns:
             The ``curl_cffi`` response object.
+
+        Note:
+            Governor-gated (``_govern()`` runs before I/O) and
+            soft-block-observed. Only reads (``is_mutation=False``)
+            retry on connection-phase failures; mutations are never
+            retried at the transport layer — a timeout after send
+            cannot distinguish "request lost" from "response lost"
+            (docs/11 §5).
         """
         # governor gate BEFORE I/O — mutation calls debit their own budget
         self._govern(is_mutation=is_mutation)
-        resp = self._session.post(
-            url, data=dict(data),
-            headers=graphql_headers(self.profile, friendly_name, lsd),
-            impersonate=cast("BrowserTypeLiteral", self.impersonate), timeout=self.timeout, **kw)
+        resp: creq.Response = self._send_with_retry(
+            lambda: self._session.post(
+                url, data=dict(data),
+                headers=graphql_headers(self.profile, friendly_name, lsd),
+                impersonate=cast("BrowserTypeLiteral", self.impersonate),
+                timeout=self.timeout, **kw),
+            retryable=not is_mutation,
+            describe=f"POST graphql/{friendly_name}",
+        )
         self._note("POST", resp, {"body_fields": sorted(data.keys())})
         self._observe_governor_response(resp)
         return resp

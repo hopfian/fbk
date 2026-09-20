@@ -95,10 +95,26 @@ Behavior details:
   or logged-out bootstrap never caches as reusable tokens.
 * The file holds the token pair (`fb_dtsg`, `lsd`) and non-secret metadata
   (user_id, revision) — **never cookie values**. Writes are atomic (temp +
-  replace); a corrupt or hand-edited file fails soft to a cache miss.
+  replace); a corrupt or hand-edited file fails soft to a cache miss — and
+  the miss is *diagnosed*: `TokenCache.load_diagnosed` pairs it with a
+  reason token (`ok` on a fresh hit; `absent` / `expired` / `stale-state` /
+  `corrupt: <exception repr>` / `invalid-shape` on a miss), the hook the
+  self-healing coordinator reads to tell the benign misses
+  (`absent`/`expired`/`stale-state`) from the heal-worthy ones
+  (`corrupt`/`invalid-shape`) without re-reading the file.
 * Live DTSG tokens carry their own expiry in the `:1:<unix>` suffix (a
   multi-day validity window), so 15 minutes is far inside server-legal
   reuse.
+
+**The corrupt-cache self-heal.** A cache classified `corrupt` or
+`invalid-shape` is discarded — the discard IS the heal: the fail-soft
+contract already turned the damaged file into a cache miss, and the full
+bootstrap that follows regenerates it. Session records a
+`token-cache-rebuild` event in `state/healing.jsonl` (capped at 2 per
+invocation, src/healing.py) so the extra bootstrap request is auditable;
+`fbk doctor`'s self-healing check surfaces the census. The benign misses
+(`absent`, `expired`, `stale-state`) are ordinary cache behavior, never
+heal events.
 
 **Force a full re-bootstrap:** delete `state/token_cache.json`. (A DTSG
 rejection auto-invalidates it too, and `fbk logout` invalidates it on
@@ -274,7 +290,10 @@ The discipline is enforced structurally, not by convention:
 - `src/auth/state.py` — the `LoginState` enum
 - `src/auth/logout.py` — the `logout.php` POST pair, `jazoest`,
   `LogoutService`
-- `src/token_cache.py` — the persistent token cache (15-min TTL)
+- `src/token_cache.py` — the persistent token cache (15-min TTL,
+  `load_diagnosed` reason tokens)
+- `src/healing.py` — the self-healing coordinator (records the
+  `token-cache-rebuild` events)
 - `src/transport/cookies.py` — Netscape jar load, `fingerprint`, `redact`
 - `src/commands/auth.py` — `whoami` / `state` / `logout` handlers
 - `src/commands/cookies.py` — `cookies inspect` handler

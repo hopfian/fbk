@@ -5,9 +5,10 @@ OFFLINE answer to "is my environment whole?" before a live session.
 the jar; doctor composes the whole pre-flight after a credential scrub
 + re-auth cycle: registry tiers (v3 + the v2 fallback), the capture
 assets, client-profile coherence, the impersonation target, the cookie
-jar, state-dir writability, and the journal census — each a
-pass/warn/fail line with a remediation hint whenever degraded, and
-``--json`` for the structured list.
+jar, state-dir writability, the journal census, and the self-healing
+visibility readout (the ambient FBK_HEAL switch + the healing.jsonl
+census) — each a pass/warn/fail line with a remediation hint whenever
+degraded, and ``--json`` for the structured list.
 
 OFFLINE / NON-MUTATION CONTRACT:
   * no Session, no journal records, no governor ticks, no contact with
@@ -43,6 +44,14 @@ from config import Config
 from constants import AUTH_COOKIES
 from graphql.errors import RegistryLoadError, RegistryMissError
 from graphql.registry import DocIdRegistry
+from healing import (
+    KIND_DOC_ID_RETRY,
+    KIND_REGISTRY_REFRESH,
+    KIND_TOKEN_CACHE_REBUILD,
+    KIND_TRANSPORT_RETRY,
+    HealingLog,
+    healing_enabled,
+)
 from journal.recorder import iter_journals
 from transport.cookies import CookieLoadError, load_netscape
 from transport.profile import ClientProfile
@@ -67,6 +76,13 @@ _REGISTRY_V2 = "doc_id_registry_v2.json"
 
 _STATE_PROBE_NAME = ".doctor-probe"
 _GOVERNOR_STATE = "governor_state.json"
+
+# The self-healing readout: the 24h window plus the closed KIND_* vocabulary
+# in healing.py's declaration order (by_kind keys are log-consumer-stable).
+_HEALING_LOG = "healing.jsonl"
+_HEALING_WINDOW_S = 86400.0
+_HEALING_KINDS = (KIND_REGISTRY_REFRESH, KIND_DOC_ID_RETRY,
+                  KIND_TOKEN_CACHE_REBUILD, KIND_TRANSPORT_RETRY)
 
 
 @dataclass
@@ -346,6 +362,61 @@ def _check_journals(cfg: Config) -> Check:
                  f"{count} journal file(s) under {cfg.state_dir}")
 
 
+def _check_self_healing(cfg: Config) -> tuple[Check, dict[str, Any]]:
+    """Self-healing visibility: the FBK_HEAL switch + the healing.jsonl census.
+
+    Read-only over ``<journal_dir>/healing.jsonl`` (the path Session wires
+    the HealingContext to) through the healing module's own API —
+    ``count_since`` for the 24h census, ``last_event`` for the newest row
+    — honoring the AMBIENT ``FBK_HEAL`` switch (no new flags, no
+    Session). Advisory by construction: FAIL is unreachable (healing
+    problems must not fail the doctor), and a disabled switch is a
+    legitimate operator choice, still a pass. The single WARN is a
+    non-empty log file that yields zero parseable rows — a torn/corrupt
+    log loses the self-repair audit trail (visibility, not function:
+    healing reads are fail-soft and the next append starts a fresh
+    readable log).
+
+    Returns:
+        The finding plus the structured readout carried by the ``--json``
+        payload's top-level ``self_healing`` field: ``enabled``, the log
+        path, the 24h event count, the per-kind breakdown over the closed
+        KIND_* vocabulary, and the newest event (``None`` when the log is
+        absent or unreadable).
+    """
+    path = cfg.journal_dir / _HEALING_LOG
+    log = HealingLog(path)
+    enabled = healing_enabled()
+    events = log.count_since(_HEALING_WINDOW_S)
+    by_kind = {kind: log.count_since(_HEALING_WINDOW_S, kind)
+               for kind in _HEALING_KINDS}
+    last = log.last_event()
+    try:
+        nonempty = path.is_file() and path.stat().st_size > 0
+    except OSError:
+        nonempty = False
+    readout: dict[str, Any] = {"enabled": enabled, "log": str(path),
+                               "events_24h": events, "by_kind": by_kind,
+                               "last": last}
+    if nonempty and last is None:
+        return Check(
+            "self-healing", WARN, False,
+            f"healing log present but unreadable ({path}) — 0 parseable rows; "
+            "self-repair visibility lost (fail-soft: healing itself is "
+            "unaffected)",
+            "no action needed — the next healing append starts a fresh "
+            "readable log; delete the file to discard the torn history",
+        ), readout
+    switch = "on" if enabled else "off (FBK_HEAL)"
+    if not path.is_file():
+        return Check("self-healing", PASS, False,
+                     f"healing {switch}; no log yet ({path})"), readout
+    tail = f"; last: {last['kind']}: {last['trigger']}" if last else ""
+    return Check("self-healing", PASS, False,
+                 f"healing {switch}; {events} event(s) in 24h ({path})"
+                 + tail), readout
+
+
 def _check_version(cfg: Config) -> Check:
     """Informational: version provenance consistency.
 
@@ -396,6 +467,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     """
     cfg = build_config(args)
     profile_check, profile = _check_profile(cfg)
+    healing_check, healing_readout = _check_self_healing(cfg)
     checks = [
         _check_registry(cfg),
         _check_captures(cfg),
@@ -404,10 +476,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         _check_cookies(cfg),
         _check_state(cfg),
         _check_journals(cfg),
+        healing_check,
         _check_version(cfg),
     ]
     ok = all(c.status != FAIL for c in checks if c.critical)
-    payload = {"ok": ok, "checks": [c.to_dict() for c in checks]}
+    payload = {"ok": ok, "checks": [c.to_dict() for c in checks],
+               "self_healing": healing_readout}
 
     def human() -> None:
         for c in checks:

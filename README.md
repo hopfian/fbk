@@ -38,6 +38,9 @@ page 1           : has_next_page=True
   a separate 40/day mutation budget, soft-block cooldowns, checkpoint
   disengagement, quiet hours, and a daily warm-up curve. Pacing discipline is
   structural: no surface or script can opt out by accident.
+* **Self-healing** — registry rotation auto-re-harvest, corrupt state
+  discard-and-rebuild, read-only transport retries — capped, cooled down,
+  and logged to `state/healing.jsonl`.
 * **Realtime the way the browser speaks it** — the Messenger MQTT dialect
   (MQIsdp over a fingerprinted WebSocket, Thrift-compact delta decoding) plus
   the DGW transport, both under `fbk messenger listen`.

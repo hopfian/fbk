@@ -25,8 +25,8 @@ of the research suite's 01–16 numbering.
 | [05-reference-content.md](05-reference-content.md) | search, marketplace, video, photos, events, upload, draft |
 | [06-reference-people.md](06-reference-people.md) | messenger, friends, groups, pages, settings |
 | [07-reference-tooling.md](07-reference-tooling.md) | doc-ids, registry, templates, governor, measure, journal, doctor, completions |
-| [08-architecture.md](08-architecture.md) | internal design, request flow, error taxonomy |
-| [09-safety-and-opsec.md](09-safety-and-opsec.md) | the governor policy, request discipline, journals, env overrides |
+| [08-architecture.md](08-architecture.md) | internal design, request flow, error taxonomy, self-healing |
+| [09-safety-and-opsec.md](09-safety-and-opsec.md) | the governor and self-healing policies, request discipline, journals, env overrides |
 | [10-extending-and-testing.md](10-extending-and-testing.md) | adding commands/surfaces, live calibration, tests, quality gates |
 | [11-troubleshooting.md](11-troubleshooting.md) | exit codes, failures, remedies |
 

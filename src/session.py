@@ -38,6 +38,7 @@ from config import Config
 from governor import default_governor
 from graphql.errors import DryRunRawSeamError
 from graphql.registry import DocIdRegistry
+from healing import HealingContext
 from journal.recorder import JSONLJournal
 from token_cache import TokenCache
 from transport.cookies import load_netscape
@@ -135,6 +136,12 @@ class Session:
         self._registry: DocIdRegistry | None = None
         self.token_cache = TokenCache(
             self.config.journal_dir / "token_cache.json")
+        # the self-healing coordinator (src/healing.py): capped, cooled
+        # down, log-backed recovery for registry rotation, corrupt state
+        # files, and transport blips. Wired into the GraphQL client below.
+        self.healer = HealingContext(
+            self.config, log_path=self.config.journal_dir / "healing.jsonl")
+        self.transport.healing_log = self.healer.log
         self._bootstrap: Bootstrap | None = None
         self._graphql: GraphQLClient | None = None
 
@@ -193,6 +200,17 @@ class Session:
             self._registry = DocIdRegistry.from_assets(self.config.assets_dir)
         return self._registry
 
+    def reload_registry(self) -> DocIdRegistry:
+        """Drop the memoized registry and re-parse from assets.
+
+        The self-healing registry path uses this after a re-harvest rewrites
+        ``doc_id_registry_v3.json``: the next access re-reads the directory
+        and picks up the rotated ids. Also the hook a test uses to swap a
+        fixture registry in between calls.
+        """
+        self._registry = None
+        return self.registry
+
     # ---------------------------------------------------------------- bootstrap
     def bootstrap(self, *, force: bool = False) -> Bootstrap:
         """Return the page bootstrap, going to the network only on cache miss.
@@ -216,6 +234,9 @@ class Session:
             ``LOGGED_IN`` and a ``token_cache`` marker — the on-disk entry
             only ever exists for a previously verified login, and the
             GraphQL client's auto-refresh still catches revoked tokens.
+            A corrupt cache file fails soft to the full bootstrap (the
+            discard IS the heal) and the coordinator records a
+            ``token-cache-rebuild`` event so the cost is auditable.
         """
         if force:
             self.token_cache.invalidate()
@@ -223,7 +244,7 @@ class Session:
             return self._bootstrap
 
         # cache-first: a fresh entry means ZERO bootstrap requests
-        cached = self.token_cache.load()
+        cached, reason = self.token_cache.load_diagnosed()
         if cached is not None:
             self._bootstrap = Bootstrap(
                 state=LoginState.LOGGED_IN,
@@ -235,6 +256,12 @@ class Session:
                 markers_seen=["token_cache"],
             )
             return self._bootstrap
+        if reason in ("corrupt", "invalid-shape"):
+            # a damaged cache file was discarded: the full bootstrap below
+            # regenerates it — record the heal so the extra request is
+            # auditable (self-healing visibility, src/healing.py)
+            self.healer.record_token_cache_rebuild(
+                f"token_cache.json {reason} — discarded")
 
         # cache miss: full bootstrap (the expensive path)
         self._bootstrap = bootstrap_homepage(self.transport, self.cookies)
@@ -265,7 +292,7 @@ class Session:
             self._graphql = GraphQLClient(
                 self.transport, boot, registry=self.registry,
                 endpoint=self.config.graphql_endpoint,
-                dry_run=self.dry_run)
+                dry_run=self.dry_run, healer=self.healer)
             self._graphql._token_cache = self.token_cache
         return self._graphql
 

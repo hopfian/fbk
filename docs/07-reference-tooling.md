@@ -64,9 +64,13 @@ filename (e.g. research doc: docs/13-recon-methodology.md).
 * `src/commands/journal.py` and `src/journal/recorder.py` — journal review
   and the write-time redaction boundary.
 * `src/commands/doctor.py` — the environment self-diagnostic.
+* `src/healing.py` — the healing engine; the doctor's self-healing check
+  reads `state/healing.jsonl` through its own API (`count_since`,
+  `last_event`).
 * `src/commands/completions.py` — the completion bridge scripts and the
   hidden candidate engine.
-* `tests/unit/test_doctor.py`, `tests/unit/test_registry_audit.py`,
+* `tests/unit/test_doctor.py`, `tests/unit/test_healing_doctor.py`,
+  `tests/unit/test_registry_audit.py`,
   `tests/unit/test_governor_audit.py` — the pinned output/exit contracts.
 * Companion guides: [03-session-and-auth.md](03-session-and-auth.md) (global
   flags), [09-safety-and-opsec.md](09-safety-and-opsec.md) (governor policy
@@ -978,7 +982,7 @@ target.
 
 The one-shot, fully offline self-diagnostic: "is my environment whole?"
 Run it after a credential scrub + re-auth cycle, before a live session, or
-whenever anything in this guide exits 6. Eight checks, each reported
+whenever anything in this guide exits 6. Nine checks, each reported
 `pass`/`warn`/`fail` with a remediation hint whenever degraded:
 
 | # | check | verifies | fails when |
@@ -990,7 +994,8 @@ whenever anything in this guide exits 6. Eight checks, each reported
 | 5 | cookie jar | presence + auth-pair completeness (`c_user` + `xs`) | **never fails** — an absent or partial jar is a warn, the expected clean post-scrub state |
 | 6 | state dir | `state/` exists and is writable (probe writes + immediately removes `state/.doctor-probe` — the only write doctor ever performs); `governor_state.json` parses when present | missing or unwritable (critical); a corrupt governor state is a warn — it fails soft to fresh counters and the next persist repairs it |
 | 7 | journal dir | informational journal census under `state/` (count only) | never fails |
-| 8 | version | resolved version vs the pyproject declaration; informational | never fails (skipped, not failed, where pyproject.toml is absent) |
+| 8 | self-healing | the ambient `FBK_HEAL` switch + a read-only census of `state/healing.jsonl` (24 h event count, per-kind breakdown over the closed healing-kind vocabulary, newest event) — read through the healing module's own API | **never fails** — the single warn is a non-empty log that yields zero parseable rows (torn history; the next healing append starts a fresh readable log); a disabled switch (`FBK_HEAL=off`) is a pass — a legitimate operator choice |
+| 9 | version | resolved version vs the pyproject declaration; informational | never fails (skipped, not failed, where pyproject.toml is absent) |
 
 **Syntax**
 
@@ -999,7 +1004,8 @@ fbk doctor
 ```
 
 **Flags.** None beyond the global set (`--json` emits the structured check
-list: `name`, `status`, `critical`, `detail`, `hint` per check).
+list: `name`, `status`, `critical`, `detail`, `hint` per check, plus a
+top-level `self_healing` readout — see the output notes).
 
 **Example** (real run, trimmed)
 
@@ -1013,12 +1019,20 @@ fbk doctor
 [PASS] cookie jar      10 cookies, auth pair complete (c_user + xs)
 [PASS] state dir       writable; governor state parses (day_count=493, cooldown_until=0.0)
 [PASS] journal dir     9 journal file(s) under ...\cli\state
+[PASS] self-healing    healing on; 0 event(s) in 24h (...\cli\state\healing.jsonl)
 [PASS] version         2.2.0 (resolved version matches the pyproject declaration)
-doctor: 8 checks — 7 passed, 1 warned, 0 failed — environment healthy
+doctor: 9 checks — 8 passed, 1 warned, 0 failed — environment healthy
 ```
 
 **Output notes.** The final line carries the counts and the verdict
-(`environment healthy` / `environment broken`). Exit semantics (pinned by
+(`environment healthy` / `environment broken`). The self-healing check's
+human line reports the switch state (`healing on` / `healing off (FBK_HEAL)`),
+the 24 h event count, the log path, and the newest event's kind when one
+exists; `--json` additionally carries the top-level `self_healing` payload:
+`enabled` (bool), `log` (path), `events_24h` (int), `by_kind` (per-kind
+census over the closed vocabulary — `registry-refresh`, `doc-id-retry`,
+`token-cache-rebuild`, `transport-retry`), and `last` (the newest event
+row, `null` when the log is absent or nothing parses). Exit semantics (pinned by
 `tests/unit/test_doctor.py`): **0 while every critical check passes —
 warns allowed, even critical ones; 1 as soon as any critical check
 fails.** The jar check is deliberately non-critical so doctor passes on a

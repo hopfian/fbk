@@ -168,6 +168,61 @@ class TokenCache:
         self.path = Path(cache_path)
         self.ttl_s = ttl_s if ttl_s is not None else self.DEFAULT_TTL_S
 
+    def load_diagnosed(self, *, now: float | None = None
+                       ) -> tuple[CachedBootstrap | None, str]:
+        """Load with a machine-readable miss reason (the healing hook).
+
+        Behaviorally identical to :meth:`load` — same fail-soft contract,
+        same ``None`` on every miss — but pairs the result with a reason
+        token so the self-healing coordinator (src/healing.py) can
+        distinguish the benign misses (``absent``, ``expired``,
+        ``stale-state``) from the heal-worthy ones (``corrupt``,
+        ``invalid-shape``) without re-reading the file.
+
+        Args:
+            now: Explicit epoch-seconds clock for TTL evaluation; defaults
+                to ``time.time()``.
+
+        Returns:
+            ``(entry, "ok")`` on a fresh valid hit; ``(None, reason)``
+            otherwise, with reason one of ``absent`` / ``expired`` /
+            ``stale-state`` / ``corrupt: <exception repr>`` /
+            ``invalid-shape``.
+        """
+        check = now if now is not None else time.time()
+        if not self.path.is_file():
+            return None, "absent"
+        try:
+            raw = json.loads(self.path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            return None, f"corrupt: {exc!r}"
+        if not isinstance(raw, dict):
+            return None, "invalid-shape"
+        dtsg = raw.get("fb_dtsg")
+        lsd = raw.get("lsd")
+        if not isinstance(dtsg, str) or not dtsg:
+            return None, "invalid-shape"  # missing/empty/non-string dtsg
+        if lsd is not None and not isinstance(lsd, str):
+            return None, "invalid-shape"
+        try:
+            entry = CachedBootstrap(
+                fb_dtsg=SecretStr(dtsg),
+                lsd=SecretStr(lsd) if lsd else None,
+                user_id=raw.get("user_id"),
+                user_name=raw.get("user_name"),
+                revision=raw.get("revision"),
+                state=raw.get("state", ""),
+                cached_at=raw.get("cached_at", 0),
+                expires_at=raw.get("expires_at", 0),
+            )
+        except (AttributeError, TypeError, ValueError, KeyError) as exc:
+            return None, f"corrupt: {exc!r}"
+        if not entry.is_fresh(check):
+            state = raw.get("state", "")
+            return None, ("stale-state" if state != LoginState.LOGGED_IN.value
+                          else "expired")
+        return entry, "ok"
+
     def load(self, *, now: float | None = None) -> CachedBootstrap | None:
         """Load a fresh cache entry, or None when absent/expired/invalid.
 
@@ -186,35 +241,7 @@ class TokenCache:
             structurally invalid, or was harvested in a non-logged-in
             state.
         """
-        check = now if now is not None else time.time()
-        if not self.path.is_file():
-            return None
-        try:
-            raw = json.loads(self.path.read_text(encoding="utf-8"))
-            if not isinstance(raw, dict):
-                return None
-            dtsg = raw.get("fb_dtsg")
-            lsd = raw.get("lsd")
-            if not isinstance(dtsg, str) or not dtsg:
-                return None  # missing/empty/non-string dtsg: broken entry
-            if lsd is not None and not isinstance(lsd, str):
-                return None
-            # wrap the raw token strings in SecretStr on load
-            entry = CachedBootstrap(
-                fb_dtsg=SecretStr(dtsg),
-                lsd=SecretStr(lsd) if lsd else None,
-                user_id=raw.get("user_id"),
-                user_name=raw.get("user_name"),
-                revision=raw.get("revision"),
-                state=raw.get("state", ""),
-                cached_at=raw.get("cached_at", 0),
-                expires_at=raw.get("expires_at", 0),
-            )
-        except (json.JSONDecodeError, AttributeError, TypeError, ValueError,
-                KeyError):
-            return None
-        if not entry.is_fresh(check):
-            return None
+        entry, _reason = self.load_diagnosed(now=now)
         return entry
 
     def save(self, bootstrap: _BootstrapSource) -> None:

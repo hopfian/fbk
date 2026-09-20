@@ -74,8 +74,9 @@ data, not failure.
 ## Environment overrides
 
 Every knob is individually overridable via `FBK_GOVERNOR_*` environment
-variables, resolved by `GovernorConfig.from_env` in `src/governor.py`.
-Exact names, types, and defaults:
+variables, resolved by `GovernorConfig.from_env` in `src/governor.py`; the
+self-healing layer (`src/healing.py`) mirrors the same convention with its
+own four overrides. Exact names, types, and defaults:
 
 | Variable | Type | Default (field) | Meaning |
 |---|---|---|---|
@@ -88,6 +89,10 @@ Exact names, types, and defaults:
 | `FBK_GOVERNOR_COOLDOWN` | float | 900.0 (`cooldown_s` = 15 x 60) | Soft-block disengagement window, seconds |
 | `FBK_GOVERNOR_QUIET_HOURS` | str | `"0-24"` (`quiet_hours`) | Active window in local hours `"H-H"`; `off`/`0-24`/`24`/`always` disable gating; `lo > hi` means an overnight window (e.g. `22-6`) |
 | `FBK_GOVERNOR_WARMUP` | int | 8 (`warmup_requests`) | First N requests of a day paced at 2x the mean gap |
+| `FBK_HEAL` | flag | enabled | Self-healing master switch. The falsy spellings `off`, `0`, `false` (case-insensitive) disable every heal — for tests, dry runs, debugging |
+| `FBK_HEAL_REGISTRY_HOURS` | float | 6.0 (`DEFAULT_REGISTRY_HOURS`) | Cross-invocation cooldown between self-healing registry re-harvests, hours |
+| `FBK_HEAL_MAX_BUNDLES` | int | 60 (`DEFAULT_MAX_BUNDLES`) | Bundle cap per self-healing re-harvest; `0` or a malformed value falls back to this default |
+| `FBK_HEAL_TRANSPORT_RETRIES` | int | 1 (`DEFAULT_TRANSPORT_RETRIES`) | Read-only connection-phase retries per logical call, hard ceiling 3 |
 
 Notes, all verified in source:
 
@@ -96,6 +101,12 @@ Notes, all verified in source:
   transport down with it.
 * The gap CV (0.7) is deliberately **not** env-overridable; lowering it
   is how you rebuild the Phase-8 kill signature, so it has no knob.
+* The `FBK_HEAL_*` values follow the same malformed-override rule (the
+  governor's `from_env` contract mirrored in `src/healing.py`): a
+  malformed or negative value silently keeps the safe default.
+* `FBK_HEAL=off` exists for the same reason as `FBK_GOVERNOR=off` — tests,
+  dry runs, debugging. (Dry runs never heal anyway: a plan touches no
+  edge, so both client heal paths refuse under `--dry-run`.)
 * **Overrides are for tests and dry-runs, not for production sessions.**
   `FBK_GOVERNOR=off` exists so the offline test suite and scripted
   dry-runs never sleep; disabling the gate on a live session removes the
@@ -125,6 +136,37 @@ Writes are scarce in human traffic, so they get their own daily budget
 * **Check it:** `fbk governor status` shows `mutation_count / budget`
   live. Hitting the cap raises `GovernorBlockedError` with "reads still
   allowed" — the batch aborts, it does not degrade.
+
+## Self-healing discipline
+
+The self-healing layer (`src/healing.py`) runs the documented manual
+recovery actions automatically — and it inherits every volume rule on this
+page:
+
+* **The registry re-harvest is the only expensive heal, and it is not
+  exempt from the governor.** It runs governor-paced inside the same
+  pacing queue, bundle-capped (`FBK_HEAL_MAX_BUNDLES`, default 60 — `0` or
+  a malformed value falls back to the default, because an uncapped harvest
+  would fire hundreds of requests per heal), and cooled down across
+  invocations (`FBK_HEAL_REGISTRY_HOURS`, default 6 — one deploy roll per
+  cooldown window is the realistic fault rate, docs/04 §10). The cooldown
+  is read from the healing log, so it survives process restarts: a broken
+  deploy cannot turn every command into a harvest storm.
+* **Mutations are never retried at the transport layer.** Connection-phase
+  failures on reads (curl_cffi `Timeout`/`ConnectionError`) retry up to
+  `FBK_HEAL_TRANSPORT_RETRIES` times per logical call (default 1, ceiling
+  3); a mutation is never re-fired — a timeout after send cannot
+  distinguish "request lost" from "response lost", and the double-post
+  hazard outweighs the recovery (docs/11 §5).
+* **Every heal is logged for audit.** Each action appends a redacted row
+  to `state/healing.jsonl` (operation names, doc ids, error codes, counts
+  — never token values) and mirrors to stderr as
+  `[heal] kind: trigger — detail`; `fbk doctor`'s self-healing check
+  summarizes the last 24 h (row shape in
+  [08-architecture.md](08-architecture.md)).
+* **A heal never swallows the triggering error:** it either produces the
+  recovery (one retry with healed inputs) or the original typed error
+  propagates — self-repair never becomes silent failure.
 
 ## Enforcement response doctrine
 
@@ -218,12 +260,19 @@ fbk governor audit --file feed     # the pacing verdict over the same data
    handful of requests; investigate `metronomic-suspect` immediately.
 7. Keep the journals — they are your alibi and your dataset — but never
    let a secret near them, and never commit an identifier.
+8. Let self-healing work: the `[heal]` stderr lines and
+   `state/healing.jsonl` are the audit trail. `FBK_HEAL=off` is for tests
+   and debugging, same discipline as `FBK_GOVERNOR=off`.
 
 ## Files that feed this guide
 
 * `src/governor.py` (the full `from_env` override table, the policy, the
   Phase-8 rationale)
-* `src/transport/session.py` (soft-block detection: empty-200, 403/429)
+* `src/healing.py` (the healing engine: per-kind caps, the 6 h harvest
+  cooldown, the redacted `state/healing.jsonl` log)
+* `src/session.py` (HealingContext wiring, token-cache diagnosis)
+* `src/transport/session.py` (soft-block detection: empty-200, 403/429;
+  the read-only connection-phase retry)
 * `src/auth/bootstrap.py` (checkpoint + account-warning detection)
 * `src/retry.py` (the only sanctioned retry class)
 * `src/journal/recorder.py` (redaction-at-write, the ALL_SECRETS vocabulary)

@@ -325,6 +325,12 @@ pillars:
   `messenger_ws_full.json`, and the rest — so tests validate against real
   protocol shapes, not hand-waved approximations.
 
+The self-healing layer carries its own pinned suites: `tests/unit/test_healing_engine.py`
+(the `KIND_*` vocabulary, per-kind caps, the 6 h cooldown, the log), `test_healing_graphql.py`
+(the client's two heal paths), `test_healing_transport.py` (read-only connection-phase
+retries, mutations never retried), and `test_healing_doctor.py` (the doctor's self-healing
+readout).
+
 **Pins, not smoke.** Unit tests pin exact decoded shapes and counts: field
 sets, doc_id equality, input structures, human-output lines. When a wire
 shape legitimately changes, the pin is re-cut in the same change as the
@@ -432,6 +438,7 @@ Full anchor map (src area → operator guide):
 | `graphql/registry.py`, `graphql/registry_refresh.py`, `commands/registry.py`, `commands/templates.py`, `commands/governor.py` (the command), `commands/measure.py`, `commands/journal.py`, `commands/doctor.py`, `commands/completions.py` | 07-reference-tooling.md |
 | `app.py`, `commands/common.py`, `commands/render.py`, `surfaces/base.py`, `domain/common.py`, `graphql/client.py`, `graphql/parsing.py`, `graphql/errors.py`, `retry.py`, `stats.py`, `realtime/*` | 08-architecture.md |
 | `governor.py` (the engine), `journal/recorder.py`, `transport/session.py` soft-block paths | 09-safety-and-opsec.md |
+| `src/healing.py`, the `graphql/client.py` heal paths, the `transport/session.py` retry paths | 08-architecture.md (+09 for policy) |
 | `constants.py` (the `KNOWN_MUTATIONS` catalog and all live-derived protocol values) | 07-reference-tooling.md |
 | all of `tests/` | 10-extending-and-testing.md (this file) |
 
@@ -502,6 +509,11 @@ agent-commenting-standards.md (§4 above).
 - `src/graphql/client.py` — the persisted-query client, typed errors, dry-run
 - `src/graphql/registry.py`, `src/graphql/registry_refresh.py` — registry
   loading priority and the re-harvest pipeline
+- `src/healing.py` — the self-healing coordinator (caps, cooldowns,
+  `state/healing.jsonl`)
+- `tests/unit/test_healing_engine.py`, `test_healing_graphql.py`,
+  `test_healing_transport.py`, `test_healing_doctor.py` — the healing
+  suites
 - `src/commands/registry.py` — `doc-ids` / `registry refresh|diff|audit`
 - `src/constants.py` — `KNOWN_MUTATIONS` and the calibration-citation model
 - `tests/fakes.py` — `StubSession` / `StubGraphQLClient` / `StubTransport`

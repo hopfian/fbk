@@ -30,8 +30,10 @@ from commands.doctor import _probe_state_writable, register
 from transport.profile import ClientProfile
 from transport.session import FingerprintRejectedError
 
+# "self-healing": the healing.jsonl visibility readout (healing.py).
 CHECK_ORDER = ["registry", "capture assets", "client profile", "impersonate",
-               "cookie jar", "state dir", "journal dir", "version"]
+               "cookie jar", "state dir", "journal dir", "self-healing",
+               "version"]
 
 JAR_AUTHED = (
     "# Netscape HTTP Cookie File\n"
@@ -100,6 +102,7 @@ def _env(monkeypatch):
     monkeypatch.delenv("FBK_ROOT", raising=False)
     monkeypatch.delenv("FBK_COOKIES", raising=False)
     monkeypatch.delenv("FBK_IMPERSONATE", raising=False)
+    monkeypatch.delenv("FBK_HEAL", raising=False)  # ambient heal switch out
 
 
 class TestDoctorHealthy:
@@ -121,7 +124,8 @@ class TestDoctorHealthy:
         _stub_probe(monkeypatch)
         _, _, payload = _run(capsys, ["doctor", "--root", str(tmp_path),
                                       "--json"])
-        assert set(payload) == {"ok", "checks"}
+        assert set(payload) == {"ok", "checks",
+                                "self_healing"}  # + self-healing readout
         for c in payload["checks"]:
             assert set(c) == {"name", "status", "critical", "detail", "hint"}
         critical = {c["name"]: c["critical"] for c in payload["checks"]}
@@ -129,7 +133,8 @@ class TestDoctorHealthy:
             "registry": True, "capture assets": True,
             "client profile": True, "impersonate": True,
             "cookie jar": False, "state dir": True,
-            "journal dir": False, "version": False,
+            "journal dir": False, "self-healing": False,
+            "version": False,
         }
 
     def test_cookies_absent_warns_but_exits_zero(
@@ -174,7 +179,7 @@ class TestDoctorHealthy:
         assert rc == 0
         assert out.count("[PASS]") >= 5
         assert "[WARN]" in out
-        assert "doctor: 8 checks" in out
+        assert "doctor: 9 checks" in out  # + the self-healing check
         assert "environment healthy" in out
         # the trailing compact line is the machine payload (emit contract)
         assert json.loads(out.splitlines()[-1])["ok"] is True

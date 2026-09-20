@@ -45,6 +45,7 @@ from typing import Any, NoReturn
 
 import constants as C
 from auth.bootstrap import Bootstrap
+from healing import KIND_DOC_ID_RETRY
 from journal.recorder import redact_entry
 from transport.session import FBTransport
 
@@ -91,6 +92,7 @@ class GraphQLClient:
         endpoint: str = C.GRAPHQL_ENDPOINT,
         max_refresh: int = 1,
         dry_run: bool = False,
+        healer: Any | None = None,
     ):
         """Construct the client around one harvested bootstrap.
 
@@ -108,6 +110,12 @@ class GraphQLClient:
                 raises :class:`DryRunComplete` instead of sending. The
                 flag is inert by default; nothing about the live wire
                 path changes when it is absent.
+            healer: Optional self-healing coordinator
+                (:class:`healing.HealingContext`, wired by Session). When
+                attached, a :class:`RegistryMissError` on by-name
+                dispatch and a :class:`DocIdStaleError` mid-call trigger
+                the capped, cooled-down registry re-harvest + one retry
+                (src/healing.py); inert when absent.
 
         Raises:
             NotLoggedInError: The bootstrap carries no usable fb_dtsg —
@@ -124,6 +132,7 @@ class GraphQLClient:
         self.endpoint = endpoint
         self._max_refresh = max_refresh
         self.dry_run = dry_run
+        self._healer = healer
         # set by Session to enable the persistent token cache (docs/16 §P11-1)
         self._token_cache: Any | None = None
 
@@ -351,9 +360,13 @@ class GraphQLClient:
                 not applicable.
             CheckpointError: CHECKPOINT_REQUIRED envelope or redirect.
             RateLimitedError: RATE_LIMITED_SUSPECTED envelope or soft-block.
-            DocIdStaleError: The deploy rolled this doc_id — re-harvest.
+            DocIdStaleError: The deploy rolled this doc_id and the
+                self-healing re-harvest could not produce a different
+                fresh id (healing disabled, cooldown active, harvest
+                failed, or the fresh registry carries the same id).
             GraphQLProtocolError: Unmapped structured error (docs/15 §4).
         """
+        doc_id_healed = False
         for attempt in range(self._max_refresh + 1):
             docs = self.call_raw(friendly_name, doc_id, variables,
                                  caller_class=caller_class, extra_body=extra_body)
@@ -368,6 +381,33 @@ class GraphQLClient:
                         and self._refresh_tokens()):
                     continue
                 raise
+            except DocIdStaleError as exc:
+                # Self-healing (src/healing.py): a 1570245-family rejection
+                # means the deploy rolled this registration. One capped,
+                # cooled-down re-harvest, then exactly one retry — and only
+                # when the fresh registry actually carries a DIFFERENT id
+                # (re-firing the same body against the same dead id fails
+                # identically; that shape drift is a caller bug, not
+                # staleness — docs/04 §10). Dry-run never heals: a plan
+                # touches no edge, so a harvest would violate docs/11 §8.
+                if (self.dry_run or self._healer is None or doc_id_healed
+                        or attempt >= self._max_refresh):
+                    raise
+                doc_id_healed = True
+                fresh = self._healer.refresh_registry()
+                if fresh is None:
+                    raise
+                self.registry = fresh
+                new_id = fresh.get(friendly_name)
+                if new_id is None or new_id == str(doc_id):
+                    raise
+                self._healer.record(
+                    KIND_DOC_ID_RETRY,
+                    f"doc_id {doc_id} rejected for {friendly_name!r} "
+                    f"({exc.code})",
+                    f"retrying once with the fresh id {new_id}")
+                doc_id = new_id
+                continue
             return merged
         return merged  # pragma: no cover - unreachable
 
@@ -386,13 +426,29 @@ class GraphQLClient:
 
         Raises:
             RegistryMissError: No registry attached to this client (the
-                operator ran without the data/ registry — re-harvest or
-                use :meth:`call` with an explicit doc_id), or the name is
-                absent from the registry — re-harvest bundles (docs/13 §2).
+                operator ran without the data/ registry), or the name is
+                absent — including after the self-healing re-harvest
+                (the operation is lazy-loaded and outside the homepage
+                harvest's reach; extend the harvest per docs/13 §2).
         """
         if self.registry is None:
             raise RegistryMissError("no registry attached to this client")
-        return self.call(friendly_name, self.registry.doc_id(friendly_name), variables, **kw)
+        try:
+            doc_id = self.registry.doc_id(friendly_name)
+        except RegistryMissError:
+            # Self-healing (src/healing.py): one capped, cooled-down
+            # re-harvest, then re-resolve against the fresh registry.
+            # Dry-run never heals — a plan touches no edge (docs/11 §8),
+            # so triggering a bundle harvest from plan mode would debit
+            # exactly what dry-run exists to avoid.
+            if self.dry_run or self._healer is None:
+                raise
+            fresh = self._healer.refresh_registry()
+            if fresh is None:
+                raise
+            self.registry = fresh
+            doc_id = fresh.doc_id(friendly_name)
+        return self.call(friendly_name, doc_id, variables, **kw)
 
     # ---------------------------------------------------------- token refresh
     def _refresh_tokens(self) -> bool:

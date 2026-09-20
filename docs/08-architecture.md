@@ -174,9 +174,9 @@ is the operator view.
 | `NotLoggedInError` | 1357004 hard logged-out; 1357051/1677047 DTSG rejection *after* the client's one auto-refresh failed; 302 → `/login`; bootstrap with no fb_dtsg | 3 | Re-export the cookie jar from a logged-in browser |
 | `CheckpointError` | 1384000-family envelope; 302 → `/checkpoint` | 4 | Halt and contain — the governor has already engaged its 6-hour disengagement; do not retry the jar |
 | `RateLimitedError` | HTTP 403/429; 1357046 envelope; 200-but-unparseable body (empty-200 soft block) | 5 | Disengage into the governor cooldown; only `--retry N` (jittered backoff, this error class only) is sanctioned |
-| `DocIdStaleError` | 1570245-family "Query with id ... not found" — the deploy rolled the doc_id | 2 | Run `fbk registry refresh --save`, not ad-hoc retries |
+| `DocIdStaleError` | 1570245-family "Query with id ... not found" — the deploy rolled the doc_id | 2 | Auto-heals (one capped re-harvest + one retry on a *different* fresh id); manual `fbk registry refresh --save` when the typed error still surfaces — see Self-healing below |
 | `GraphQLProtocolError` | Any unmapped structured error (live-confirmed: 1675012 variable coercion) | 2 | Fix the caller's variables shape; the same body fails identically on retry |
-| `RegistryMissError` | Strict `doc_id` lookup miss, or no registry file at all | 6 | Re-harvest (`fbk registry refresh`) |
+| `RegistryMissError` | Strict `doc_id` lookup miss, or no registry file at all | 6 | Auto-heals (one capped re-harvest + re-resolve); manual `fbk registry refresh --save` when the typed error still surfaces — see Self-healing below |
 | `RegistryLoadError` (`RegistryMissError` subclass) | Registry file present but corrupt | 6 | Delete or re-harvest the named file |
 | `DryRunComplete` (success sentinel, NOT an FBGraphError) | `--dry-run` printed the request plan; nothing was sent or debited | 0 | None — this is success |
 | `DryRunRawSeamError` (outside the family) | A raw-seam command (upload, video upload) under `--dry-run` — the raw HTTP seam has no request plan | 1 | Re-run without `--dry-run` if the action is intended |
@@ -190,6 +190,97 @@ Exit code 1 is reserved for failed *preconditions* the handler itself
 reports (unconfirmed mutations, `--show` contradictions, missing journals)
 — no exception involved. Any other unexpected exception escaping `main()`
 also exits 2.
+
+## Self-healing
+
+`src/healing.py` automates the three manual recovery actions that dominate
+fbk's failure modes. Three inputs decay: the doc_id registry (Facebook
+rotates persisted-query registrations on every build push — docs/13 §2,
+docs/04 §10), the persistent token cache (a corrupt or identity-mismatched
+entry), and the network itself (transient TLS/connect blips no behavioural
+discipline can prevent). Each used to surface as a typed error plus a
+manual remedy (`fbk registry refresh --save`, delete the cache file,
+rerun); the healing coordinator executes those same actions automatically —
+paced by the governor, capped per invocation, cooled down across
+invocations, and every action recorded. Healing is **ON by default**;
+`FBK_HEAL=off` (also `0` or `false`) disables every heal.
+
+### The four healing kinds
+
+The kind set is closed (stable `KIND_*` tags used in the log, the stderr
+mirror, and the doctor readout — a typo must fail visibly, not heal
+silently):
+
+| kind (`KIND_*` tag) | trigger | action | per-invocation cap | cooldown |
+|---|---|---|---|---|
+| `registry-refresh` | `RegistryMissError` on by-name dispatch; `DocIdStaleError` mid-call | governed re-harvest of the live deploy's bundles + v3 rewrite, then adopt the fresh registry | 1 | 6 h across invocations (`FBK_HEAL_REGISTRY_HOURS`) |
+| `doc-id-retry` | the fresh registry carries a *different* id for the rejected name | re-fire the call exactly once on the fresh doc_id | 1 | — |
+| `token-cache-rebuild` | `state/token_cache.json` classified `corrupt`/`invalid-shape` | the discard IS the heal — the next bootstrap regenerates the file | 2 | — |
+| `transport-retry` | connection-phase failure (curl_cffi `Timeout`/`ConnectionError`) on a READ | re-send the same request at the transport layer | `FBK_HEAL_TRANSPORT_RETRIES` per logical call (default 1, ceiling 3) | — |
+
+Policy knobs mirror the governor's `FBK_GOVERNOR_*` convention (a malformed
+or negative value silently keeps the safe default): `FBK_HEAL` master
+switch, `FBK_HEAL_REGISTRY_HOURS` (default 6), `FBK_HEAL_MAX_BUNDLES`
+(per-harvest bundle cap, default 60 — `0`/malformed falls back to the
+default), `FBK_HEAL_TRANSPORT_RETRIES` (default 1, ceiling 3).
+
+### Recursive but terminating
+
+Healing is layered: a registry refresh bootstraps the live homepage, which
+may exercise the token-cache path, which may itself need the transport — a
+naive implementation could recurse forever on a persistent fault.
+Termination is structural, not hopeful:
+
+* per-kind attempt counters cap every kind per invocation; a kind that has
+  spent its quota re-raises the original error;
+* the expensive kind (registry re-harvest) additionally carries a
+  cross-invocation cooldown read from the healing log, so a broken deploy
+  cannot turn every command into a harvest storm — a harvest that recorded
+  its event cannot be re-triggered inside the window, even across process
+  restarts;
+* the coordinator never swallows the triggering error: healing either
+  produces a recovery (the caller retries once with healed inputs) or the
+  original typed error propagates untouched.
+
+### The wiring map
+
+| site | heal path |
+|---|---|
+| `GraphQLClient.call_by_name` | `RegistryMissError` → one capped, cooled re-harvest → adopt the fresh registry → re-resolve; a miss surviving the fresh registry (a lazy operation outside the homepage harvest's reach) propagates |
+| `GraphQLClient.call` | `DocIdStaleError` (1570245 family) → the same re-harvest, then retry **exactly once** — and only when the fresh registry carries a *different* id; re-firing the same id is refused (same-id drift is shape drift, a caller bug — docs/04 §10) |
+| `Session` | constructs the `HealingContext` over `state/healing.jsonl`, wires it into the client and the transport (`healing_log` handle), records `token-cache-rebuild` events when `TokenCache.load_diagnosed` reports `corrupt`/`invalid-shape`, exposes `reload_registry()` |
+| `FBTransport._send_with_retry` | read-only connection-phase retry: `get()` always retryable, `post_graphql()` only for reads; **mutations are never retried** (a timeout after send cannot distinguish "request lost" from "response lost" — the double-post hazard outweighs the recovery, docs/11 §5); the governor gate runs once per logical call, so a retry never re-debits a budget or re-sleeps the inter-arrival gap |
+| `fbk doctor` | the self-healing check: the ambient `FBK_HEAL` switch + a read-only `healing.jsonl` census (below) |
+
+**Dry-run never heals.** A plan touches no edge (docs/11 §8), so
+triggering a bundle harvest from plan mode would debit exactly what
+dry-run exists to avoid; both client heal paths check `dry_run` first and
+re-raise.
+
+### The healing log
+
+Every event appends one row to `state/healing.jsonl` (gitignored with the
+rest of `state/`) and mirrors to stderr as `[heal] <kind>: <trigger> —
+<detail>` so the operator sees the self-repair in real time:
+
+```json
+{"ts": 1789844905.2, "kind": "registry-refresh",
+ "trigger": "doc_id registry re-harvested",
+ "detail": "added=3 changed=20 bundles=60 errors=0"}
+```
+
+The log is redacted by construction — only operation names, doc ids, error
+codes, and counts may enter `trigger`/`detail`; token values are
+structurally excluded, so the log is journal-safe without a redaction
+pass. Reads are fail-soft: a torn or corrupt file yields whatever prefix
+parses (cooldowns and the doctor readout degrade; a live command never
+does), and write failures degrade to stderr-only visibility — healing
+itself must never crash the command it is healing. `fbk doctor`'s
+self-healing check reads the log through the healing module's own API
+(`count_since` for the 24 h census, `last_event` for the newest row); the
+single WARN is a non-empty log that yields zero parseable rows, and the
+`--json` payload carries the top-level `self_healing` field (`enabled`,
+`log`, `events_24h`, `by_kind`, `last`).
 
 ## The realtime stack
 
@@ -336,11 +427,11 @@ of these, the change is wrong.
    annotations. Offline commands (config, journal, doctor, templates,
    governor status/audit, registry lookups) never pay for it.
 4. **`data/` immutable, `state/` mutable.** `data/` holds captured wire
-   payloads and registries and is never written at runtime; `state/`
-   holds journals, `governor_state.json`, `token_cache.json`, and
-   `drafts/`. State writes are atomic (temp file + `os.replace`) and
-   fail-soft — a corrupt state file resets to defaults rather than
-   taking commands down.
+    payloads and registries and is never written at runtime; `state/`
+    holds journals, `governor_state.json`, `token_cache.json`,
+    `healing.jsonl`, and `drafts/`. State writes are atomic (temp file +
+    `os.replace`) and fail-soft — a corrupt state file resets to defaults
+    rather than taking commands down.
 5. **Offline-first testability.** Every surface is testable against
    stub sessions (`tests/fakes.py`) and the *real* captured fixtures in
    `data/` (930+ offline tests); live integration tests are
@@ -361,6 +452,8 @@ of these, the change is wrong.
 * `src/surfaces/base.py`, `src/surfaces/feed.py`, `src/commands/feed.py`
 * `src/graphql/client.py`, `src/graphql/parsing.py`, `src/graphql/errors.py`,
   `src/graphql/registry.py`, `src/graphql/registry_refresh.py`
+* `src/healing.py` — the self-healing coordinator (the `KIND_*` vocabulary,
+  per-kind caps and cooldowns, `state/healing.jsonl`)
 * `src/auth/bootstrap.py`, `src/auth/state.py`, `src/auth/logout.py`
 * `src/transport/session.py`, `src/transport/headers.py`,
   `src/transport/profile.py`, `src/transport/cookies.py`

@@ -4,7 +4,7 @@ Exit codes first — they are a stable public interface (scripts and CI gates ma
 them), then symptom → cause → remedy for the failures operators actually hit. Ground
 truth: `src/commands/common.py` (`run_command`), `src/app.py`, `src/governor.py`,
 `src/graphql/errors.py`, `src/auth/state.py`, `src/auth/bootstrap.py`,
-`src/transport/session.py`, `src/commands/doctor.py`.
+`src/transport/session.py`, `src/commands/doctor.py`, `src/healing.py`.
 
 ## Exit codes
 
@@ -16,7 +16,7 @@ truth: `src/commands/common.py` (`run_command`), `src/app.py`, `src/governor.py`
 | 3 | `NotLoggedInError` — session invalid/expired. The client already tried one auto re-bootstrap on DTSG rejection and it failed. | Re-export the jar (below). |
 | 4 | `CheckpointError` — integrity challenge. The governor has already engaged a 6-hour disengagement. | Halt. Do not hammer. |
 | 5 | `RateLimitedError` — soft block. The governor has already engaged a 15-minute cooldown. | Respect-backoff (`--retry N`) or disengage. |
-| 6 | `RegistryMissError` (incl. `RegistryLoadError`, its corrupt-file subclass) — friendly_name absent from every registry tier. | Re-harvest: `fbk registry refresh --save`. |
+| 6 | `RegistryMissError` (incl. `RegistryLoadError`, its corrupt-file subclass) — friendly_name absent from every registry tier. | Auto-heals first (one capped re-harvest + re-resolve); the manual re-harvest `fbk registry refresh --save` remains the move when the typed error still surfaces (see the registry-drift section). |
 | 7 | `CookieLoadError` — jar missing, unreadable, or carries no parseable auth rows. | Re-export the jar. |
 | 8 | `FingerprintRejectedError` — the edge rejected the TLS/h2 identity itself, or no supported curl_cffi impersonation target exists. | Fix the fingerprint (below); retrying the same session cannot succeed. |
 | 130 | `KeyboardInterrupt` — operator interrupt. | — |
@@ -150,23 +150,51 @@ once — ids harvested together die together on a single build push.
 
 **Cause.** A deploy rolled the `doc_id`s of the persisted queries fbk replays.
 
-**Remedy.** Diagnose, then re-harvest:
+**Remedy.** Both failure classes now **self-heal first** (src/healing.py): one capped,
+cooled-down re-harvest of the current deploy, then — for `DocIdStaleError` — exactly one
+retry on the fresh id (and only when it differs from the rejected one), and for
+`RegistryMissError` a re-resolve against the fresh registry. On success the operator sees
+the `[heal]` mirror lines on stderr and the command completes; the typed error never
+surfaces:
+
+```
+[heal] registry-refresh: doc_id registry re-harvested — added=3 changed=20 bundles=60 errors=0
+[heal] doc-id-retry: doc_id 28024744447224397 rejected for 'CometModernHomeFeedQuery' (1570245) — retrying once with the fresh id 28136951115834703
+```
+
+The typed error still surfaces — and the manual `fbk registry refresh --save` remains the
+move — exactly when:
+
+* `FBK_HEAL=off` (or `0`/`false`) — healing is disabled for the process;
+* the **cooldown is active** — a heal already re-harvested within the last
+  `FBK_HEAL_REGISTRY_HOURS` (default 6), so the re-harvest is refused and the original
+  error propagates;
+* the **harvest failed** — the `[heal] registry-refresh: re-harvest failed — ...` line
+  shows why, then the original typed error follows;
+* the name is **lazy-loaded outside the homepage harvest's reach** — a `RegistryMissError`
+  that survives a fresh registry (extend the harvest per research doc:
+  docs/13-recon-methodology.md §2);
+* **same-id shape drift** — the fresh registry carries the *same* id for the rejected
+  name, so the retry is refused: that is a caller bug (the request shape, not staleness),
+  and re-firing the identical body fails identically.
+
+Diagnose offline either way:
 
 ```
 fbk registry diff       # offline pre-flight: v2 vs v3 pair counts and changes
 fbk registry audit      # offline: KNOWN_MUTATIONS cross-ref against the registry
 ```
 
-`registry audit` reports one of three verdicts per entry — `ok` (catalog id matches the
-registry), `doc-id-mismatch` (the registry carries a different id for the name), and
-`missing` (the name is absent from the registry). Recovery is the live re-harvest:
+Recovery is the live re-harvest:
 
 ```
 fbk registry refresh --save
 ```
 
 `--save` writes `data/doc_id_registry_v3.json`; the v2 fallback tier is never overwritten.
-Re-run `fbk doctor` afterwards to confirm both tiers parse.
+Re-run `fbk doctor` afterwards to confirm both tiers parse; its self-healing check also
+summarizes what the auto-heals did (the `state/healing.jsonl` census — see
+[07-reference-tooling.md](07-reference-tooling.md)).
 
 ## Doctor failures
 
@@ -181,7 +209,9 @@ absent jar is the expected post-scrub state). Read the per-check line and its hi
 | impersonate | no supported curl_cffi target (probe to 127.0.0.1:9 — offline) | upgrade curl_cffi (exit 8 is the live-run equivalent) |
 | cookie jar | never fails — absent/partial jar is a **warn** | re-export from a logged-in browser |
 | state dir | missing or not writable (probe writes and removes `state/.doctor-probe`) | `mkdir` it or fix permissions |
-| journal dir / version | informational, never fail | — |
+| journal dir | informational, never fails | — |
+| self-healing | never fails — a non-empty but unparseable `state/healing.jsonl` is a **warn** (torn history); `FBK_HEAL=off` is a pass, a legitimate operator choice | no action needed — the next healing append starts a fresh readable log |
+| version | informational, never fails | — |
 
 ## Cookies inspect exits 1
 
@@ -203,9 +233,16 @@ persists across invocations within the 15-minute window.
 **Cause.** `state/token_cache.json` holds the bootstrap tokens (`fb_dtsg`, `lsd`) plus
 identity metadata with a 15-minute TTL; entries harvested in a non-`logged_in` state are
 never trusted. The GraphQL client already auto-refreshes on DTSG rejection — a persistent
-problem means the cache disagrees with a changed session.
+problem means the cache disagrees with a changed session. A **corrupt** cache file is now
+self-healed too: `TokenCache.load_diagnosed` classifies the miss (`absent`/`expired`/
+`stale-state`/`corrupt`/`invalid-shape`), a `corrupt` or `invalid-shape` file is discarded
+— the discard IS the heal — and the bootstrap that follows regenerates it, with a
+`token-cache-rebuild` event recorded in `state/healing.jsonl` (see
+[03-session-and-auth.md](03-session-and-auth.md) §3).
 
-**Remedy.** Delete the cache to force a fresh bootstrap on the next invocation:
+**Remedy.** Delete the cache to force a fresh bootstrap on the next invocation (a corrupt
+file needs no manual delete — the self-heal discards it; deleting is for staleness and
+identity-mismatch cases):
 
 ```
 Remove-Item state\token_cache.json     # (or: rm state/token_cache.json)
@@ -242,7 +279,7 @@ exit 1 under `--dry-run`.
 3   NotLoggedInError        — re-auth the jar
 4   CheckpointError         — halt, 6h disengagement
 5   RateLimitedError        — backoff / 15min cooldown
-6   RegistryMissError       — fbk registry refresh --save
+6   RegistryMissError       — auto-heal first; manual: fbk registry refresh --save
 7   CookieLoadError         — jar missing/unreadable
 8   FingerprintRejectedError — fingerprint rejected; retrying same session is futile
 130 KeyboardInterrupt
