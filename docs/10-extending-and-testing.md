@@ -326,10 +326,14 @@ pillars:
   protocol shapes, not hand-waved approximations.
 
 The self-healing layer carries its own pinned suites: `tests/unit/test_healing_engine.py`
-(the `KIND_*` vocabulary, per-kind caps, the 6 h cooldown, the log), `test_healing_graphql.py`
+(the `KIND_*` vocabulary, per-kind caps, the 6 h cooldown, the log, and the
+re-harvest's verification + rollback), `test_healing_graphql.py`
 (the client's two heal paths), `test_healing_transport.py` (read-only connection-phase
-retries, mutations never retried), and `test_healing_doctor.py` (the doctor's self-healing
-readout).
+retries, mutations never retried), `test_healing_wiring.py` (the round-two wiring:
+`Session.registry` adopting a healed registry when every on-disk tier is corrupt, the
+`Surface.doc_id` chokepoint heal with its dry-run refusal, and the governor's
+corrupt-state rebuild event), `test_healing_doctor.py` (the doctor's self-healing
+readout), and `test_healing_doctor_fix.py` (the `--fix` quarantine pass).
 
 **Pins, not smoke.** Unit tests pin exact decoded shapes and counts: field
 sets, doc_id equality, input structures, human-output lines. When a wire
@@ -512,7 +516,8 @@ agent-commenting-standards.md (§4 above).
 - `src/healing.py` — the self-healing coordinator (caps, cooldowns,
   `state/healing.jsonl`)
 - `tests/unit/test_healing_engine.py`, `test_healing_graphql.py`,
-  `test_healing_transport.py`, `test_healing_doctor.py` — the healing
+  `test_healing_transport.py`, `test_healing_wiring.py`,
+  `test_healing_doctor.py`, `test_healing_doctor_fix.py` — the healing
   suites
 - `src/commands/registry.py` — `doc-ids` / `registry refresh|diff|audit`
 - `src/constants.py` — `KNOWN_MUTATIONS` and the calibration-citation model

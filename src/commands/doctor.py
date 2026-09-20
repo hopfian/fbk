@@ -46,6 +46,8 @@ from graphql.errors import RegistryLoadError, RegistryMissError
 from graphql.registry import DocIdRegistry
 from healing import (
     KIND_DOC_ID_RETRY,
+    KIND_DOCTOR_FIX,
+    KIND_GOVERNOR_STATE_REBUILD,
     KIND_REGISTRY_REFRESH,
     KIND_TOKEN_CACHE_REBUILD,
     KIND_TRANSPORT_RETRY,
@@ -82,7 +84,8 @@ _GOVERNOR_STATE = "governor_state.json"
 _HEALING_LOG = "healing.jsonl"
 _HEALING_WINDOW_S = 86400.0
 _HEALING_KINDS = (KIND_REGISTRY_REFRESH, KIND_DOC_ID_RETRY,
-                  KIND_TOKEN_CACHE_REBUILD, KIND_TRANSPORT_RETRY)
+                  KIND_TOKEN_CACHE_REBUILD, KIND_TRANSPORT_RETRY,
+                  KIND_GOVERNOR_STATE_REBUILD, KIND_DOCTOR_FIX)
 
 
 @dataclass
@@ -457,6 +460,80 @@ def _check_version(cfg: Config) -> Check:
                  "informational; reinstall to sync the two")
 
 
+def _quarantine(path: Path) -> Path | None:
+    """Rename one corrupt state file aside (``<name>.corrupt-<epoch>``).
+
+    The doctor --fix repair primitive: the damaged file is MOVED, never
+    deleted — the operator keeps the evidence, the live path becomes
+    absent (every loader's fail-soft regeneration then owns recovery).
+    Returns the quarantine path, or None when the rename failed (the
+    fix pass is best-effort and never breaks the doctor run).
+    """
+    import time as _time
+    target = path.with_name(f"{path.name}.corrupt-{int(_time.time())}")
+    try:
+        path.rename(target)
+    except OSError:
+        return None
+    return target
+
+
+def _json_parseable(path: Path) -> bool:
+    """Whether the file exists and parses as JSON (the fix precondition)."""
+    if not path.is_file():
+        return True  # absent = nothing to fix
+    try:
+        json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return False
+    return True
+
+
+def _apply_fixes(cfg: Config) -> list[dict[str, str]]:
+    """Quarantine every corrupt offline-state file the doctor can detect.
+
+    The ``--fix`` pass: governor_state.json, token_cache.json, and a
+    fully-unparseable healing.jsonl are the state files whose corruption
+    the checks WARN/FAIL on. Each is quarantined (renamed aside, never
+    deleted) and the action is recorded in the healing log
+    (``doctor-fix`` kind) so the audit trail shows WHY the file
+    vanished. Parseable files are left untouched; nothing here touches
+    data/ (the registry heal is network-side and stays governed).
+
+    Note:
+        The healing log is JSONL — many JSON documents, not one — so its
+        corruption test is ROW-based (the same WARN condition the
+        self-healing check uses: non-empty file, zero parseable rows),
+        not a whole-file ``json.loads``.
+    """
+    state = cfg.journal_dir
+    candidates = {
+        "governor_state.json": KIND_GOVERNOR_STATE_REBUILD,
+        "token_cache.json": KIND_TOKEN_CACHE_REBUILD,
+        _HEALING_LOG: KIND_DOCTOR_FIX,
+    }
+    log = HealingLog(state / _HEALING_LOG)
+    fixed: list[dict[str, str]] = []
+    for name, kind in candidates.items():
+        path = state / name
+        if name == _HEALING_LOG:
+            corrupt = (path.is_file() and path.stat().st_size > 0
+                       and HealingLog(path).last_event() is None)
+        else:
+            corrupt = path.is_file() and not _json_parseable(path)
+        if corrupt:
+            # the healing log is special: quarantining it removes the
+            # audit trail, so the event must be recorded INTO THE FRESH
+            # file (append creates it lazily)
+            target = _quarantine(path)
+            if target is None:
+                continue
+            log.append(kind, f"quarantined corrupt {name}",
+                       f"renamed to {target.name} (fbk doctor --fix)")
+            fixed.append({"file": name, "quarantined_to": target.name})
+    return fixed
+
+
 def cmd_doctor(args: argparse.Namespace) -> int:
     """Run every offline check; report pass/warn/fail + remediation hints.
 
@@ -480,14 +557,28 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         _check_version(cfg),
     ]
     ok = all(c.status != FAIL for c in checks if c.critical)
-    payload = {"ok": ok, "checks": [c.to_dict() for c in checks],
-               "self_healing": healing_readout}
+    payload: dict[str, Any] = {"ok": ok,
+                               "checks": [c.to_dict() for c in checks],
+                               "self_healing": healing_readout}
+
+    # the --fix pass (offline self-repair): after reporting what it FOUND,
+    # quarantine every corrupt state file so the next run starts clean.
+    # Never deletes — renames aside, and every quarantine is logged.
+    fixed: list[dict[str, str]] | None = None
+    if getattr(args, "fix", False):
+        fixed = _apply_fixes(cfg)
+        if fixed:
+            payload["fixed"] = fixed
 
     def human() -> None:
         for c in checks:
             print(f"[{c.status.upper():<4}] {c.name:<15} {c.detail}")
             if c.status != PASS and c.hint:
                 print(f"       hint: {c.hint}")
+        if fixed:
+            for entry in fixed:
+                print(f"[FIXED] {entry['file']:<15} quarantined -> "
+                      f"{entry['quarantined_to']}")
         passed = sum(1 for c in checks if c.status == PASS)
         warned = sum(1 for c in checks if c.status == WARN)
         failed = sum(1 for c in checks if c.status == FAIL)
@@ -506,4 +597,9 @@ def register(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
         help="one-shot offline environment self-diagnostic: registry, "
              "assets, profile, impersonate, jar, state (pass/warn/fail)")
     add_common_args(p)
+    p.add_argument(
+        "--fix", action="store_true",
+        help="after diagnosing, quarantine corrupt offline-state files "
+             "(governor state, token cache, torn healing log) — renamed "
+             "aside, never deleted; every quarantine is logged")
     p.set_defaults(fn=cmd_doctor)

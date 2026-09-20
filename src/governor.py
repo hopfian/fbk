@@ -72,6 +72,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from healing import KIND_GOVERNOR_STATE_REBUILD, healing_enabled
+
 
 class GovernorBlockedError(RuntimeError):
     """The governor refuses this request: caps hit or cooldown active.
@@ -212,7 +214,8 @@ class RequestGovernor:
     def __init__(self, config: GovernorConfig | None = None,
                  state_path: Path | str | None = None, *,
                  sleeper: Callable[[float], None] | None = None,
-                 clock: Callable[[], float] | None = None):
+                 clock: Callable[[], float] | None = None,
+                 healing_log: Any | None = None):
         """Wire the governor together and load any persisted state.
 
         Args:
@@ -223,12 +226,24 @@ class RequestGovernor:
                 ``--no-journal`` runs that must not touch shared state).
             sleeper: Injected sleep function (tests pass a no-op recorder).
             clock: Injected clock (tests pass a deterministic counter).
+            healing_log: Optional healing log handle (a
+                :class:`healing.HealingLog`) — when a corrupt state file is
+                discarded below, the rebuild is recorded as a
+                ``governor-state-rebuild`` event so the self-healing audit
+                trail and the doctor's readout see it. Kept untyped at
+                ``Any`` to avoid importing the healing engine eagerly
+                (startup-audit discipline: the governor loads on every
+                session; the healing module is cheap, but the handle is
+                duck-typed by design).
 
         Note:
             A corrupt or hand-edited state file fails SOFT to a fresh
             ``GovernorState()`` (§5.5): a governor that crashed on bad
             state would take every command down with it, and the next
-            successful ``_persist()`` repairs the file.
+            successful ``_persist()`` repairs the file. The discard is
+            itself a self-healing action now: with a log handle attached
+            it is RECORDED, because a counter reset re-arms the request
+            caps — an event the operator must be able to audit.
         """
         self.config = config or GovernorConfig.from_env()
         self._sleep = sleeper or time.sleep
@@ -237,6 +252,7 @@ class RequestGovernor:
         self._rng = random.Random()  # process-seeded; gaps stay heavy-tailed
         self._lock = threading.Lock()  # harvest pools share one governor
         self._warned: set[str] = set()
+        self._healing_log = healing_log
         if self.state_path and self.state_path.is_file():
             try:
                 raw = json.loads(self.state_path.read_text(encoding="utf-8"))
@@ -245,6 +261,12 @@ class RequestGovernor:
                     if k in GovernorState.__dataclass_fields__})
             except (json.JSONDecodeError, TypeError, ValueError):
                 self.state = GovernorState()
+                log = self._healing_log
+                if log is not None:
+                    log.append(
+                        KIND_GOVERNOR_STATE_REBUILD,
+                        "governor_state.json corrupt — discarded",
+                        "counters reset to zero; caps re-arm (audited)")
         else:
             self.state = GovernorState()
 
@@ -516,10 +538,23 @@ def default_governor(state_path: Path | str | None = None) -> RequestGovernor:
     global _GLOBAL
     with _GLOBAL_LOCK:
         if _GLOBAL is None:
+            log_path: Path
             if state_path is None:
                 from config import Config
-                state_path = (Config.discover().journal_dir / "governor_state.json")
-            _GLOBAL = RequestGovernor(state_path=state_path)
+                journal_dir = Config.discover().journal_dir
+                state_path = journal_dir / "governor_state.json"
+                log_path = journal_dir / "healing.jsonl"
+            else:
+                log_path = Path(state_path).parent / "healing.jsonl"
+            # the corrupt-state rebuild event rides the healing log when
+            # healing is enabled; FBK_HEAL=off keeps the old silent-soft
+            # behavior (the log handle stays None)
+            healing_log = None
+            if healing_enabled():
+                from healing import HealingLog
+                healing_log = HealingLog(log_path)
+            _GLOBAL = RequestGovernor(state_path=state_path,
+                                      healing_log=healing_log)
         return _GLOBAL
 
 

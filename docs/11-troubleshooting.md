@@ -139,8 +139,11 @@ Wait for the bucket to roll, or adjust the policy for a specific run via the
 [09-safety-and-opsec.md](09-safety-and-opsec.md)). `FBK_GOVERNOR=off` disables the gate
 entirely and is intended for tests and dry runs only — do not use it against the live
 edge. Hand-editing `governor_state.json` is a bad idea: a corrupt file fails soft to
-fresh counters, silently forgetting discipline exactly when the platform is already
-suspicious.
+fresh counters — silently forgetting discipline exactly when the platform is already
+suspicious. The discard is now an audited event: when healing is enabled, the governor
+records a `governor-state-rebuild` row in `state/healing.jsonl` ("counters reset to
+zero; caps re-arm (audited)") — a counter reset re-arms the request caps, and that is
+exactly the kind of change an operator must be able to see.
 
 ## Registry drift after a Facebook deploy
 
@@ -153,13 +156,30 @@ once — ids harvested together die together on a single build push.
 **Remedy.** Both failure classes now **self-heal first** (src/healing.py): one capped,
 cooled-down re-harvest of the current deploy, then — for `DocIdStaleError` — exactly one
 retry on the fresh id (and only when it differs from the rejected one), and for
-`RegistryMissError` a re-resolve against the fresh registry. On success the operator sees
-the `[heal]` mirror lines on stderr and the command completes; the typed error never
-surfaces:
+`RegistryMissError` a re-resolve against the fresh registry. The heal also covers
+corruption, not just staleness: a registry whose **every tier is corrupt**
+(`RegistryLoadError`) auto-heals through `Session.registry` the same way, and
+`Surface.doc_id` — the chokepoint every surface resolves doc-ids through — heals its
+misses identically. On success the operator sees the `[heal]` mirror lines on stderr and
+the command completes; the typed error never surfaces:
 
 ```
-[heal] registry-refresh: doc_id registry re-harvested — added=3 changed=20 bundles=60 errors=0
+[heal] registry-refresh: doc_id registry re-harvested (verified) — pairs=1031; added=3 changed=20 bundles=60 errors=0
 [heal] doc-id-retry: doc_id 28024744447224397 rejected for 'CometModernHomeFeedQuery' (1570245) — retrying once with the fresh id 28136951115834703
+```
+
+The heal verifies itself: before it rewrites `data/doc_id_registry_v3.json` it backs the
+current file up bit-for-bit to `data/doc_id_registry_v3.prev.json` (that file is the
+pre-heal backup — the last verified registry, safe to keep or diff); after the harvest the
+reloaded registry must clear 200 pairs (`MIN_HARVEST_PAIRS` — the shipped v3 carries
+1,031). A degenerate or unparseable harvest — a soft-blocked or shape-drifted page parse —
+is refused and **rolled back**: the backup restored via `os.replace`, or the fresh v3
+dropped when no previous file existed (resolution falls back to v2 exactly as before the
+heal). The rollback events an operator may see:
+
+```
+[heal] registry-refresh: degenerate harvest refused — rolled back — 3 pairs < floor 200; added=0 changed=0 bundles=60 errors=0
+[heal] registry-refresh: harvest verification failed — rolled back — JSONDecodeError(...)
 ```
 
 The typed error still surfaces — and the manual `fbk registry refresh --save` remains the
@@ -171,6 +191,9 @@ move — exactly when:
   error propagates;
 * the **harvest failed** — the `[heal] registry-refresh: re-harvest failed — ...` line
   shows why, then the original typed error follows;
+* the **backup could not be created** — no overwrite without a rollback path:
+  `[heal] registry-refresh: re-harvest skipped — no backup possible`, then the original
+  error;
 * the name is **lazy-loaded outside the homepage harvest's reach** — a `RegistryMissError`
   that survives a fresh registry (extend the harvest per research doc:
   docs/13-recon-methodology.md §2);
@@ -208,10 +231,34 @@ absent jar is the expected post-scrub state). Read the per-check line and its hi
 | client profile | profile.json present but unreadable or incoherent | repair or delete `data/profile.json` — a broken profile must never reach the wire |
 | impersonate | no supported curl_cffi target (probe to 127.0.0.1:9 — offline) | upgrade curl_cffi (exit 8 is the live-run equivalent) |
 | cookie jar | never fails — absent/partial jar is a **warn** | re-export from a logged-in browser |
-| state dir | missing or not writable (probe writes and removes `state/.doctor-probe`) | `mkdir` it or fix permissions |
+| state dir | missing or not writable (probe writes and removes `state/.doctor-probe`); a corrupt `governor_state.json` is a warn — it fails soft to fresh counters and the next persist repairs it, with the rebuild audited (`governor-state-rebuild`) | `mkdir` it or fix permissions; `fbk doctor --fix` quarantines the corrupt state file |
 | journal dir | informational, never fails | — |
 | self-healing | never fails — a non-empty but unparseable `state/healing.jsonl` is a **warn** (torn history); `FBK_HEAL=off` is a pass, a legitimate operator choice | no action needed — the next healing append starts a fresh readable log |
 | version | informational, never fails | — |
+
+### `fbk doctor --fix` — the offline quarantine pass
+
+Adding `--fix` runs a repair pass after the checks: corrupt offline-state
+files are quarantined — **renamed aside to `<name>.corrupt-<epoch>`,
+never deleted** (the evidence is kept) — and every quarantine is logged
+as a `doctor-fix` event into the (fresh) `state/healing.jsonl`. What it
+touches:
+
+* `state/governor_state.json` — unparseable JSON; the next governor
+  persist writes a fresh file;
+* `state/token_cache.json` — unparseable JSON; the next bootstrap
+  regenerates it;
+* `state/healing.jsonl` — non-empty with **zero parseable rows** (the
+  same warn condition the self-healing check reports). JSONL-vs-JSON
+  nuance: the healing log's corruption test is row-based, not a
+  whole-file `json.loads`.
+
+Parseable files are left untouched, and nothing here touches `data/` —
+the registry heal is network-side and stays governed. `--json` gains a
+top-level `fixed` list (only when `--fix` and something was fixed —
+`{"file", "quarantined_to"}` entries); human mode prints `[FIXED]` lines
+after the checks. The exit code is unchanged — still 0/1, decided by the
+checks alone; the fix pass is best-effort and cannot break the run.
 
 ## Cookies inspect exits 1
 

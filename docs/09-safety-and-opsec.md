@@ -164,6 +164,27 @@ page:
   `[heal] kind: trigger — detail`; `fbk doctor`'s self-healing check
   summarizes the last 24 h (row shape in
   [08-architecture.md](08-architecture.md)).
+* **A heal that cannot be verified is refused — the rollback doctrine.**
+  Before the re-harvest overwrites `data/doc_id_registry_v3.json`, the
+  current file is backed up bit-for-bit (`shutil.copy2`) to
+  `data/doc_id_registry_v3.prev.json`; after the harvest, the reloaded
+  registry must clear 200 pairs (`MIN_HARVEST_PAIRS` — the shipped v3
+  carries 1,031, and a healthy homepage harvest yields hundreds). A
+  degenerate or unparseable harvest — a soft-blocked or shape-drifted
+  page parse — is rolled back: the backup restored via `os.replace`, or
+  the fresh v3 dropped when no previous file existed (resolution falls
+  back to v2 exactly as before the heal). The doctrine is *no overwrite
+  without a rollback path*: a backup-creation failure skips the heal
+  entirely and the caller's typed error is the honest outcome. Rolling
+  back protects the working registry from being replaced by garbage.
+* **A governor counter reset is an audited event.** A corrupt
+  `state/governor_state.json` fails soft to fresh counters — which
+  re-arms the request caps. Under `FBK_HEAL=off` that discard stays
+  silent (the old behavior); with healing on, the governor records a
+  `governor-state-rebuild` event ("counters reset to zero; caps
+  re-arm") — a silent counter reset would be an untracked cap reset,
+  exactly the discipline-forgetting moment the persistence layer exists
+  to prevent.
 * **A heal never swallows the triggering error:** it either produces the
   recovery (one retry with healed inputs) or the original typed error
   propagates — self-repair never becomes silent failure.

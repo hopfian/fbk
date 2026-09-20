@@ -59,7 +59,12 @@ def make_healer(tmp_path) -> HealingContext:
 
 
 def stub_refresh(monkeypatch, fresh_pairs: dict[str, str]) -> SimpleNamespace:
-    """Patch the lazy re-harvest import to return a fresh registry."""
+    """Patch the lazy re-harvest import to return a fresh registry.
+
+    Also drops the verification floor to 1 pair: the fixtures carry a
+    single operation, far below the real floor of 200 — the floor's
+    degenerate-harvest rollback is covered by its own dedicated test.
+    """
     fresh = SimpleNamespace(added=dict(fresh_pairs), changed={},
                             bundles_fetched=5, fetch_errors=0)
     registry = DocIdRegistry.from_pairs(fresh_pairs)
@@ -72,6 +77,7 @@ def stub_refresh(monkeypatch, fresh_pairs: dict[str, str]) -> SimpleNamespace:
     monkeypatch.setattr(
         DocIdRegistry, "from_assets",
         classmethod(lambda cls, path: registry))
+    monkeypatch.setattr("healing.MIN_HARVEST_PAIRS", 1, raising=False)
     return fresh
 
 
@@ -157,6 +163,23 @@ class TestCallByNameRegistryMissHeal:
         with pytest.raises(RegistryMissError):
             client.call_by_name("CometModernHomeFeedQuery", {})
         assert transport.posts == []
+
+    def test_degenerate_harvest_is_refused(self, tmp_path, monkeypatch):
+        # a harvest whose fresh registry holds fewer than MIN_HARVEST_PAIRS
+        # pairs is treated as a degenerate parse and rolled back — the
+        # typed miss propagates, no retry happens
+        stub_refresh(monkeypatch, {"CometModernHomeFeedQuery": "999"})
+        monkeypatch.setattr("healing.MIN_HARVEST_PAIRS", 200, raising=False)
+        transport = StubTransport([])
+        client = GraphQLClient(transport, make_bootstrap(),
+                               registry=DocIdRegistry.from_pairs({}),
+                               healer=make_healer(tmp_path))
+        with pytest.raises(RegistryMissError):
+            client.call_by_name("CometModernHomeFeedQuery", {})
+        rows = [json.loads(line) for line in
+                (tmp_path / "state" / "healing.jsonl").read_text(
+                    encoding="utf-8").splitlines()]
+        assert "rolled back" in rows[-1]["trigger"]
 
 
 class TestCallDocIdStaleHeal:

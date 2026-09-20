@@ -74,6 +74,8 @@ KIND_REGISTRY_REFRESH = "registry-refresh"   # governed re-harvest + v3 rewrite
 KIND_DOC_ID_RETRY = "doc-id-retry"           # retry once on the fresh doc_id
 KIND_TOKEN_CACHE_REBUILD = "token-cache-rebuild"  # corrupt cache -> bootstrap
 KIND_TRANSPORT_RETRY = "transport-retry"     # read-only connection-phase retry
+KIND_GOVERNOR_STATE_REBUILD = "governor-state-rebuild"  # corrupt counters reset
+KIND_DOCTOR_FIX = "doctor-fix"               # `fbk doctor --fix` quarantine
 
 #: Per-invocation attempt caps. The registry re-harvest and the doc-id retry
 #: are one-shot recoveries per command run — a second failure means the heal
@@ -93,6 +95,12 @@ ENV_TRANSPORT_RETRIES = "FBK_HEAL_TRANSPORT_RETRIES"  # read retries per call
 DEFAULT_REGISTRY_HOURS = 6.0
 DEFAULT_MAX_BUNDLES = 60
 DEFAULT_TRANSPORT_RETRIES = 1
+
+#: Verification floor for a healed registry: a re-harvest producing fewer
+#: pairs than this is treated as a degenerate parse (soft-blocked or
+#: shape-drifted page) and rolled back — the shipped v3 carries 1031 pairs,
+#: a healthy homepage harvest yields hundreds at minimum (docs/15 §P2-1).
+MIN_HARVEST_PAIRS = 200
 
 
 def _env_float(name: str, default: float) -> float:
@@ -174,7 +182,19 @@ class HealingLog:
     cooldown semantics make the append the durability point: a harvest
     that recorded its event cannot be re-triggered by a later invocation
     inside the cooldown window, even across process restarts.
+
+    The log heals ITSELF (the recursive layer): growth is bounded by a
+    self-prune on append — once the file passes :attr:`PRUNE_BYTES`, it
+    is rewritten keeping only the newest :attr:`KEEP_ROWS` rows, so a
+    long-lived checkout cannot grow the log without bound and the
+    cooldown windows (which read only recent rows) stay correct. Pruning
+    is itself fail-soft: a failed prune leaves the file untouched.
     """
+
+    #: size threshold that triggers a self-prune on the next append
+    PRUNE_BYTES = 256 * 1024
+    #: rows retained by a prune (newest first — the cooldown read window)
+    KEEP_ROWS = 400
 
     def __init__(self, path: Path | str):
         """Bind the log to one JSONL file (created lazily by append)."""
@@ -208,9 +228,33 @@ class HealingLog:
                 fh.write(row + "\n")
         except OSError:
             pass  # log-less healing: stderr mirror below is still emitted
+        else:
+            self._prune_if_large()
         print(f"[heal] {kind}: {trigger}"
               + (f" — {detail}" if detail else ""), file=sys.stderr)
         return event.as_dict()
+
+    def _prune_if_large(self) -> None:
+        """Self-prune once the log outgrows PRUNE_BYTES (fail-soft).
+
+        The heal log healing itself: rewrite the file keeping only the
+        newest KEEP_ROWS parseable rows. Torn tail lines are dropped by
+        the same pass. Any I/O failure leaves the file exactly as it was
+        — pruning is an optimization, never a correctness step.
+        """
+        try:
+            if self.path.stat().st_size <= self.PRUNE_BYTES:
+                return
+            rows = self._rows()
+            kept = rows[-self.KEEP_ROWS:]
+            tmp = self.path.with_suffix(".jsonl.tmp")
+            tmp.write_text(
+                "".join(json.dumps(r, ensure_ascii=False) + "\n"
+                        for r in kept),
+                encoding="utf-8")
+            os.replace(tmp, self.path)
+        except (OSError, TypeError, ValueError):
+            pass  # unreadable/unwritable state dir: keep the fat log
 
     def _rows(self) -> list[dict[str, Any]]:
         """Every parseable row, oldest first (fail-soft prefix read)."""
@@ -356,22 +400,48 @@ class HealingContext:
         deploy's rsrc.php bundles (governor-paced inside
         ``graphql.registry_refresh``), and writes ``doc_id_registry_v3.json``
         (v2 is never overwritten — docs/13 §2). The bundle cap keeps a
-        single heal inside a bounded request envelope. On success the
-        Session's in-memory registry is invalidated and the FRESH registry
-        object is returned for the caller to adopt; on any failure the
-        event is recorded and ``None`` returned so the caller's original
-        typed error propagates.
+        single heal inside a bounded request envelope.
+
+        The heal verifies ITSELF before declaring success: the previous
+        v3 is backed up to ``doc_id_registry_v3.prev.json`` first, and the
+        reloaded registry must clear :data:`MIN_HARVEST_PAIRS` — a
+        degenerate harvest (a soft-blocked or shape-drifted page parsed
+        into a handful of pairs) would otherwise replace a working
+        registry with garbage. On any failure the backup is restored (or
+        the fresh v3 dropped, when no previous file existed, falling back
+        to v2 exactly as before the heal) and the event records the
+        rollback. On success the FRESH registry object is returned for
+        the caller to adopt; every failure path returns ``None`` so the
+        caller's original typed error propagates untouched.
 
         Returns:
             The reloaded :class:`~graphql.registry.DocIdRegistry` after the
-            heal, or ``None`` when the heal was refused/not attempted or
-            the harvest failed.
+            verified heal, or ``None`` when the heal was refused/not
+            attempted, the harvest failed, or verification rolled it back.
         """
         if not self.allow(KIND_REGISTRY_REFRESH):
             return None
         self._attempts[KIND_REGISTRY_REFRESH] = (
             self._attempts.get(KIND_REGISTRY_REFRESH, 0) + 1)
         from graphql.registry import DocIdRegistry  # lazy: heavy import chain
+        current = Path(self.config.assets_dir) / "doc_id_registry_v3.json"
+        backup = current.with_name("doc_id_registry_v3.prev.json")
+        had_backup = False
+        try:
+            if current.is_file():
+                # shutil.copy2: preserve bytes exactly — the rollback path
+                # must restore the working registry bit-for-bit
+                import shutil
+                shutil.copy2(current, backup)
+                had_backup = True
+        except OSError as exc:
+            # no backup -> no heal: overwriting the only good registry
+            # without a rollback path trades a known-good state for a
+            # maybe; the caller's typed error is the honest outcome
+            self.log.append(KIND_REGISTRY_REFRESH,
+                            "re-harvest skipped — no backup possible",
+                            f"{type(exc).__name__}: {exc}")
+            return None
         try:
             from graphql.registry_refresh import refresh_registry
             # 0 or a malformed override falls back to the default cap: an
@@ -382,25 +452,56 @@ class HealingContext:
                 max_bundles = DEFAULT_MAX_BUNDLES
             diff = refresh_registry(self.config, save=True,
                                     max_bundles=max_bundles)
+            detail = (f"added={len(diff.added)} changed={len(diff.changed)} "
+                      f"bundles={diff.bundles_fetched} "
+                      f"errors={diff.fetch_errors}")
         except Exception as exc:  # heal must never mask the caller's typed
-            # error with a heal-engine crash; the original exception then
-            # propagates right after this return.
+            # error with a heal-engine crash; v3 was not written (refresh
+            # saves only after a complete harvest), so nothing to roll back
             self.log.append(KIND_REGISTRY_REFRESH,
                             "re-harvest failed",
                             f"{type(exc).__name__}: {exc}")
             return None
-        detail = (f"added={len(diff.added)} changed={len(diff.changed)} "
-                  f"bundles={diff.bundles_fetched} "
-                  f"errors={diff.fetch_errors}")
-        self.log.append(KIND_REGISTRY_REFRESH,
-                        "doc_id registry re-harvested",
-                        detail)
-        # adopt the fresh registry: re-parse from assets (v3 now first and
-        # fresh) so the caller's next lookup resolves the rotated ids.
+        # verification: reload from disk and refuse a degenerate harvest
         try:
-            return DocIdRegistry.from_assets(self.config.assets_dir)
-        except Exception:  # parse failure after a verified harvest is a
-            return None    # deeper fault; report the heal as failed
+            fresh = DocIdRegistry.from_assets(self.config.assets_dir)
+        except Exception as exc:
+            self._rollback_v3(current, backup, had_backup)
+            self.log.append(KIND_REGISTRY_REFRESH,
+                            "harvest verification failed — rolled back",
+                            f"{type(exc).__name__}: {exc}")
+            return None
+        pair_count = sum(1 for _ in fresh)
+        if pair_count < MIN_HARVEST_PAIRS:
+            self._rollback_v3(current, backup, had_backup)
+            self.log.append(KIND_REGISTRY_REFRESH,
+                            "degenerate harvest refused — rolled back",
+                            f"{pair_count} pairs < floor {MIN_HARVEST_PAIRS}"
+                            f"; {detail}")
+            return None
+        self.log.append(KIND_REGISTRY_REFRESH,
+                        "doc_id registry re-harvested (verified)",
+                        f"pairs={pair_count}; {detail}")
+        return fresh
+
+    def _rollback_v3(self, current: Path, backup: Path,
+                     had_backup: bool) -> None:
+        """Restore the pre-heal registry state (fail-soft best effort).
+
+        With a backup: bit-for-bit restore via ``os.replace``. Without
+        one (first-ever heal): drop the fresh v3 so the registry descent
+        falls back to v2 exactly as before the heal. Failures here are
+        suppressed — the caller's typed error is what reaches the
+        operator either way; this only bounds the damage.
+        """
+        import os
+        try:
+            if had_backup and backup.is_file():
+                os.replace(backup, current)
+            elif current.is_file():
+                current.unlink()
+        except OSError:
+            pass
 
     def record_token_cache_rebuild(self, trigger: str) -> None:
         """Record that a corrupt token cache was discarded and rebuilt.

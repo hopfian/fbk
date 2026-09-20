@@ -122,6 +122,33 @@ class TestHealingLog:
         assert log.last_ts(KIND_REGISTRY_REFRESH) is None
         assert log.count_since(1000.0) == 0
 
+    def test_log_self_prunes_when_oversized(self, tmp_path, monkeypatch):
+        # the recursive layer: the heal log heals its own growth — once
+        # the file passes PRUNE_BYTES, the next append keeps only the
+        # newest KEEP_ROWS rows
+        log = HealingLog(tmp_path / "healing.jsonl")
+        log.PRUNE_BYTES = 1          # force the prune on every append
+        log.KEEP_ROWS = 50
+        for i in range(120):
+            log.append(KIND_DOC_ID_RETRY, f"event-{i}", ts=float(i))
+        rows = log._rows()
+        assert len(rows) == 50
+        # the NEWEST rows survived (cooldown windows stay correct)
+        assert rows[-1]["trigger"] == "event-119"
+        assert rows[0]["trigger"] == "event-70"
+
+    def test_prune_failure_leaves_log_untouched(self, tmp_path, monkeypatch):
+        log = HealingLog(tmp_path / "healing.jsonl")
+        log.append(KIND_DOC_ID_RETRY, "seed", ts=1.0)
+        log.PRUNE_BYTES = 1
+        monkeypatch.setattr("healing.os.replace",
+                            lambda *a, **kw: (_ for _ in ()).throw(
+                                OSError("locked")))
+        log.append(KIND_DOC_ID_RETRY, "second", ts=2.0)
+        # the prune failed silently; both rows still readable (explicit
+        # clock: the seeded ts values sit near epoch zero)
+        assert log.count_since(10**9, now=3.0) == 2
+
 
 class TestHealingContextGuards:
     """Termination guarantees: caps, cooldown, master switch, vocabulary."""
@@ -166,20 +193,30 @@ class TestHealingContextGuards:
         assert ctx.allow(KIND_REGISTRY_REFRESH) is True
 
 
+def _write_registry(path, names: list[str], revision: str = "rev-1") -> None:
+    """Write one real-schema registry file (unique_pairs) for verification."""
+    doc = {"revision": revision,
+           "unique_pairs": [{"friendly_name": n, "doc_id": f"100{i}"}
+                            for i, n in enumerate(names)]}
+    path.write_text(json.dumps(doc), encoding="utf-8")
+
+
 class TestRegistryRefreshHeal:
-    """The expensive heal: governed re-harvest + fresh registry adoption."""
+    """The expensive heal: governed re-harvest + verification + rollback."""
+
+    def _patch(self, monkeypatch, behavior):
+        monkeypatch.setattr(FAKE_REGISTRY_REFRESH, behavior, raising=False)
 
     def test_success_returns_reloaded_registry(self, tmp_path, monkeypatch):
-        fresh = SimpleNamespace(added={"Op": "999"}, changed={},
-                                bundles_fetched=12, fetch_errors=0)
+        monkeypatch.setattr("healing.MIN_HARVEST_PAIRS", 1, raising=False)
 
         def fake_refresh(config, *, save, max_bundles):
             assert save is True
             assert max_bundles == DEFAULT_MAX_BUNDLES
-            return fresh
+            return SimpleNamespace(added={"Op": "999"}, changed={},
+                                   bundles_fetched=12, fetch_errors=0)
 
-        monkeypatch.setattr(FAKE_REGISTRY_REFRESH, fake_refresh,
-                            raising=False)
+        self._patch(monkeypatch, fake_refresh)
         import graphql.registry as reg_module
         reloaded = reg_module.DocIdRegistry.from_pairs({"Op": "999"})
         monkeypatch.setattr(
@@ -192,14 +229,78 @@ class TestRegistryRefreshHeal:
             encoding="utf-8").splitlines()
         row = json.loads(rows[0])
         assert row["kind"] == KIND_REGISTRY_REFRESH
-        assert "added=1" in row["detail"]
+        assert "verified" in row["trigger"]
+
+    def test_degenerate_harvest_rolls_back_to_backup(self, tmp_path,
+                                                     monkeypatch):
+        # a healthy v3 exists; the "harvest" overwrites it with a
+        # degenerate 5-pair file; verification refuses and restores the
+        # backup bit-for-bit
+        assets = tmp_path / "data"
+        assets.mkdir(parents=True)
+        good = assets / "doc_id_registry_v3.json"
+        _write_registry(good, [f"Op{i}" for i in range(300)])
+        _write_registry(good.with_name("doc_id_registry_v2.json"),
+                        [f"Op{i}" for i in range(300)])
+
+        def bad_refresh(config, *, save, max_bundles):
+            _write_registry(good, [f"Junk{i}" for i in range(5)],
+                            revision="rev-bad")
+            return SimpleNamespace(added={}, changed={}, bundles_fetched=3,
+                                   fetch_errors=0)
+
+        self._patch(monkeypatch, bad_refresh)
+        ctx = _ctx(tmp_path)
+        assert ctx.refresh_registry() is None
+        assert good.is_file()
+        assert "rev-1" in good.read_text(encoding="utf-8")  # backup restored
+        row = json.loads((tmp_path / "state" / "healing.jsonl").read_text(
+            encoding="utf-8").splitlines()[0])
+        assert "degenerate" in row["trigger"]
+        assert "5 pairs" in row["detail"]
+
+    def test_degenerate_first_harvest_drops_new_v3(self, tmp_path,
+                                                   monkeypatch):
+        # no previous v3: the rollback DROPS the fresh file so the descent
+        # falls back to v2 exactly as before the heal
+        assets = tmp_path / "data"
+        assets.mkdir(parents=True)
+        _write_registry(assets / "doc_id_registry_v2.json",
+                        [f"Op{i}" for i in range(300)])
+        fresh_v3 = assets / "doc_id_registry_v3.json"
+
+        def bad_refresh(config, *, save, max_bundles):
+            _write_registry(fresh_v3, ["Junk"], revision="rev-bad")
+            return SimpleNamespace(added={}, changed={}, bundles_fetched=3,
+                                   fetch_errors=0)
+
+        self._patch(monkeypatch, bad_refresh)
+        ctx = _ctx(tmp_path)
+        assert ctx.refresh_registry() is None
+        assert not fresh_v3.exists()  # dropped; v2 descent is intact
+
+    def test_unparseable_new_v3_rolls_back(self, tmp_path, monkeypatch):
+        assets = tmp_path / "data"
+        assets.mkdir(parents=True)
+        good = assets / "doc_id_registry_v3.json"
+        _write_registry(good, [f"Op{i}" for i in range(300)])
+
+        def bad_refresh(config, *, save, max_bundles):
+            good.write_text("{torn", encoding="utf-8")
+            return SimpleNamespace(added={}, changed={}, bundles_fetched=3,
+                                   fetch_errors=0)
+
+        self._patch(monkeypatch, bad_refresh)
+        ctx = _ctx(tmp_path)
+        assert ctx.refresh_registry() is None
+        assert "rev-1" in good.read_text(encoding="utf-8")
 
     def test_failure_records_event_and_returns_none(self, tmp_path,
                                                     monkeypatch):
         def boom(config, *, save, max_bundles):
             raise RuntimeError("network down")
 
-        monkeypatch.setattr(FAKE_REGISTRY_REFRESH, boom, raising=False)
+        self._patch(monkeypatch, boom)
         ctx = _ctx(tmp_path)
         assert ctx.refresh_registry() is None
         row = json.loads((tmp_path / "state" / "healing.jsonl")
@@ -212,8 +313,7 @@ class TestRegistryRefreshHeal:
         def must_not_run(config, *, save, max_bundles):
             raise AssertionError("harvest must not run after the cap")
 
-        monkeypatch.setattr(FAKE_REGISTRY_REFRESH, must_not_run,
-                            raising=False)
+        self._patch(monkeypatch, must_not_run)
         ctx = _ctx(tmp_path)
         ctx._attempts[KIND_REGISTRY_REFRESH] = 1
         assert ctx.refresh_registry() is None
@@ -222,8 +322,7 @@ class TestRegistryRefreshHeal:
         def must_not_run(config, *, save, max_bundles):
             raise AssertionError("harvest must not run inside cooldown")
 
-        monkeypatch.setattr(FAKE_REGISTRY_REFRESH, must_not_run,
-                            raising=False)
+        self._patch(monkeypatch, must_not_run)
         ctx = _ctx(tmp_path)
         ctx.log.append(KIND_REGISTRY_REFRESH, "recent", ts=time.time())
         assert ctx.refresh_registry() is None

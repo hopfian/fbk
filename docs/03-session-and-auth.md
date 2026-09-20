@@ -116,6 +116,21 @@ invocation, src/healing.py) so the extra bootstrap request is auditable;
 (`absent`, `expired`, `stale-state`) are ordinary cache behavior, never
 heal events.
 
+**The session-level registry heal.** Corruption and staleness now heal at
+the session layer too: when **every** registry tier on disk is corrupt
+(`RegistryLoadError` — the one failure the per-file fail-soft descent
+cannot route around), `Session.registry` runs the coordinator's capped,
+cooled-down re-harvest, verifies the result, and adopts the fresh
+registry via the `adopt_registry()` hook (a heal that cannot be verified
+is rolled back — see [08-architecture.md](08-architecture.md)); every
+surface's `doc_id` lookup heals a `RegistryMissError` through the same
+path. The original typed error propagates when healing is off, the
+caps/cooldown are spent, or the harvest fails. One more audited rebuild:
+a corrupt `state/governor_state.json` fails soft to fresh counters at
+governor construction — which re-arms the request caps — and, when
+healing is on, records a `governor-state-rebuild` event in
+`state/healing.jsonl` so the reset is visible.
+
 **Force a full re-bootstrap:** delete `state/token_cache.json`. (A DTSG
 rejection auto-invalidates it too, and `fbk logout` invalidates it on
 confirmed teardown.)
@@ -284,7 +299,7 @@ The discipline is enforced structurally, not by convention:
 ## Files that feed this guide
 
 - `src/session.py` — the Session facade: composition order, cache-first
-  bootstrap, dry-run raw-seam guard
+  bootstrap, dry-run raw-seam guard, the registry heal (`adopt_registry`)
 - `src/auth/bootstrap.py` — page bootstrap, token harvest, login-state
   classification, checkpoint signal
 - `src/auth/state.py` — the `LoginState` enum

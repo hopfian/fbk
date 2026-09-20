@@ -70,6 +70,7 @@ filename (e.g. research doc: docs/13-recon-methodology.md).
 * `src/commands/completions.py` — the completion bridge scripts and the
   hidden candidate engine.
 * `tests/unit/test_doctor.py`, `tests/unit/test_healing_doctor.py`,
+  `tests/unit/test_healing_doctor_fix.py`,
   `tests/unit/test_registry_audit.py`,
   `tests/unit/test_governor_audit.py` — the pinned output/exit contracts.
 * Companion guides: [03-session-and-auth.md](03-session-and-auth.md) (global
@@ -1000,12 +1001,18 @@ whenever anything in this guide exits 6. Nine checks, each reported
 **Syntax**
 
 ```
-fbk doctor
+fbk doctor [--fix]
 ```
 
-**Flags.** None beyond the global set (`--json` emits the structured check
-list: `name`, `status`, `critical`, `detail`, `hint` per check, plus a
-top-level `self_healing` readout — see the output notes).
+**Flags.**
+
+| flag | meaning |
+|---|---|
+| `--fix` | after diagnosing, quarantine corrupt offline-state files (below) — renamed aside, never deleted; every quarantine is logged |
+
+`--json` emits the structured check list (`name`, `status`, `critical`,
+`detail`, `hint` per check) plus a top-level `self_healing` readout — and,
+when `--fix` repaired something, a top-level `fixed` list (see below).
 
 **Example** (real run, trimmed)
 
@@ -1024,6 +1031,34 @@ fbk doctor
 doctor: 9 checks — 8 passed, 1 warned, 0 failed — environment healthy
 ```
 
+With `--fix` on an environment carrying a corrupt state file, the same run
+quarantines it after the checks (trimmed):
+
+```
+fbk doctor --fix
+[WARN] state dir       writable, but governor_state.json is corrupt (...) — ...
+       hint: no action needed: the next successful governor persist repairs the file
+[FIXED] governor_state.json   quarantined -> governor_state.json.corrupt-1789844905
+doctor: 9 checks — 8 passed, 1 warned, 0 failed — environment healthy
+```
+
+**The `--fix` pass (offline self-repair).** After reporting what it found,
+doctor quarantines every corrupt offline-state file it can detect — three
+candidates: `governor_state.json` and `token_cache.json` when unparseable
+as JSON, and `healing.jsonl` when it is non-empty yet yields zero
+parseable rows (the same warn the self-healing check reports — a
+row-based JSONL test, not a whole-file `json.loads`). Quarantine is a
+**rename aside to `<name>.corrupt-<epoch>`** — never a deletion, so the
+operator keeps the evidence — and each quarantine is logged as a
+`doctor-fix` event into the fresh healing log (the healing log's own
+event is appended after its rename, into the new file). The next run
+starts clean: the loaders' fail-soft regeneration owns recovery (a fresh
+governor persist, a fresh bootstrap, a fresh log). Parseable files are
+left untouched, and the pass never touches `data/` — the registry heal
+is network-side and stays governed. It is best-effort: a failed rename
+is skipped, never fatal, and the exit code stays decided by the checks
+alone (0/1, unchanged by `--fix`).
+
 **Output notes.** The final line carries the counts and the verdict
 (`environment healthy` / `environment broken`). The self-healing check's
 human line reports the switch state (`healing on` / `healing off (FBK_HEAL)`),
@@ -1031,7 +1066,8 @@ the 24 h event count, the log path, and the newest event's kind when one
 exists; `--json` additionally carries the top-level `self_healing` payload:
 `enabled` (bool), `log` (path), `events_24h` (int), `by_kind` (per-kind
 census over the closed vocabulary — `registry-refresh`, `doc-id-retry`,
-`token-cache-rebuild`, `transport-retry`), and `last` (the newest event
+`token-cache-rebuild`, `transport-retry`, `governor-state-rebuild`,
+`doctor-fix`), and `last` (the newest event
 row, `null` when the log is absent or nothing parses). Exit semantics (pinned by
 `tests/unit/test_doctor.py`): **0 while every critical check passes —
 warns allowed, even critical ones; 1 as soon as any critical check

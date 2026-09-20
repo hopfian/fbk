@@ -59,7 +59,7 @@ import time
 import uuid
 from collections.abc import Callable, Iterator
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import constants as C
 from auth.bootstrap import PreloadEntry, extract_preload_registry
@@ -67,9 +67,10 @@ from auth.bootstrap import PreloadEntry, extract_preload_registry
 if TYPE_CHECKING:  # pragma: no cover
     from curl_cffi.requests import Response as CurlResponse
 
-    from graphql.client import GraphQLClient
-    from graphql.registry import DocIdRegistry
-    from session import Session
+from graphql.client import GraphQLClient
+from graphql.errors import RegistryMissError
+from graphql.registry import DocIdRegistry
+from session import Session
 
 
 def _data_dir() -> Path:
@@ -246,6 +247,15 @@ class Surface:
     def doc_id(self, friendly_name: str) -> str:
         """Resolve a friendly name to its persisted doc_id.
 
+        Self-healing (src/healing.py): a strict lookup miss triggers the
+        coordinator's capped, cooled-down re-harvest exactly once, then
+        re-resolves against the verified fresh registry (which the
+        session adopts for every later lookup). The original
+        :class:`RegistryMissError` propagates when healing is off, the
+        caps/cooldown are spent, the harvest fails, or the operation is
+        lazy-loaded outside the homepage harvest's reach. Dry-run mode
+        never heals — a plan touches no edge (docs/11 §8).
+
         Args:
             friendly_name: The registry key, e.g.
                 ``"CometNotificationsBadgeCountQuery"`` — the same string the
@@ -255,11 +265,22 @@ class Surface:
             The numeric doc_id string for the current deploy's registry.
 
         Raises:
-            RegistryMissError: When the name is absent from the harvested
-                registry — run ``fbk registry refresh`` (docs/13 §2.4 merge
-                semantics) before retrying.
+            RegistryMissError: When the name is absent — including after
+                the self-healing re-harvest — or no healer is available
+                and recovery cannot run.
         """
-        return self.session.registry.doc_id(friendly_name)
+        try:
+            return self.session.registry.doc_id(friendly_name)
+        except RegistryMissError:
+            healer = getattr(self.session, "healer", None)
+            if healer is None or getattr(self.session, "dry_run", False):
+                raise
+            healed = healer.refresh_registry()
+            if healed is None:
+                raise
+            fresh = cast(DocIdRegistry, healed)
+            self.session.adopt_registry(fresh)
+            return fresh.doc_id(friendly_name)
 
     # -------------------------------------------------- shared service plumbing
     def _fetch(self, url: str) -> str:

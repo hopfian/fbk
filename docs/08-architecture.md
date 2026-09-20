@@ -205,7 +205,7 @@ paced by the governor, capped per invocation, cooled down across
 invocations, and every action recorded. Healing is **ON by default**;
 `FBK_HEAL=off` (also `0` or `false`) disables every heal.
 
-### The four healing kinds
+### The six healing kinds
 
 The kind set is closed (stable `KIND_*` tags used in the log, the stderr
 mirror, and the doctor readout — a typo must fail visibly, not heal
@@ -217,6 +217,14 @@ silently):
 | `doc-id-retry` | the fresh registry carries a *different* id for the rejected name | re-fire the call exactly once on the fresh doc_id | 1 | — |
 | `token-cache-rebuild` | `state/token_cache.json` classified `corrupt`/`invalid-shape` | the discard IS the heal — the next bootstrap regenerates the file | 2 | — |
 | `transport-retry` | connection-phase failure (curl_cffi `Timeout`/`ConnectionError`) on a READ | re-send the same request at the transport layer | `FBK_HEAL_TRANSPORT_RETRIES` per logical call (default 1, ceiling 3) | — |
+| `governor-state-rebuild` | corrupt `state/governor_state.json` discarded at governor construction | the discard IS the heal — fresh counters; caps re-arm, recorded via the governor's `healing_log` handle | — | — |
+| `doctor-fix` | `fbk doctor --fix` on a corrupt state file | quarantine — rename aside to `<name>.corrupt-<epoch>`, never delete — + log | — | — |
+
+The last two are audit events rather than coordinator recoveries — recorded
+straight into the log, with no attempt counter and no cooldown:
+`governor-state-rebuild` fires at governor construction (wired by
+`default_governor()` whenever healing is enabled; `FBK_HEAL=off` keeps the
+old silent-soft discard), `doctor-fix` from the `--fix` quarantine pass.
 
 Policy knobs mirror the governor's `FBK_GOVERNOR_*` convention (a malformed
 or negative value silently keeps the safe default): `FBK_HEAL` master
@@ -231,8 +239,10 @@ may exercise the token-cache path, which may itself need the transport — a
 naive implementation could recurse forever on a persistent fault.
 Termination is structural, not hopeful:
 
-* per-kind attempt counters cap every kind per invocation; a kind that has
-  spent its quota re-raises the original error;
+* per-kind attempt counters cap every coordinator kind per invocation
+  (the two audit kinds — `governor-state-rebuild`, `doctor-fix` — are
+  recorded uncapped, straight into the log); a kind that has spent its
+  quota re-raises the original error;
 * the expensive kind (registry re-harvest) additionally carries a
   cross-invocation cooldown read from the healing log, so a broken deploy
   cannot turn every command into a harvest storm — a harvest that recorded
@@ -248,14 +258,37 @@ Termination is structural, not hopeful:
 |---|---|
 | `GraphQLClient.call_by_name` | `RegistryMissError` → one capped, cooled re-harvest → adopt the fresh registry → re-resolve; a miss surviving the fresh registry (a lazy operation outside the homepage harvest's reach) propagates |
 | `GraphQLClient.call` | `DocIdStaleError` (1570245 family) → the same re-harvest, then retry **exactly once** — and only when the fresh registry carries a *different* id; re-firing the same id is refused (same-id drift is shape drift, a caller bug — docs/04 §10) |
-| `Session` | constructs the `HealingContext` over `state/healing.jsonl`, wires it into the client and the transport (`healing_log` handle), records `token-cache-rebuild` events when `TokenCache.load_diagnosed` reports `corrupt`/`invalid-shape`, exposes `reload_registry()` |
+| `Session` | constructs the `HealingContext` over `state/healing.jsonl`, wires it into the client and the transport (`healing_log` handle), records `token-cache-rebuild` events when `TokenCache.load_diagnosed` reports `corrupt`/`invalid-shape`, exposes `reload_registry()` and the `adopt_registry()` hook |
+| `Session.registry` (property) | `RegistryLoadError` — every registry tier corrupt, the one failure the per-file fail-soft descent cannot route around → the same capped, cooled re-harvest → adopt the fresh registry; the original error propagates when the heal is unavailable |
+| `Surface.doc_id` (surfaces/base.py) | the chokepoint every surface resolves doc-ids through: `RegistryMissError` → the same capped, cooled re-harvest → `session.adopt_registry()` → re-resolve; a miss surviving the fresh registry propagates; dry-run never heals |
+| `RequestGovernor.__init__` | a corrupt `governor_state.json` discard records `governor-state-rebuild` via the governor's `healing_log` handle — "counters reset to zero; caps re-arm (audited)" |
 | `FBTransport._send_with_retry` | read-only connection-phase retry: `get()` always retryable, `post_graphql()` only for reads; **mutations are never retried** (a timeout after send cannot distinguish "request lost" from "response lost" — the double-post hazard outweighs the recovery, docs/11 §5); the governor gate runs once per logical call, so a retry never re-debits a budget or re-sleeps the inter-arrival gap |
-| `fbk doctor` | the self-healing check: the ambient `FBK_HEAL` switch + a read-only `healing.jsonl` census (below) |
+| `fbk doctor` | the self-healing check: the ambient `FBK_HEAL` switch + a read-only `healing.jsonl` census (below); `--fix` quarantines corrupt offline-state files (governor state, token cache, torn healing log), each logged as a `doctor-fix` event into the fresh log |
 
 **Dry-run never heals.** A plan touches no edge (docs/11 §8), so
 triggering a bundle harvest from plan mode would debit exactly what
 dry-run exists to avoid; both client heal paths check `dry_run` first and
 re-raise.
+
+### The heal verifies itself
+
+The registry re-harvest is the one heal that *replaces a known-good
+file*, so it is also the one heal that verifies its own output before
+declaring success. Before harvesting, the current v3 is backed up to
+`data/doc_id_registry_v3.prev.json` (`shutil.copy2` — bit-for-bit, so
+the rollback path restores the working registry exactly). After the
+harvest, the registry is reloaded from disk and must clear
+`MIN_HARVEST_PAIRS` — 200 pairs; the shipped v3 carries 1,031, and a
+healthy homepage harvest yields hundreds. A degenerate or unparseable
+harvest — the signature of a soft-blocked or shape-drifted page parse —
+is refused and **rolled back**: with a backup, the pre-heal v3 is
+restored via `os.replace`; on a first-ever heal with no previous file,
+the fresh v3 is dropped so resolution falls back to v2 exactly as before
+the heal. The event records it (`degenerate harvest refused — rolled
+back` / `harvest verification failed — rolled back`). A backup-creation
+failure skips the heal entirely — no overwrite without a rollback path.
+A verified success reads `doc_id registry re-harvested (verified)` with
+a `pairs=N` detail.
 
 ### The healing log
 
@@ -265,22 +298,28 @@ rest of `state/`) and mirrors to stderr as `[heal] <kind>: <trigger> —
 
 ```json
 {"ts": 1789844905.2, "kind": "registry-refresh",
- "trigger": "doc_id registry re-harvested",
- "detail": "added=3 changed=20 bundles=60 errors=0"}
+ "trigger": "doc_id registry re-harvested (verified)",
+ "detail": "pairs=1031; added=3 changed=20 bundles=60 errors=0"}
 ```
 
 The log is redacted by construction — only operation names, doc ids, error
 codes, and counts may enter `trigger`/`detail`; token values are
 structurally excluded, so the log is journal-safe without a redaction
-pass. Reads are fail-soft: a torn or corrupt file yields whatever prefix
-parses (cooldowns and the doctor readout degrade; a live command never
-does), and write failures degrade to stderr-only visibility — healing
-itself must never crash the command it is healing. `fbk doctor`'s
-self-healing check reads the log through the healing module's own API
-(`count_since` for the 24 h census, `last_event` for the newest row); the
-single WARN is a non-empty log that yields zero parseable rows, and the
-`--json` payload carries the top-level `self_healing` field (`enabled`,
-`log`, `events_24h`, `by_kind`, `last`).
+pass. **The log prunes itself** (the healer healing itself): on append, a
+log that has outgrown `PRUNE_BYTES` (256 KB) is rewritten keeping only
+the newest `KEEP_ROWS` (400) parseable rows — torn tail lines are
+dropped by the same pass, and a failed prune leaves the file untouched
+(fail-soft; pruning is an optimization, never a correctness step). This
+bounds a long-lived checkout's log growth and keeps the cooldown read
+window correct. Reads are fail-soft: a torn or corrupt file yields
+whatever prefix parses (cooldowns and the doctor readout degrade; a live
+command never does), and write failures degrade to stderr-only
+visibility — healing itself must never crash the command it is healing.
+`fbk doctor`'s self-healing check reads the log through the healing
+module's own API (`count_since` for the 24 h census, `last_event` for
+the newest row); the single WARN is a non-empty log that yields zero
+parseable rows, and the `--json` payload carries the top-level
+`self_healing` field (`enabled`, `log`, `events_24h`, `by_kind`, `last`).
 
 ## The realtime stack
 

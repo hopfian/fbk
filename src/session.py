@@ -36,7 +36,7 @@ from auth.bootstrap import Bootstrap, bootstrap_homepage
 from auth.state import LoginState
 from config import Config
 from governor import default_governor
-from graphql.errors import DryRunRawSeamError
+from graphql.errors import DryRunRawSeamError, RegistryLoadError
 from graphql.registry import DocIdRegistry
 from healing import HealingContext
 from journal.recorder import JSONLJournal
@@ -195,10 +195,33 @@ class Session:
         180KB v3 registry JSON; commands that never run GraphQL
         (governor status, auth whoami, registry doc-ids...) shouldn't
         pay ~12ms of parse + 180KB of I/O per invocation.
+
+        Self-healing (src/healing.py): when EVERY registry file on disk
+        is corrupt (:class:`RegistryLoadError` — the one failure the
+        per-file fail-soft descent cannot route around), the coordinator
+        runs its capped, cooled-down re-harvest and adopts the verified
+        fresh registry. The original typed error propagates when healing
+        is off, its caps/cooldown are spent, or the harvest fails.
         """
         if self._registry is None:
-            self._registry = DocIdRegistry.from_assets(self.config.assets_dir)
+            try:
+                self._registry = DocIdRegistry.from_assets(
+                    self.config.assets_dir)
+            except RegistryLoadError:
+                fresh = self.healer.refresh_registry()
+                if fresh is None:
+                    raise
+                self._registry = fresh
         return self._registry
+
+    def adopt_registry(self, fresh: DocIdRegistry) -> None:
+        """Swap in a healed registry object (the self-healing adopt hook).
+
+        Called by the heal paths (this property, the surface doc_id
+        resolver, the GraphQL client) after a verified re-harvest so every
+        later lookup in this invocation resolves against the rotated ids.
+        """
+        self._registry = fresh
 
     def reload_registry(self) -> DocIdRegistry:
         """Drop the memoized registry and re-parse from assets.
